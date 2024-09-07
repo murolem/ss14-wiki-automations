@@ -2,20 +2,20 @@ import yaml, { YAMLException } from 'js-yaml';
 import fs from 'fs-extra';
 import path from 'path';
 import Logger from '@aliser/logger';
+import chalk from 'chalk';
+import { EXPLICIT_PASSTHROUGH_YAML_SCHEMA, PASSTHROUGH_YAML_SCHEMA } from '$src/yaml-schema';
+import { getFilesInDirectoryRecursively, isFilenameForYamlFile } from '$src/utils';
+import { dataPaths, projectRelPaths } from '$src/preset';
 const logger = new Logger("02-convert-source-data-to-json");
 const { logInfo, logError, logWarn } = logger;
-import chalk from 'chalk';
-import { EXPLICIT_PASSTHROUGH_YAML_SCHEMA, generateYamlSchema, PASSTHROUGH_YAML_SCHEMA } from '$src/yaml-schema';
-import { convertFilepathToFileEntryFromRecursiveFileFunctions, getFilesInDirectoryRecursively, isFilenameForYamlFile, isRecord } from '$src/utils';
-import { dataPaths, projectRelPaths } from '$src/preset';
+
+logInfo(chalk.bold("converting input data"));
 
 if (fs.existsSync(projectRelPaths.convertedData)) {
     fs.emptyDirSync(projectRelPaths.convertedData);
 } else {
     fs.ensureDirSync(projectRelPaths.convertedData)
 }
-
-logInfo(chalk.bold("converting input data"));
 
 // ======== generate jsons ========
 
@@ -35,6 +35,10 @@ convertAndSaveInputData('entities.source.store.presets', EXPLICIT_PASSTHROUGH_YA
 convertAndSaveInputData('entities.source.catalog.fills', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
 convertAndSaveInputData('entities.source.inventory-templates.inventorybase', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
 convertAndSaveInputData('entities.source.markers', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+
+
+convertAndSaveInputData('research.techs.parsed', PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('research.disciplines.parsed', PASSTHROUGH_YAML_SCHEMA);
 
 
 // ==============
@@ -73,6 +77,7 @@ function convertAndSaveInputData(dataPathAlias: keyof typeof dataPaths, yamlSche
 
     // this path can be either to a file or a directory.
     const dataPathProjectConvertedAbsPath = path.resolve(path.join(projectRelPaths.convertedData, dataPath.projectConvertedPath));
+    const dataPathProjectConvertedAbsPathParsed = path.parse(dataPathProjectConvertedAbsPath);
 
     let entriesFoundTotal = 0;
     let filesFoundTotal = 0;
@@ -121,8 +126,26 @@ function convertAndSaveInputData(dataPathAlias: keyof typeof dataPaths, yamlSche
     }
 
     if (dataPath.type === 'file') {
-        const converted = convertFile(dataPathProjectInputAbsPath);
+        if (dataPathProjectConvertedAbsPathParsed.ext === '') {
+            // if a path doesn't have an extension, it's likely not a path to a file
+            logError(`failed to convert and save an input file: given project converted path is likely a directory path, when a file path was expected`, {
+                throwErr: true,
+                additional: {
+                    projectConvertedPath: dataPath.projectConvertedPath
+                }
+            });
+            throw '' // type guard
+        } else if (dataPathProjectConvertedAbsPathParsed.ext !== '.json') {
+            logError(`failed to convert and save an input file: given project converted path does not in .json`, {
+                throwErr: true,
+                additional: {
+                    projectConvertedPath: dataPath.projectConvertedPath
+                }
+            });
+            throw '' // type guard
+        }
 
+        const converted = convertFile(dataPathProjectInputAbsPath);
         if (converted !== undefined) {
             fs.ensureDirSync(path.parse(dataPathProjectConvertedAbsPath).dir);
             fs.writeJsonSync(dataPathProjectConvertedAbsPath, converted, { spaces: 4 });
@@ -130,6 +153,16 @@ function convertAndSaveInputData(dataPathAlias: keyof typeof dataPaths, yamlSche
 
         filesFoundTotal++;
     } else {
+        if (dataPathProjectConvertedAbsPathParsed.ext !== '') {
+            logError(`failed to convert and save an input file: given project converted is a filepath, when a directory path was expected`, {
+                throwErr: true,
+                additional: {
+                    projectConvertedPath: dataPath.projectConvertedPath
+                }
+            });
+            throw '' // type guard
+        }
+
         const yamlFiles = getFilesInDirectoryRecursively(dataPathProjectInputAbsPath)
             .filter(file => isFilenameForYamlFile(file.filename))
 

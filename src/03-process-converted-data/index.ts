@@ -1,27 +1,28 @@
-import yaml, { YAMLException } from 'js-yaml';
-import fs, { stat } from 'fs-extra';
-import path, { parse } from 'path';
+import fs from 'fs-extra';
+import path from 'path';
 import Logger from '@aliser/logger';
 import chalk from 'chalk';
-import { z, ZodArray, ZodObject, ZodType } from 'zod';
-import { FluentBundle, FluentResource } from '@fluent/bundle';
+import { z } from 'zod';
 import { latheCategoryValidator, latheRecipeValidator } from '$src/schemas/recipes/lathe';
 import { latheEntityValidator } from '$src/schemas/entities/lathe';
-import { assertPathExists, convertFilepathToFileEntryFromRecursiveFileFunctions, deepCloneObjectUsingJson, FileEntryFromRecursiveFileFunctions, getFilesInDirectoryRecursively, roundToDigit } from '$src/utils';
-import { DataPath, dataPaths, extendedLogging, projectRelPaths } from '$src/preset';
+import { deepCloneObjectUsingJson, roundToDigit } from '$src/utils';
+import { dataPaths, extendedLogging, projectRelPaths } from '$src/preset';
 import { resolveInheritance } from '$src/schemas/utils';
-import { entitiyProcessedValidator, entityFilteringBasicValidator, entityValidator } from '$src/schemas/entities/entity';
-import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
+import { entityFilteringBasicValidator, entityValidator } from '$src/schemas/entities/entity';
+import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData/index';
+import { researchTechValidator } from '$src/schemas/research/tech';
+import { researchDisciplineValidator } from '$src/schemas/research/discipline';
+import { localizeRecordProperty } from '$src/03-process-converted-data/localizer';
 const logger = new Logger("03-parse-converted-data");
 const { logInfo, logError, logWarn } = logger;
+
+logInfo(chalk.bold("processing converted data"));
 
 if (fs.existsSync(projectRelPaths.outputData)) {
     fs.emptyDirSync(projectRelPaths.outputData);
 } else {
     fs.ensureDirSync(projectRelPaths.outputData)
 }
-
-logInfo(chalk.bold("processing converted data"));
 
 // lathe recipe categories
 const lathesCategories = processAndSaveConvertedData({
@@ -341,6 +342,7 @@ const entityNamesByEntityIds = entitiesProcessed
         return accum;
     }, {} as Record<string, string>);
 
+// save generated mapping
 processAndSaveConvertedData({
     convertedDataPathAlias: 'noop',
     outputDataPathAlias: 'entities.processed.entity-names-by-entity-ids',
@@ -372,6 +374,7 @@ const entityIdsByEntityNames = entitiesProcessed
         return accum;
     }, {} as Record<string, string>);
 
+// save generated mapping
 processAndSaveConvertedData({
     convertedDataPathAlias: 'noop',
     outputDataPathAlias: 'entities.processed.entity-ids-by-lowercase-entity-names',
@@ -380,6 +383,102 @@ processAndSaveConvertedData({
     }
 });
 
+
+// =================
+
+// research
+
+const researchDisciplinesParsed = processAndSaveConvertedData({
+    convertedDataPathAlias: 'research.disciplines.parsed',
+    outputDataPathAlias: 'research.disciplines.parsed',
+    processor({ files, parseFiles, writeToOutput }) {
+        const parsedEntries = parseFiles(files, researchDisciplineValidator);
+
+        for (const entry of parsedEntries) {
+            // localize in place
+            localizeRecordProperty(entry, { property: 'name' });
+        }
+
+        writeToOutput(parsedEntries);
+
+        return parsedEntries;
+    }
+});
+
+processAndSaveConvertedData({
+    convertedDataPathAlias: 'noop',
+    outputDataPathAlias: 'research.disciplines.processed',
+    processor({ writeToOutput }) {
+        // a record mapping discipline ID → discipline
+        const disciplinesByDisciplineId = researchDisciplinesParsed
+            .reduce((accum, entry) => {
+                accum[entry.id] = entry;
+
+                // remove extra fields
+                // @ts-ignore safe if we don't use this one further
+                delete entry.type;
+                // @ts-ignore same as above
+                delete entry.id;
+
+                return accum;
+            }, {} as Record<string, unknown>);
+
+        writeToOutput(disciplinesByDisciplineId);
+    }
+});
+
+
+const researchTechsParsed = processAndSaveConvertedData({
+    convertedDataPathAlias: 'research.techs.parsed',
+    outputDataPathAlias: 'research.techs.parsed',
+    processor({ files, parseFiles, writeToOutput }) {
+        const parsedEntries = parseFiles(files, researchTechValidator);
+
+        for (const entry of parsedEntries) {
+            // localize in place
+            localizeRecordProperty(entry, { property: 'name' });
+        }
+
+        writeToOutput(parsedEntries);
+
+        return parsedEntries;
+    }
+});
+
+processAndSaveConvertedData({
+    convertedDataPathAlias: 'noop',
+    outputDataPathAlias: 'research.techs.processed',
+    processor({ writeToOutput }) {
+        // a record mapping discipline ID → tech ID → tech
+        const techsByTechIdByDisciplineId = researchTechsParsed
+            .reduce((accum, entry) => {
+                // assign to a discipline
+                if (!accum[entry.discipline]) {
+                    accum[entry.discipline] = {}
+                }
+
+                accum[entry.discipline][entry.id] = entry;
+
+                // remove extra fields
+                // @ts-ignore safe if we don't use this one further
+                delete entry.type;
+                // @ts-ignore same as above
+                delete entry.id;
+                // @ts-ignore same as above
+                delete entry.discipline;
+
+                return accum;
+            }, {} as Record<string, Record<string, unknown>>);
+
+        writeToOutput(techsByTechIdByDisciplineId);
+    }
+});
+
+
+
+// ==================================
+// big functions go below
+// ==================================
 
 function processAndSaveConvertedDataForEntity(
     dataPathAlias: keyof typeof dataPaths,
@@ -399,329 +498,3 @@ function processAndSaveConvertedDataForEntity(
         }
     });
 }
-
-
-// =====================
-
-
-// // lathe recipes
-
-// /**
-//  * Parses files in the converted data directory, reducing them to a single array (or otherwise, if `afterDoneTransform` is defined)
-//  * and saving to the parsed data directory.
-//  *
-//  * Directory with files to parse is specified via `inputDirpath`, with the file output path set in `outputFilepath`.
-//  * Provide a Zod validator in `entryValidator`, with optional `localizator` function for translating strings.
-//  *
-//  * Use `relFilepathsBlacklist` to keep files from being parsed, or `relFilepathsWhitelist` to include only the specified files
-//  * to the parsing.
-//  *
-//  * To transform the resulting array of entries in any way, use `afterDoneTransform`.
-//  *
-//  * @returns The resulting data.
-//  */
-// function parseAndSaveConvertedData<
-//     ZodValidator extends ZodType,
-//     ZodValidatorInferred extends z.infer<ZodValidator>
-// >({
-//     inputDirpath,
-//     outputFilepath,
-//     entryValidator,
-//     localizator = noop,
-//     relFilepathsBlacklist = [],
-//     relFilepathsWhitelist = [],
-//     afterDoneTransform = null
-// }: {
-//     /** Path inside the converted data directory to the directory with files that need to be parsed. */
-//     inputDirpath: string,
-
-//     /** Path inside the parsed data directory to the file that will contain the parsed data. */
-//     outputFilepath: string,
-
-//     /**
-//      * A Zod validator used for validating and parsing each entry inside each found file.
-//      */
-//     entryValidator: ZodValidator,
-
-//     /**
-//      * A localizator function. Takes in each entry individually.
-//      *
-//      * @param relFilepath
-//      * @param doc Input entry. These are entries inside each found file.
-//      */
-//     localizator?: (doc: z.infer<ZodValidator>, args: {
-//         /** Path to the file that's being processed. This is an absolute path. */
-//         absFilepath: string,
-
-//         /** Filename. */
-//         filename: string,
-
-//         /**
-//          * Path to the directory containing the file that's being processed.
-//          * This is a path relative to the converted data directory.
-//         */
-//         relDirpath: string,
-
-//         /**
-//          * Path to the file that's being processed.
-//          * This is a path relative to the converted data directory.
-//          */
-//         relFilepath: string,
-
-//         /** An array of entries inside the file that's currently being parsed. */
-//         docArray: Array<ZodValidatorInferred>,
-//     }) => void,
-
-//     /**
-//      * A list of filepaths to exclude from processing, relative to the converted data directory.
-//      *
-//      * If set with `relFilepathsWhitelist`, will still be applied.
-//      */
-//     relFilepathsBlacklist?: string[],
-
-//     /**
-//      * A list of filepaths to only include to processing.
-//      * If set, all other files not specified here will be ignored.
-//      */
-//     relFilepathsWhitelist?: string[],
-
-//     /** A transform function applied to the resulting entries. */
-//     afterDoneTransform?: null | ((entries: ZodValidatorInferred[]) => unknown)
-// }): unknown {
-//     const inputDirAbsPath = path.resolve(projectRelPaths.convertedData, inputDirpath);
-//     const outputFileAbsPath = path.resolve(projectRelPaths.outputData, outputFilepath);
-
-//     if (!fs.existsSync(inputDirAbsPath)) {
-//         throw new Error("failed to parse: input directory doesn't exist: " + inputDirAbsPath);
-//     }
-
-//     logInfo(`⭐ parsing files in directory: ${chalk.bold(inputDirpath)}`);
-//     logInfo(`(${inputDirAbsPath})`);
-
-//     if (relFilepathsWhitelist.length > 0) {
-//         logInfo(chalk.blue(`WHITELIST mode`));
-//     }
-
-//     const inputFilepaths = getFilesInDirectoryRecursively(inputDirAbsPath)
-//         .filter(({ relFilepath, absFilepath }) => {
-//             // when not in whitelist mode, set to true, allowing any file to pass
-//             const inWhitelist = relFilepathsWhitelist.length === 0 || relFilepathsWhitelist.includes(relFilepath);
-//             if (!inWhitelist) {
-//                 return;
-//             }
-
-//             const inBlacklist = relFilepathsBlacklist.includes(relFilepath);
-
-//             if (inBlacklist) {
-//                 logInfo(`file excluded: ${chalk.bold(relFilepath)}`);
-//                 logInfo(`(${absFilepath})`);
-
-//                 return;
-//             }
-
-//             return true;
-//         });
-
-//     const resultingEntries = [];
-//     for (const [i, { relDirpath, filename, absFilepath, relFilepath }] of inputFilepaths.entries()) {
-//         logInfo(`[${i + 1} of ${inputFilepaths.length}] parsing file: ${chalk.bold(relFilepath)}`);
-//         logInfo(`(${absFilepath})`);
-
-//         const parsedEntries = entryValidator.array()
-//             .parse(fs.readJsonSync(absFilepath));
-
-//         parsedEntries.forEach(entry => {
-//             localizator(entry, {
-//                 absFilepath,
-//                 filename,
-//                 relDirpath,
-//                 relFilepath,
-//                 docArray: parsedEntries,
-//             })
-//         });
-
-//         resultingEntries.push(...parsedEntries);
-//     }
-
-//     logInfo(chalk.bold(`directory "${inputDirpath}" parsed! entries in total: ${resultingEntries.length}`));
-//     logInfo(`(${outputFileAbsPath})`);
-
-//     let result;
-//     if (afterDoneTransform === null) {
-//         result = resultingEntries;
-//     } else {
-//         logInfo(chalk.bold.blue("applying transform..."));
-
-//         result = afterDoneTransform(resultingEntries)
-//     }
-
-//     fs.mkdirSync(path.parse(outputFileAbsPath).dir, { recursive: true });
-//     fs.writeFileSync(outputFileAbsPath, JSON.stringify(result, null, 4));
-
-//     return result;
-// }
-
-// /**
-//  * Setups the FTL localizator function, based on the language code provided (e.g. `en-US`),
-//  * consuming all FTL files inside `localizationFilesPaths` containing localized strings.
-//  * @param lang Language code. Doesn't do much currently.
-//  * @param localizationFilesPaths A list of FTL files filepaths. These are loaded and added to the localization dictionary
-//  * to use by the localizer.
-//  * @returns A localizer function. It takes in the document to localize (any object), and a field name containing the
-//  * localization key. If the desired property lies somewhere within the document, define a function to perform the localization manually.
-//  */
-// function setupFtlLocalizator(lang: string, localizationFilesPaths: string[]) {
-//     const localization = new FluentBundle(lang);
-//     for (const filepath of localizationFilesPaths) {
-//         const resource = new FluentResource(fs.readFileSync(filepath).toString());
-//         localization.addResource(resource);
-//     }
-
-//     /**
-//      * Localizes given value.
-//      *
-//      * @returns the localized value.
-//      * @returns `null`, if the value is unknown in the localization.
-//      * */
-//     function localizeValue(value: string): string | null {
-//         const valuePattern = localization.getMessage(value)?.value;
-//         if (!valuePattern) {
-//             return null;
-//         }
-
-//         const valueString = localization.formatPattern(valuePattern);
-//         return valueString;
-//     }
-
-//     type LocalizeFn = typeof localizeValue;
-
-//     return function localizeDocField<T extends Record<string, unknown>>(
-//         /** Document to localize a field in. */
-//         doc: T,
-
-//         /**
-//          * A field name to localize, if it's one the first level.
-//          * Otherwise a function, in which you must manually extract the desired field's value from the document,
-//          * localize it with the `localize` function and set it back in the document.
-//          */
-//         fieldNameOrFieldLocalizationFn: string | ((doc: T, localize: LocalizeFn) => void)
-//     ): void {
-//         if (typeof fieldNameOrFieldLocalizationFn === 'string') {
-//             const fieldName = fieldNameOrFieldLocalizationFn;
-
-//             if (!(fieldName in doc)) {
-//                 return;
-//             }
-
-//             const fieldValue = doc[fieldName];
-//             if (typeof fieldValue !== 'string') {
-//                 logError(`failed to localize: expected the field to be a string, received ${typeof fieldValue}`, {
-//                     throwErr: true,
-//                     additional: {
-//                         fieldName,
-//                         fieldValue,
-//                         doc
-//                     }
-//                 })
-//                 throw '' // type guard
-//             }
-
-//             const result = localizeValue(fieldValue);
-//             if (result !== null) {
-//                 // @ts-ignore checked above
-//                 doc[fieldName] = result;
-//             }
-//         } else {
-//             const fieldLocalizationFn = fieldNameOrFieldLocalizationFn;
-
-//             fieldLocalizationFn(doc, localizeValue);
-//         }
-//     }
-// }
-
-// // ==========
-
-// const localeFiles = getFilesInDirectoryRecursively(path.join(projectRelPaths.inputData, 'locale'));
-
-// const localizator = setupFtlLocalizator(
-//     'en-US',
-//     localeFiles.map(file => file.absFilepath)
-// );
-
-// function parseLatheRecipes(outputProjectParsedDataFilepath: string, entryFilter: (entry: z.infer<typeof latheRecipeValidator>) => boolean): void {
-//     // recipes → lathe (excluding categories)
-//     // these contain all -lathe-related recipes,
-//     // including: autolate, protolate etc.
-//     parseAndSaveConvertedData({
-//         inputDirpath: projectInputDataDirPaths['recipes.lathes'],
-//         outputFilepath: projectOutputDataFilePaths['recipes.autolathe'],
-//         entryValidator: latheRecipeValidator,
-//         // contains lathe recipe categories, which requires a separate validator
-//         relFilepathsBlacklist: ['categories.json'],
-//         localizator: doc => localizator(doc, 'name'),
-//         afterDoneTransform: entries => {
-//             const matchingEntries = entries.filter(entry => entryFilter(entry));
-
-//             // normalize the material cost
-//             matchingEntries.forEach(entry => {
-//                 Object.entries(entry.materials).forEach(([material, count]) => {
-//                     entry.materials[material] = count / 100
-//                 })
-//             });
-
-//             return matchingEntries;
-//         }
-//         // afterDoneTransform: entries => {
-//         //     // transform resulting entries into a record
-//         //     const transformed = entries.reduce((accum, entry) => {
-//         //         const entryClone = jsonClone(entry) as typeof entry;
-//         //         accum[entry.id] = entryClone;
-//         //         // @ts-ignore schema validated at the end
-//         //         delete entryClone.id;
-
-//         //         return accum;
-//         //     }, {} as Record<string, unknown>);
-
-//         //     // validate the resulting record
-//         //     return latheRecipeAfterParseValidator.parse(transformed);
-//         // },
-//     })
-// }
-
-// // recipes → lathe entity config
-// const latheEntityConfig = LatheEntityValidator.array().parse(
-//     parseAndSaveConvertedData({
-//         inputDirpath: path.join('prototypes', 'entities', 'structures', 'machines'),
-//         outputFilepath: path.join('prototypes', 'entities', 'structures', 'machines', 'lathe.json'),
-//         entryValidator: LatheEntityValidator,
-//         relFilepathsWhitelist: ['lathe.json']
-//     })
-// );
-
-
-// parseLatheRecipes(
-//     projectOutputDataFilePaths['recipes.autolathe'],
-//     entry => {
-//         const matchingLatheEntityConfigEntry = latheEntityConfig
-//             .find(latheEntity => latheEntity.id == 'Autolathe');
-
-//         // todo error handling
-
-//         const latheComponent = matchingLatheEntityConfigEntry?.components
-//             .find(comp => comp.type === 'Lathe');
-//         const staticRecipes = latheComponent.staticRecipes;
-
-//         const dynamicRecipes = latheComponent.dynamicRecipes;
-//     }
-// )
-
-// // recipes → lathe recipe categories
-// parseAndSaveConvertedData({
-//     inputDirpath: path.join('recipes', 'lathe'),
-//     outputFilepath: path.join('recipes', 'lathe_categories' + '.json'),
-//     entryValidator: latheCategoryValidator,
-//     relFilepathsWhitelist: ['categories.json'],
-//     localizator: doc => localizator(doc, 'name')
-// });
-
-// logInfo(chalk.bold(`parsing for all complete!`));

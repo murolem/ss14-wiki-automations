@@ -37,7 +37,11 @@ export type ProcessAndSaveConvertedDataProcessor<TOptionalReturnType extends unk
     files: FileEntryFromRecursiveFileFunctions[],
 
     /**
-     * Parses each entry in each file in `files` using Zod validator `entryValidator`.
+     * Parses each entry in each file in `files` using a series of Zod validators `entryValidators`.
+     * 
+     * A single validator will work as expected - validate, throw on errors. 
+     * If multiple validators are specified, all validators except the last will work in "filtering" mode, 
+     * discarding invalid entries.
      * 
      * @returns A flat array of parsed entries.
      */

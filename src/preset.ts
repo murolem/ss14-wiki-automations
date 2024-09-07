@@ -46,6 +46,13 @@ export type DataPath = {
     /** Path to a file/directory (depending on the `type`) to import, relative to the SS14 installation directory. */
     ss14Path?: string,
 
+    /** 
+     * A list of globs for paths to exclude from importing.
+     * 
+     * Works only when `type` = `dir`, otherwise gets ignored.
+     */
+    ss14PathExcludeGlobs?: string[],
+
     /** Path to a file/directory (depending on the `type`) to where to import the data.
      *  It must be inside the projects' input data folder. */
     projectInputPath?: string,
@@ -262,5 +269,36 @@ export const dataPaths = {
         type: 'file',
         projectOutputFilePath: path.join('Entities', 'from-wiki.entity-names-by-entity-ids.json'),
         wikiPage: 'Module:Item/item names by item ids.json'
+    },
+
+
+
+    "research.techs.parsed": {
+        type: 'dir',
+        ss14Path: path.join('Resources', 'Prototypes', 'Research'),
+        ss14PathExcludeGlobs: ['disciplines*'],
+        projectInputPath: path.join('Research', 'Techs'),
+        projectConvertedPath: path.join('Research', 'Techs'),
+        projectOutputFilePath: path.join('Research', 'research.techs.parsed.json')
+    },
+
+    "research.techs.processed": {
+        type: 'dir',
+        projectOutputFilePath: path.join('Research', 'research.techs.processed.json'),
+        wikiPage: 'Module:Research/techs by tech IDs by discipline IDs.json'
+    },
+
+    "research.disciplines.parsed": {
+        type: 'file',
+        ss14Path: path.join('Resources', 'Prototypes', 'Research', 'disciplines.yml'),
+        projectInputPath: path.join('Research', 'Disciplines', 'disciplines.yml'),
+        projectConvertedPath: path.join('Research', 'Disciplines', 'disciplines.json'),
+        projectOutputFilePath: path.join('Research', 'research.disciplines.parsed.json')
+    },
+
+    "research.disciplines.processed": {
+        type: 'file',
+        projectOutputFilePath: path.join('Research', 'research.disciplines.processed.json'),
+        wikiPage: 'Module:Research/disciplines by discipline IDs.json'
     }
 } satisfies Record<string, DataPath>;

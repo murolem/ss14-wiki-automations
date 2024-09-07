@@ -3,6 +3,7 @@ import path, { resolve } from 'path';
 import Logger from '@aliser/logger';
 import { rejects } from 'assert';
 import { execSync } from 'child_process';
+import chalk from 'chalk';
 const logger = new Logger("utils (/src)");
 const { logInfo, logError } = logger;
 
@@ -13,7 +14,7 @@ export type LastElementOf<T extends unknown[]> = T extends [...unknown[], infer 
 
 export function assertPathExists(pathStr: string, message?: string): void {
     if (!fs.existsSync(pathStr)) {
-        throw new Error(message ? message : ("path doesn't exist: " + pathStr))
+        throw new Error(message ? message + `\n${chalk.gray(pathStr)}` : ("path doesn't exist: " + pathStr))
     }
 }
 
@@ -85,6 +86,8 @@ export function copyListOfFilesRecursively(files: FileEntryFromRecursiveFileFunc
     filesCopiedCount: number,
     bytesCopiedCount: number
 } {
+    fs.ensureDirSync(toDirPath);
+
     let filesCopiedCount = 0;
     let bytesCopiedCount = 0;
     for (const entry of files) {

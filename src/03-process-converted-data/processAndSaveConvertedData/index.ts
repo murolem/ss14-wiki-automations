@@ -97,6 +97,28 @@ export function processAndSaveConvertedData<
     const dataPathOutputDataAbsFilePath = path.resolve(path.join(
         projectRelPaths.outputData, outputDataPath.projectOutputFilePath
     ));
+    const dataPathOutputDataAbsFilePathParsed = path.parse(dataPathOutputDataAbsFilePath);
+
+    if (dataPathOutputDataAbsFilePathParsed.ext === '') {
+        // if a path doesn't have an extension, it's likely not a path to a file
+        logError(`failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: given project output path is likely a directory path, when a file path was expected`, {
+            throwErr: true,
+            additional: {
+                projectOutputPath: outputDataPath.projectOutputFilePath,
+                outputDataPath,
+            }
+        });
+        throw '' // type guard
+    } else if (dataPathOutputDataAbsFilePathParsed.ext !== '.json') {
+        logError(`failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: given project output path doesn't have a .json extension`, {
+            throwErr: true,
+            additional: {
+                projectOutputPath: outputDataPath.projectOutputFilePath,
+                outputDataPath,
+            }
+        });
+        throw '' // type guard
+    }
 
     return processor({
         convertedDataPathAlias,
@@ -178,7 +200,7 @@ export function processAndSaveConvertedData<
             });
         },
         writeToOutput(data, { stringifyJson = true } = {}) {
-            fs.ensureDirSync(path.parse(dataPathOutputDataAbsFilePath).dir);
+            fs.ensureDirSync(dataPathOutputDataAbsFilePathParsed.dir);
             if (stringifyJson) {
                 fs.writeJSONSync(dataPathOutputDataAbsFilePath, data, { spaces: 4 });
             } else {

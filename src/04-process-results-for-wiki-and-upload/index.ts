@@ -1,6 +1,4 @@
 import Logger from '@aliser/logger';
-const logger = new Logger("04-upload-results-to-wiki");
-const { logInfo, logError, logWarn } = logger;
 import chalk from 'chalk';
 import MwBot from "nodemw";
 import dotenv from 'dotenv';
@@ -9,6 +7,8 @@ import { DeferredPromise, getLocalGitRepoHeadShortCommitHash } from '$src/utils'
 import { dataPaths, projectRelPaths } from '$src/preset';
 import path from 'path';
 import fs from 'fs-extra';
+const logger = new Logger("04-upload-results-to-wiki");
+const { logInfo, logError, logWarn } = logger;
 dotenv.config();
 
 logInfo(chalk.bold("final data processing step with wiki uploads"));
@@ -92,6 +92,7 @@ async function main() {
         wikiDataPathAlias: 'recipes.lathes',
     });
 
+
     await processPage({
         projectOutputDataPathAlias: 'entities.processed.entity-names-by-entity-ids',
         wikiDataPathAlias: 'entities.wiki.entity-names-by-entity-ids'
@@ -100,6 +101,17 @@ async function main() {
     await processPage({
         projectOutputDataPathAlias: 'entities.processed.entity-ids-by-lowercase-entity-names',
         wikiDataPathAlias: 'entities.wiki.entity-ids-by-lowercase-entity-names'
+    });
+
+
+    await processPage({
+        projectOutputDataPathAlias: 'research.techs.processed',
+        wikiDataPathAlias: 'research.techs.processed'
+    });
+
+    await processPage({
+        projectOutputDataPathAlias: 'research.disciplines.processed',
+        wikiDataPathAlias: 'research.disciplines.processed'
     });
 
 
