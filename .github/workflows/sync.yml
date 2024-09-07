@@ -10,7 +10,7 @@ on:
             - main
 
 jobs:
-    sync:
+    Job:
         runs-on: ubuntu-latest
         env:
             FORCE_COLOR: 3
