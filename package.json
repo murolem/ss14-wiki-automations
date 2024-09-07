@@ -7,7 +7,7 @@
     "postinstall": "npx commitizen init cz-conventional-changelog --save-dev --save-exact --force",
     "dev": "vite dev",
     "type-check": "tsc",
-    "clone-ss14-repo": "rimraf temp && mkdir temp && cd temp && mkdir 00-ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/ && git fetch --depth=1 origin master && git checkout master",
+    "clone-ss14-repo": "rimraf temp && mkdir temp && cd temp && mkdir 00-ss14-repo && cd 00-ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/ && git fetch --depth=1 origin master && git checkout master",
     "import-source-data": "vite-node src/01-import-source-data/index.ts",
     "convert-source-data-to-json": "vite-node src/02-convert-source-data-to-json/index.ts",
     "process-converted-data": "vite-node src/03-process-converted-data/index.ts",
