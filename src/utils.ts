@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
-import path, { resolve } from 'path';
+import path from 'path';
 import Logger from '@aliser/logger';
-import { rejects } from 'assert';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
+import jsonDiff from 'json-diff';
 const logger = new Logger("utils (/src)");
 const { logInfo, logError } = logger;
 
@@ -300,4 +300,11 @@ export class DeferredPromise<T> extends Promise<T> {
 export function getLocalGitRepoHeadShortCommitHash(pathToRepo: string) {
     return execSync('git rev-parse --short HEAD', { cwd: pathToRepo })
         .toString().trim();
+}
+
+/**
+ * Checks if 2 objects produced from JSON.parse() are equal.
+ */
+export function areJsonObjectsEqual(obj1: unknown, obj2: unknown): boolean {
+    return jsonDiff.diff(obj1, obj2) === undefined;
 }

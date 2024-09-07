@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import MwBot from "nodemw";
 import dotenv from 'dotenv';
 import { PageEditedResult } from 'nodemw/lib/types';
-import { DeferredPromise, getLocalGitRepoHeadShortCommitHash } from '$src/utils';
+import { areJsonObjectsEqual, DeferredPromise, getLocalGitRepoHeadShortCommitHash } from '$src/utils';
 import { dataPaths, projectRelPaths } from '$src/preset';
 import path from 'path';
 import fs from 'fs-extra';
@@ -373,16 +373,13 @@ async function processPage({
 
     const currentPageContentRaw = await getArticle(wikiDataPath.wikiPage);
     let currentPageContent;
-    let currentPageContentStr;
     if (currentPageContentRaw === undefined) {
         logInfo(chalk.yellow(`${chalk.bold('[WARN]:')} wiki page doesn't exist`));
 
         currentPageContent = undefined;
-        currentPageContentStr = '';
     } else {
         try {
             currentPageContent = JSON.parse(currentPageContentRaw);
-            currentPageContentStr = JSON.stringify(currentPageContent);
         } catch (err) {
             logError("page upload failed: failed to parse page content from the wiki page to json", { throwErr: err });
             throw '' //type guard
@@ -396,9 +393,7 @@ async function processPage({
         currentContent: currentPageContentRaw,
         newContent,
         async upload(content) {
-            const contentStr = JSON.stringify(content);
-
-            const isUploadedNeeded = currentPageContentRaw === undefined || currentPageContentStr !== contentStr;
+            const isUploadedNeeded = currentPageContentRaw === undefined || !areJsonObjectsEqual(currentPageContent, content);
             if (!isUploadedNeeded) {
                 logInfo(chalk.bold.green("no changes to upload"));
 
