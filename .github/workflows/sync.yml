@@ -1,0 +1,22 @@
+name: trigger
+
+on:
+    schedule:
+        # every hour
+        - cron: "0 * * * *"
+
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: create env file
+              run: |
+                  touch .env
+                  echo WIKI_LOGIN=${{ secrets.WIKI_LOGIN }} $'\n'WIKI_PASSWORD=${{ secrets.WIKI_PASSWORD }} >> .env
+            - name: Use Node.js 20
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+            - run: npm start

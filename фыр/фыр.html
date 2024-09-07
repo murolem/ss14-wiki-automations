@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <style>
+            body {
+                background-color: #303338;
+                display: flex;
+                /* justify-content: center; */
+                align-items: end;
+
+                margin: 0;
+
+                font-family: monospace;
+                height: 100vh;
+
+                overflow: hidden;
+            }
+
+            * {
+                font-size: 30px;
+            }
+
+            .active-text-container {
+                position: relative;
+                margin: 3rem;
+
+                color: white;
+            }
+
+            .active-text {
+            }
+
+            .attempts {
+                position: absolute;
+
+                display: flex;
+                flex-direction: column;
+                top: 0;
+                left: 0;
+                transform: translate(0, -100%);
+            }
+
+            .attempts .attempt {
+                /* font-size: 1rem; */
+                /* color: white; */
+                text-shadow: -2px -1px 3px #303338;
+            }
+
+            .start-button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 1rem;
+            }
+
+            .flying-letter {
+                position: absolute;
+            }
+
+            @keyframes active-letter-color-change {
+                0% {
+                    color: #e81416;
+                }
+                17% {
+                    color: #ffa500;
+                }
+                33% {
+                    color: #faeb36;
+                }
+                50% {
+                    color: #79c314;
+                }
+                67% {
+                    color: #487de7;
+                }
+                83% {
+                    color: #4b369d;
+                }
+                100% {
+                    color: #70369d;
+                }
+            }
+
+            .active-text-guessed-letter {
+                animation: 0.6s active-letter-color-change infinite;
+            }
+        </style>
+
+        <script type="module">
+            // const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+            const alphabet =
+                "абвгдеёжзийклмнопрстуфхцчшщъыьэюя abcdefghijklmnopqrstuvwxyz 123456789 =#!@$%^&*()_-";
+
+            function randomNumInRange(fromNumber, toNumber) {
+                return fromNumber + (toNumber - fromNumber) * Math.random();
+            }
+
+            function randomIntInRange(fromNumber, toNumber) {
+                return Math.round(
+                    fromNumber + (toNumber - fromNumber) * Math.random()
+                );
+            }
+
+            function diceRoll(chance) {
+                return Math.random() < chance;
+            }
+
+            function randomLetter() {
+                let letter =
+                    alphabet[
+                        Math.round(randomNumInRange(0, alphabet.length - 1))
+                    ];
+
+                if (Math.random() > 0.5) {
+                    letter = letter.toLocaleUpperCase();
+                }
+
+                return letter;
+            }
+
+            function randomLetters(count) {
+                let result = [];
+                for (let i = 0; i < count; i++) {
+                    result.push(randomLetter());
+                }
+                return result.join("");
+            }
+
+            function randomHexColor() {
+                return (
+                    "#" +
+                    Math.round(randomNumInRange(0, 16777216 - 1)).toString(16)
+                );
+            }
+
+            function colorTextHtml(text, color) {
+                return `<span style="color: ${color}">${text}</span>`;
+            }
+
+            // =====================
+
+            const targetSequence =
+                "ФЫР вех фыр ВЕХ фыр ВЕХ! ФЫР вех фыр ВЕХ фыр! ВЕХ ФЫР вех! фыр ВЕХ";
+            // const targetSequence = "1984198419841984";
+
+            const autostart = false;
+            // const colorGuessed = true;
+            // const colorGuesses = true;
+            // const attemptElsLimit = 20;
+
+            // division if for performance reason
+            // the chance will vary based on amount of characters
+            const flyingLetterGenerationChance = 4 / targetSequence.length;
+            const flyingLetterLifetimeItersRange = [20, 100];
+            const flyingLetterSpeedRange = [600, 2000];
+            const wehChance = 0.1;
+            const yippeeiesAtEnd = true;
+            const rareYippeeChance = 0.2;
+            const guaranteedCorrectGuessOnIterationN = 70;
+            const targetFontSizePx = 30;
+            const dt = 1 / 144;
+            const guessesPerSecond = 60;
+
+            const hexCols = [
+                // "#c5f9d7",
+                // "#f7d486",
+                // "#f27a7d",
+                "#e81416",
+                "#ffa500",
+                "#faeb36",
+                "#79c314",
+                "#487de7",
+                "#4b369d",
+                "#70369d",
+            ];
+
+            // =====================
+
+            let matchedSequence = "";
+            let iterationsSpentForNextLetterInSequence = 0;
+
+            // ===========
+
+            const activeTextContainerEl = document.createElement("span");
+            activeTextContainerEl.classList.add("active-text-container");
+
+            document.body.append(activeTextContainerEl);
+
+            const activeTextEl = document.createElement("span");
+            activeTextEl.classList.add("active-text");
+
+            activeTextContainerEl.append(activeTextEl);
+            const activeTextElBbox = activeTextEl.getBoundingClientRect();
+
+            const attemptsTextsEl = document.createElement("div");
+            attemptsTextsEl.classList.add("attempts");
+
+            activeTextContainerEl.appendChild(attemptsTextsEl);
+
+            const startButton = document.createElement("button");
+            startButton.classList.add("start-button");
+            startButton.innerText = "weh weh weh!";
+            startButton.addEventListener("click", startTheMayhem);
+            document.body.append(startButton);
+
+            let currentGuessEl = document.createElement("span");
+            activeTextEl.append(currentGuessEl);
+
+            // ===================
+
+            let flyingLetterEls = [];
+            const flyingLetterElsContainerEl = document.createElement("div");
+            flyingLetterElsContainerEl.classList.add(
+                "flying-letters-container"
+            );
+
+            document.body.append(flyingLetterElsContainerEl);
+
+            const G = 9.81;
+
+            const flyingLettersAnimator = () => {
+                for (let i = flyingLetterEls.length - 1; i >= 0; i--) {
+                    const entry = flyingLetterEls[i];
+                    const shouldBeRemoved = entry.update();
+                    if (shouldBeRemoved) {
+                        flyingLetterEls.splice(i, 1);
+                        entry.el.remove();
+                    }
+                }
+
+                window.requestAnimationFrame(flyingLettersAnimator);
+            };
+            window.requestAnimationFrame(flyingLettersAnimator);
+
+            function vectorLength(vec) {
+                return Math.sqrt(vec[0] ** 2 + vec[1] ** 2);
+            }
+
+            function vectorFromAngleRad(angle, length = 1) {
+                return [Math.cos(angle) * length, Math.sin(angle) * length];
+            }
+
+            function vectorToAngleRad(vector) {
+                return Math.atan2(vector[1], vector[0]);
+            }
+
+            class FlyingLetter {
+                constructor(letter, originX, originY, color, yuppie) {
+                    if (yuppie) {
+                        flyingLetterElsContainerEl.append(letter);
+
+                        this.el = letter;
+                    } else {
+                        const letterEl = document.createElement("span");
+
+                        letterEl.classList.add("flying-letter");
+                        if (diceRoll(wehChance)) {
+                            const imgSize = "20px";
+                            letterEl.style.backgroundImage = "url('weh.png')";
+                            letterEl.style.backgroundSize = "contain";
+                            letterEl.style.width = imgSize;
+                            letterEl.style.height = imgSize;
+                        } else {
+                            letterEl.innerText = letter;
+                            letterEl.style.color = color;
+                        }
+
+                        flyingLetterElsContainerEl.append(letterEl);
+
+                        this.el = letterEl;
+                    }
+
+                    this.x = originX;
+                    this.y = originY;
+
+                    this.velocity = vectorFromAngleRad(
+                        -Math.PI / 2 +
+                            randomNumInRange(0, Math.PI / 4) *
+                                (diceRoll(0.5) ? 1 : -1),
+                        randomNumInRange(
+                            flyingLetterSpeedRange[0],
+                            flyingLetterSpeedRange[1]
+                        )
+                    );
+
+                    this.rotationRad =
+                        randomNumInRange(0, Math.PI / 2) *
+                        (diceRoll(0.5) ? 1 : -1);
+
+                    this.rotationSpeedRad =
+                        randomNumInRange(0, Math.PI / 10) *
+                        (diceRoll(0.5) ? 1 : -1);
+
+                    this.lifetimeIters = randomIntInRange(
+                        flyingLetterLifetimeItersRange[0],
+                        flyingLetterLifetimeItersRange[1]
+                    );
+                    this.removalDurationIters = 20;
+
+                    this.iters = 0;
+
+                    this.startedDisappearing = false;
+                }
+
+                update() {
+                    this.velocity[1] += G * 3;
+
+                    this.x += this.velocity[0] * dt;
+                    this.y += this.velocity[1] * dt;
+
+                    this.rotationRad += this.rotationSpeedRad;
+
+                    // ===========
+
+                    this.el.style.left = this.x + "px";
+                    this.el.style.top = this.y + "px";
+                    this.el.style.transform =
+                        `rotate(${this.rotationRad}rad)` +
+                        (this.startedDisappearing
+                            ? ` scale(${
+                                  1 -
+                                  (this.iters - this.lifetimeIters) /
+                                      this.removalDurationIters
+                              })`
+                            : "");
+
+                    this.iters++;
+
+                    if (this.iters === this.lifetimeIters) {
+                        this.startedDisappearing = true;
+                    } else if (
+                        this.iters ===
+                        this.lifetimeIters + this.removalDurationIters
+                    ) {
+                        // true = should be removed
+                        return true;
+                    }
+                }
+            }
+
+            // ===============
+
+            if (autostart) {
+                startButton.click();
+            }
+
+            // ===============
+
+            function updateActiveText(
+                lettersLeftGenerated,
+                lettersLeftGeneratedColorsPerLetter
+            ) {
+                activeTextEl.innerHTML =
+                    [...matchedSequence]
+                        .map((letter, i) => {
+                            if (colorGuessed) {
+                                return colorTextHtml(
+                                    letter,
+                                    hexCols[i % hexCols.length]
+                                );
+                            } else {
+                                return letter;
+                            }
+                        })
+                        .join("") +
+                    [...lettersLeftGenerated]
+                        .map((letter, i) =>
+                            colorTextHtml(
+                                letter,
+                                lettersLeftGeneratedColorsPerLetter[i]
+                            )
+                        )
+                        .join("");
+            }
+
+            async function startTheMayhem() {
+                startButton.remove();
+
+                let attemptsCounter = -1;
+                while (true) {
+                    attemptsCounter++;
+
+                    // check if all letters have been generated
+                    const lettersLeftCount =
+                        targetSequence.length - matchedSequence.length;
+                    if (lettersLeftCount === 0) {
+                        // THE END - NO LETTERS LEFT TO GUESS
+                        currentGuessEl.remove();
+
+                        if (yippeeiesAtEnd) {
+                            for (let i = 0; i < 10; i++) {
+                                const vidEl = document.createElement("video");
+                                vidEl.classList.add("yippe");
+                                vidEl.src = diceRoll(rareYippeeChance)
+                                    ? "yippee rare.mp4"
+                                    : "yippee!.mp4";
+                                vidEl.autoplay = true;
+                                vidEl.loop = true;
+
+                                new FlyingLetter(
+                                    vidEl,
+                                    randomNumInRange(0, window.innerWidth),
+                                    randomNumInRange(0, window.innerHeight),
+                                    "white",
+                                    true
+                                );
+
+                                await new Promise((resolve) =>
+                                    setTimeout(
+                                        resolve,
+                                        randomNumInRange(300, 1000)
+                                    )
+                                );
+                            }
+                        }
+
+                        // document.body.append(vidEl);
+
+                        // console.log(
+                        //     [...matchedSequence]
+                        //         // .map((letter, i) => chalk.hex(hexCols[i % hexCols.length])(letter))
+                        //         .join("")
+                        // );
+
+                        break;
+                    }
+
+                    // generate a random sequence
+                    const guaranteedCorrectGuessChance =
+                        (iterationsSpentForNextLetterInSequence + 1) /
+                        guaranteedCorrectGuessOnIterationN;
+
+                    let lettersLeftGenerated = diceRoll(
+                        guaranteedCorrectGuessChance
+                    )
+                        ? // guess will be correct
+                          targetSequence[matchedSequence.length] +
+                          randomLetters(lettersLeftCount - 1)
+                        : // otherwise get a random letter
+                          randomLetters(lettersLeftCount);
+
+                    iterationsSpentForNextLetterInSequence++;
+
+                    const lettersLeftGeneratedColorsPerLetter = [
+                        ...lettersLeftGenerated,
+                    ].map((letter) => randomHexColor());
+
+                    // generate attempt letters
+                    [...lettersLeftGenerated].forEach((letter, i) => {
+                        if (!diceRoll(flyingLetterGenerationChance)) {
+                            return;
+                        }
+
+                        const charWidth = targetFontSizePx / 1.82;
+
+                        flyingLetterEls.push(
+                            new FlyingLetter(
+                                letter,
+                                activeTextElBbox.left +
+                                    matchedSequence.length * charWidth +
+                                    i * charWidth,
+                                activeTextElBbox.top - targetFontSizePx,
+                                lettersLeftGeneratedColorsPerLetter[i]
+                            )
+                        );
+                    });
+
+                    currentGuessEl.innerHTML = [...lettersLeftGenerated]
+                        .map((letter, i) =>
+                            colorTextHtml(
+                                letter,
+                                lettersLeftGeneratedColorsPerLetter[i]
+                            )
+                        )
+                        .join("");
+
+                    // update active text
+                    // updateActiveText(
+                    //     lettersLeftGenerated,
+                    //     lettersLeftGeneratedColorsPerLetter
+                    // );
+
+                    // get next letter to guess
+                    const nextLetterInSequence =
+                        targetSequence[matchedSequence.length];
+
+                    // check if first letter of guess is correct
+                    if (lettersLeftGenerated[0] === nextLetterInSequence) {
+                        // if so - count it matched
+                        matchedSequence += nextLetterInSequence;
+                        iterationsSpentForNextLetterInSequence = 0;
+
+                        const letterEl = document.createElement("span");
+                        letterEl.classList.add("active-text-guessed-letter");
+                        letterEl.innerText = nextLetterInSequence;
+                        // matchedSequenceHtmlEls.push(letterEl);
+
+                        activeTextEl.children[
+                            activeTextEl.children.length - 1
+                        ].before(letterEl);
+                        // activeTextEl.before(activeTextEl.children[activeTextEl.children.length - 1], letterEl);
+
+                        continue;
+                    }
+
+                    await new Promise((resolve) =>
+                        setTimeout(resolve, 1000 / guessesPerSecond)
+                    );
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "name": "your-package",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "postinstall": "npx commitizen init cz-conventional-changelog --save-dev --save-exact --force",
+    "dev": "vite dev",
+    "type-check": "tsc",
+    "clone-ss14-repo": "rimraf temp && mkdir temp && mkdir temp\\00-ss14-repo && cd temp\\00-ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/ && git fetch --depth=1 origin master && git checkout master",
+    "import-source-data": "vite-node src/01-import-source-data/index.ts",
+    "convert-source-data-to-json": "vite-node src/02-convert-source-data-to-json/index.ts",
+    "process-converted-data": "vite-node src/03-process-converted-data/index.ts",
+    "process-results-for-wiki-and-upload": "vite-node src/04-process-results-for-wiki-and-upload/index.ts",
+    "start": "npm run type-check && npm run clone-ss14-repo && npm run start:noclone",
+    "start:noclone:nowiki": "npm run import-source-data && npm run convert-source-data-to-json && npm run process-converted-data",
+    "start:noclone": "npm run start:noclone:nowiki && npm run process-results-for-wiki-and-upload",
+    "start:nowiki": "npm run clone-ss14-repo && npm run start:noclone:nowiki",
+    "build": "concurrently --passthrough-arguments --kill-others-on-fail \"npm:build:*(!watch) -- {@}\" --",
+    "build:index1": "npm run build-task -- ./src/index1.ts",
+    "build:index2": "npm run build-task -- ./src/index2.ts",
+    "build-task": "vite-node --config vite-node.config.ts ./tasks/build.ts -- ",
+    "sendit": "npm run build && npm run add && npm run commit && npm run push",
+    "add": "git add .",
+    "commit": "cz",
+    "push": "git push origin"
+  },
+  "devDependencies": {
+    "@aliser/logger": "^1.1.2",
+    "@types/fs-extra": "^11.0.4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.5.1",
+    "commander": "^12.1.0",
+    "concurrently": "^8.2.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
+    "vite-node": "^2.0.5",
+    "vite-tsconfig-paths": "^5.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "@fluent/bundle": "^0.18.0",
+    "chalk": "^5.3.0",
+    "color-parse": "^2.0.2",
+    "dotenv": "^16.4.5",
+    "fs-extra": "^11.2.0",
+    "isomorphic-git": "^1.27.1",
+    "js-yaml": "^4.1.0",
+    "jsonpath-plus": "^9.0.0",
+    "nodemw": "^0.22.0",
+    "rimraf": "^6.0.1",
+    "zod": "^3.23.8"
+  }
+}
