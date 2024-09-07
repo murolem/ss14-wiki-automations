@@ -20,7 +20,7 @@
     "build:index1": "npm run build-task -- ./src/index1.ts",
     "build:index2": "npm run build-task -- ./src/index2.ts",
     "build-task": "vite-node --config vite-node.config.ts ./tasks/build.ts -- ",
-    "sendit": "npm run build && npm run add && npm run commit && npm run push",
+    "sendit": "npm run type-check && npm run add && npm run commit && npm run push",
     "add": "git add .",
     "commit": "cz",
     "push": "git push origin"
