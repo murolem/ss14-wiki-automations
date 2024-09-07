@@ -1,4 +1,4 @@
-name: trigger
+name: Process SS14 upstream
 
 on:
     schedule:
