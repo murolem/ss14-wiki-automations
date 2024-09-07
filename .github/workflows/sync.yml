@@ -17,7 +17,7 @@ jobs:
             - name: create env file
               run: |
                   touch .env
-                  echo WIKI_LOGIN=${{ secrets.WIKI_LOGIN }} $'\n'WIKI_PASSWORD=${{ secrets.WIKI_PASSWORD }} >> .env
+                  echo WIKI_LOGIN=${{ secrets.WIKI_LOGIN }} $'\n'WIKI_PASSWORD=${{ secrets.WIKI_PASSWORD }} $'\n'GH_RUN_URL=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} >> .env
             - name: Use Node.js 20
               uses: actions/setup-node@v4
               with:

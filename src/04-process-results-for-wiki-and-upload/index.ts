@@ -21,6 +21,8 @@ if (!wikiLogin) { logError("no wiki login defined. define 'WIKI_LOGIN' in .env f
 const wikiPassword = process.env.WIKI_PASSWORD;
 if (!wikiPassword) { logError("no wiki login defined. define 'WIKI_PASSWORD' in .env file", { throwErr: true }); throw '' /* type guard */ }
 
+const runUrl = process.env.GH_RUN_URL;
+
 const wikiServer = 'wiki.spacestation14.com';
 
 let ss14RepoCurrentCommitShortHash: string;
@@ -396,7 +398,7 @@ async function processPage({
 
             await editPage(
                 wikiDataPath.wikiPage,
-                `AUTOMATED: sync to UPSTREAM commit #${ss14RepoCurrentCommitShortHash}`,
+                `AUTOMATED: sync to UPSTREAM commit #${ss14RepoCurrentCommitShortHash}${runUrl ? ` using action ${runUrl}` : ''}`,
                 JSON.stringify(content, null, 4)
             );
 
