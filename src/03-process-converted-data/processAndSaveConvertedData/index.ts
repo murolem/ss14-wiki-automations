@@ -101,7 +101,7 @@ export function processAndSaveConvertedData<
 
     if (dataPathOutputDataAbsFilePathParsed.ext === '') {
         // if a path doesn't have an extension, it's likely not a path to a file
-        logError(`failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: given project output path is likely a directory path, when a file path was expected`, {
+        logError(`failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: given project output path is likely a directory path, when a file path was expected. Output path must always be a filepath, regardless of specified type - outputting directories is not supported.`, {
             throwErr: true,
             additional: {
                 projectOutputPath: outputDataPath.projectOutputFilePath,
@@ -110,7 +110,7 @@ export function processAndSaveConvertedData<
         });
         throw '' // type guard
     } else if (dataPathOutputDataAbsFilePathParsed.ext !== '.json') {
-        logError(`failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: given project output path doesn't have a .json extension`, {
+        logError(`failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: given project output path does not end in a .json extension.`, {
             throwErr: true,
             additional: {
                 projectOutputPath: outputDataPath.projectOutputFilePath,
