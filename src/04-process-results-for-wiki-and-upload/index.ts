@@ -13,7 +13,7 @@ dotenv.config();
 
 logInfo(chalk.bold("final data processing step with wiki uploads"));
 
-logInfo("setting up wiki stuff")
+logInfo(chalk.gray("setting up wiki stuff"));
 
 const wikiLogin = process.env.WIKI_LOGIN;
 if (!wikiLogin) { logError("no wiki login defined. define 'WIKI_LOGIN' in .env file", { throwErr: true }); throw '' /* type guard */ }
@@ -87,11 +87,24 @@ async function main() {
 
     // =================
 
+    // recipes
+
     await processPage({
-        projectOutputDataPathAlias: 'recipes.lathes',
-        wikiDataPathAlias: 'recipes.lathes',
+        projectOutputDataPathAlias: 'recipes.recipes by recipe IDs',
+        wikiDataPathAlias: 'recipes.recipes by recipe IDs',
     });
 
+    await processPage({
+        projectOutputDataPathAlias: 'recipes.recipe IDs by product IDs',
+        wikiDataPathAlias: 'recipes.recipe IDs by product IDs',
+    });
+
+    await processPage({
+        projectOutputDataPathAlias: 'recipes.recipe IDs by method',
+        wikiDataPathAlias: 'recipes.recipe IDs by method',
+    });
+
+    // entities
 
     await processPage({
         projectOutputDataPathAlias: 'entities.processed.entity-names-by-entity-ids',
@@ -103,6 +116,7 @@ async function main() {
         wikiDataPathAlias: 'entities.wiki.entity-ids-by-lowercase-entity-names'
     });
 
+    // research
 
     await processPage({
         projectOutputDataPathAlias: 'research.techs.processed',
@@ -331,7 +345,7 @@ async function processPage({
     wikiDataPathAlias: keyof typeof dataPaths,
     processor?: UploadPageProcessor
 }) {
-    logInfo(chalk.bold(`processing ${projectOutputDataPathAlias}`));
+    logInfo(`${chalk.magenta('▮')} processing: ${chalk.bold(projectOutputDataPathAlias)}`);
 
     const projectOutputDataPath = dataPaths[projectOutputDataPathAlias];
     if (!('projectOutputFilePath' in projectOutputDataPath)) {
@@ -369,7 +383,7 @@ async function processPage({
     }
 
 
-    logInfo('downloading current content');
+    logInfo(chalk.gray('downloading current content'));
 
     const currentPageContentRaw = await getArticle(wikiDataPath.wikiPage);
     let currentPageContent;
@@ -387,7 +401,7 @@ async function processPage({
     }
 
 
-    logInfo('running processing');
+    logInfo(chalk.gray('running processing'));
 
     await processor({
         currentContent: currentPageContentRaw,
@@ -395,13 +409,13 @@ async function processPage({
         async upload(content) {
             const isUploadedNeeded = currentPageContentRaw === undefined || !areJsonObjectsEqual(currentPageContent, content);
             if (!isUploadedNeeded) {
-                logInfo("no changes to upload");
+                logInfo(chalk.bold.green("no changes to upload"));
 
                 return;
             }
 
 
-            logInfo(chalk.bold.magenta("uploading new changes"));
+            logInfo(chalk.bold.magenta("found changes to upload - uploading!"));
 
             await editPage(
                 wikiDataPath.wikiPage,

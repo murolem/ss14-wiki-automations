@@ -172,9 +172,8 @@ const latheRecipesByLatheId = processAndSaveConvertedData({
             })
             // convert to a record with lathe IDs being the keys, and lathe recipes by item IDs they produce being the values.
             .reduce((accum, recipe) => {
-                const recipeProduct = recipe.result;
-                if (!recipeProduct) {
-                    logWarn(chalk.yellow(`${chalk.bold('WARN:')} skipping recipe ${chalk.bold(recipe.id)} because it doesn't have a product`));
+                if (recipe.result === undefined && recipe.resultReagents === undefined) {
+                    logWarn(chalk.yellow(`${chalk.bold('WARN:')} skipping recipe ${chalk.bold(recipe.id)} because it doesn't have a product: neither an item nor reagents`));
                     return accum;
                 }
 
@@ -277,7 +276,15 @@ processAndSaveConvertedData({
             .reduce((accum, recipes) => {
                 recipes
                     .forEach(recipe => {
-                        accum[recipe.id] = recipe;
+                        // make a clone so we can make changes to it
+                        const recipeCloned = deepCloneObjectUsingJson(recipe) as typeof recipe;
+
+                        accum[recipe.id] = recipeCloned;
+
+                        // remove ID cause recipes are mapped by IDs
+                        // so there's no need to keep it.
+                        // @ts-ignore safe as long as we don't refer to it
+                        delete recipeCloned.id;
                     });
 
                 return accum;
@@ -349,7 +356,31 @@ processAndSaveConvertedData({
 });
 
 // ::file 3: recipe IDs by [production] method
+processAndSaveConvertedData({
+    convertedDataPathAlias: 'noop',
+    outputDataPathAlias: 'recipes.recipe IDs by method',
+    processor({ writeToOutput }) {
+        const recipeIdsByMethods: Record<string, string[]> = {}
 
+        function addRecipeIdByMethod(method: string, recipeId: string): void {
+            let matchByMethod: undefined | string[] = recipeIdsByMethods[method];
+            if (matchByMethod === undefined) {
+                matchByMethod = [];
+                recipeIdsByMethods[method] = matchByMethod;
+            }
+
+            matchByMethod.push(recipeId);
+        }
+
+        for (const [method, recipes] of Object.entries(recipesByProductionMethod)) {
+            for (const recipe of recipes) {
+                addRecipeIdByMethod(method, recipe.id);
+            }
+        }
+
+        writeToOutput(recipeIdsByMethods);
+    }
+});
 
 
 
