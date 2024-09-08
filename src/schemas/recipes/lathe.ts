@@ -33,6 +33,12 @@ export const latheRecipeValidator = z.object({
     /** Resulting item ID. */
     result: z.string().optional(),
 
+    /** 
+     * Resulting reagents for lathes that product reagents.
+     * Mapping reagent ID to amount.
+     */
+    resultReagents: z.record(z.string(), z.number()).optional(),
+
     /** Duration in seconds. */
     completetime: z.number().optional(),
 

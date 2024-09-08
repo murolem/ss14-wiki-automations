@@ -107,29 +107,60 @@ export const dataPaths = {
         projectOutputFilePath: path.join('Recipes', 'reactions.json')
     },
 
+    // ================
+
+    // lathe recipes
     "recipes.lathes": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Recipes', 'Lathes'),
-        projectInputPath: path.join('Recipes', 'Lathes'),
-        projectConvertedPath: path.join('Recipes', 'Lathes'),
+        // recipe categories
+        ss14PathExcludeGlobs: ['categories.yml'],
+        projectInputPath: path.join('Recipes', 'Lathes', 'Recipes by lathe'),
+        projectConvertedPath: path.join('Recipes', 'Lathes', 'Recipes by lathe'),
         projectOutputFilePath: path.join('Recipes', 'Lathes', 'lathes.json'),
-        wikiPage: 'Module:Item recipe/recipes/lathes.json'
     },
 
+    // lathe recipe categories
     "recipes.lathes.categories": {
         type: 'file',
+        ss14Path: path.join('Resources', 'Prototypes', 'Recipes', 'Lathes', 'categories.yml'),
+        projectInputPath: path.join('Recipes', 'Lathes', 'categories.yml'),
         projectConvertedPath: path.join('Recipes', 'Lathes', 'categories.json'),
         projectOutputFilePath: path.join('Recipes', 'Lathes', 'categories.json'),
     },
 
     /** Lathes definition, that contains a list of recipes that can produce, including: by default, when researched, emagged. */
-    "entities.source.structures.machines.lathes": {
+    "recipes.lathes.machines": {
         type: 'file',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Structures', 'Machines', 'lathe.yml'),
-        projectInputPath: path.join('Entities', 'Structures', 'Machines', 'lathes.yml'),
-        projectConvertedPath: path.join('Entities', 'Structures', 'Machines', 'lathes.json'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'lathes.json'),
+        projectInputPath: path.join('Recipes', 'Lathes', 'machines.yml'),
+        projectConvertedPath: path.join('Recipes', 'Lathes', 'machines.json'),
+        projectOutputFilePath: path.join('Recipes', 'Lathes', 'machines.json')
     },
+
+    // all recipes
+    "recipes.recipes by recipe IDs": {
+        type: 'file',
+        projectOutputFilePath: path.join('Recipes', 'recipes by recipe IDs.json'),
+        wikiPage: 'Module:Item recipe/recipes by recipe IDs.json'
+    },
+
+    // all recipes
+    "recipes.recipe IDs by product IDs": {
+        type: 'file',
+        projectOutputFilePath: path.join('Recipes', 'recipe IDs by product IDs.json'),
+        wikiPage: 'Module:Item recipe/recipe IDs by product IDs.json'
+    },
+
+    // all recipes
+    "recipes.recipe IDs by method": {
+        type: 'file',
+        projectOutputFilePath: path.join('Recipes', 'recipe IDs by method.json'),
+        wikiPage: 'Module:Item recipe/recipe IDs by method.json'
+    },
+
+
+    // ================
 
     "entities.source.foldable": {
         type: 'file',
@@ -276,7 +307,7 @@ export const dataPaths = {
     "research.techs.parsed": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Research'),
-        ss14PathExcludeGlobs: ['disciplines*'],
+        ss14PathExcludeGlobs: ['disciplines.yml'],
         projectInputPath: path.join('Research', 'Techs'),
         projectConvertedPath: path.join('Research', 'Techs'),
         projectOutputFilePath: path.join('Research', 'research.techs.parsed.json')

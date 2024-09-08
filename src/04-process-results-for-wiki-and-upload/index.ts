@@ -331,7 +331,7 @@ async function processPage({
     wikiDataPathAlias: keyof typeof dataPaths,
     processor?: UploadPageProcessor
 }) {
-    logInfo(chalk.magenta(`processing: ${chalk.bold(projectOutputDataPathAlias)}`));
+    logInfo(chalk.bold(`processing ${projectOutputDataPathAlias}`));
 
     const projectOutputDataPath = dataPaths[projectOutputDataPathAlias];
     if (!('projectOutputFilePath' in projectOutputDataPath)) {
@@ -395,7 +395,7 @@ async function processPage({
         async upload(content) {
             const isUploadedNeeded = currentPageContentRaw === undefined || !areJsonObjectsEqual(currentPageContent, content);
             if (!isUploadedNeeded) {
-                logInfo(chalk.bold.green("no changes to upload"));
+                logInfo("no changes to upload");
 
                 return;
             }

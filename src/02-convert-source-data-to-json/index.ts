@@ -20,7 +20,8 @@ if (fs.existsSync(projectRelPaths.convertedData)) {
 // ======== generate jsons ========
 
 convertAndSaveInputData('recipes.lathes');
-convertAndSaveInputData('entities.source.structures.machines.lathes', PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('recipes.lathes.machines', PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('recipes.lathes.categories', PASSTHROUGH_YAML_SCHEMA);
 
 convertAndSaveInputData('entities.source.foldable', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
 convertAndSaveInputData('entities.source.clothing', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);

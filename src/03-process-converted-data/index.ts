@@ -3,16 +3,16 @@ import path from 'path';
 import Logger from '@aliser/logger';
 import chalk from 'chalk';
 import { z } from 'zod';
-import { latheCategoryValidator, latheRecipeValidator } from '$src/schemas/recipes/lathe';
-import { latheEntityValidator } from '$src/schemas/entities/lathe';
 import { deepCloneObjectUsingJson, roundToDigit } from '$src/utils';
 import { dataPaths, extendedLogging, projectRelPaths } from '$src/preset';
 import { resolveInheritance } from '$src/schemas/utils';
-import { entityFilteringBasicValidator, entityValidator } from '$src/schemas/entities/entity';
-import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData/index';
 import { researchTechValidator } from '$src/schemas/research/tech';
 import { researchDisciplineValidator } from '$src/schemas/research/discipline';
 import { localizeRecordProperty } from '$src/03-process-converted-data/localizer';
+import { entityDefiningValidator, entityValidator } from '$src/schemas/entities/entity';
+import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
+import { recipeValidator } from '$src/schemas/recipes/recipe';
+import { latheCategoryValidator } from '$src/schemas/recipes/lathe';
 const logger = new Logger("03-parse-converted-data");
 const { logInfo, logError, logWarn } = logger;
 
@@ -23,6 +23,14 @@ if (fs.existsSync(projectRelPaths.outputData)) {
 } else {
     fs.ensureDirSync(projectRelPaths.outputData)
 }
+
+// =================
+// RECIPES
+// =================
+
+// = === = === = === = === = === = === = === = === = === = === = === 
+//  STEP 1: load and process all recipes from all possible sources =
+// = === = === = === = === = === = === = === = === = === = === = === 
 
 // lathe recipe categories
 const lathesCategories = processAndSaveConvertedData({
@@ -39,10 +47,10 @@ const lathesCategories = processAndSaveConvertedData({
 
 // lathe machines
 const lathesMachines = processAndSaveConvertedData({
-    convertedDataPathAlias: 'entities.source.structures.machines.lathes',
-    outputDataPathAlias: 'entities.source.structures.machines.lathes',
+    convertedDataPathAlias: 'recipes.lathes.machines',
+    outputDataPathAlias: 'recipes.lathes.machines',
     processor({ files, parseFiles, writeToOutput }) {
-        const resultingEntries = parseFiles(files, latheEntityValidator);
+        const resultingEntries = parseFiles(files, entityValidator);
 
         writeToOutput(resultingEntries);
 
@@ -78,11 +86,16 @@ const lathesRecipeIdsByLathe = (() => {
             staticAndDynamicRecipesTimeMultiplier: 1
         } as typeof lathesRecipes[string];
 
+        if (!lathe.id) {
+            logError("lathe ID is undefined", lathe, { throwErr: true });
+            throw ''//type guard
+        }
+
         lathesRecipes[lathe.id] = latheRecipes;
 
         // ================
 
-        const latheComponent = lathe.components.find(component => component.type === 'Lathe');
+        const latheComponent = lathe.components?.find(component => component.type === 'Lathe');
         if (latheComponent) {
             if ('staticRecipes' in latheComponent) {
                 latheRecipes.staticRecipes = latheComponent.staticRecipes;
@@ -101,7 +114,7 @@ const lathesRecipeIdsByLathe = (() => {
             }
         }
 
-        const emagLatheComponent = lathe.components.find(component => component.type === 'EmagLatheRecipes');
+        const emagLatheComponent = lathe.components?.find(component => component.type === 'EmagLatheRecipes');
         if (emagLatheComponent) {
             if ('emagStaticRecipes' in emagLatheComponent) {
                 latheRecipes.emagStaticRecipes = emagLatheComponent.emagStaticRecipes;
@@ -116,21 +129,19 @@ const lathesRecipeIdsByLathe = (() => {
     return lathesRecipes;
 })();
 
+
 // lathe items recipes grouped by lathe
-processAndSaveConvertedData({
+const latheRecipesByLatheId = processAndSaveConvertedData({
     convertedDataPathAlias: 'recipes.lathes',
     outputDataPathAlias: 'recipes.lathes',
     processor({ files, parseFiles, writeToOutput }) {
-        // skip lathe categories - they are processed separately
-        files = files.filter(file => file.relFilepath !== path.parse(dataPaths['recipes.lathes.categories'].projectConvertedPath).base);
-
         // all recipes for all lathes
-        const parsedRecipes = parseFiles(files, latheRecipeValidator);
+        const parsedRecipes = parseFiles(files, recipeValidator);
 
         // recipes grouped by lathe for all lathes, processed
-        const recipesByLathe = parsedRecipes
+        const recipesByLatheId: Record<string, Array<z.infer<typeof recipeValidator>>> = parsedRecipes
             // create copies so that we do not modify the parsed recipes array
-            .map(recipe => deepCloneObjectUsingJson(recipe) as z.infer<typeof latheRecipeValidator>)
+            .map(recipe => deepCloneObjectUsingJson(recipe) as z.infer<typeof recipeValidator>)
             // resolve inheritance where needed, 
             .map((recipe, i, entries) => {
                 if (recipe.parent) {
@@ -214,21 +225,133 @@ processAndSaveConvertedData({
 
                     // add recipe to lathe
                     if (!accum[latheId]) {
-                        accum[latheId] = {}
+                        accum[latheId] = []
                     }
 
-                    accum[latheId][recipeProduct] = recipeCloned
-                    delete (recipeCloned as any).type;
-                    delete (recipeCloned as any).result;
+                    accum[latheId].push(recipeCloned);
                 }
 
                 return accum;
-            }, {} as Record<string, Record<string, z.infer<typeof latheRecipeValidator>>>);
+            }, {} as Record<string, Array<z.infer<typeof recipeValidator>>>);
 
 
-        writeToOutput(recipesByLathe);
+        writeToOutput(recipesByLatheId);
+
+        return recipesByLatheId;
     }
 });
+
+// === = === = === = === = === = === = === = === = === = === = === = === = === = === = === = === =
+//  STEP 2: gather all imported recipes into a single record,                                    =
+//          grouping them by production method.                                                  =
+// === = === = === = === = === = === = === = === = === = === = === = === = === = === = === = === =
+
+const recipesByProductionMethod: Record<string, z.infer<typeof recipeValidator>[]> = {}
+
+// function getRecipeArrayByMethodFromRecipesByProductionMethod(productionMethod: string): typeof recipesByProductionMethod[string] {
+//     let arr: undefined | typeof recipesByProductionMethod[string] = recipesByProductionMethod[productionMethod];
+//     if (!arr) {
+//         arr = [];
+//         recipesByProductionMethod[productionMethod] = arr;
+//     }
+
+//     return arr;
+// }
+
+
+Object.entries(latheRecipesByLatheId)
+    .forEach(([latheId, latheRecipes]) => {
+        recipesByProductionMethod[latheId] = [...latheRecipes];
+    });
+
+// === = = === = = === = = === = = === 
+//  STEP 3: generate recipes files ===
+// === = = === = = === = = === = = === 
+
+// ::file 1: recipes by recipe IDs
+processAndSaveConvertedData({
+    convertedDataPathAlias: 'noop',
+    outputDataPathAlias: 'recipes.recipes by recipe IDs',
+    processor({ writeToOutput }) {
+        const recipesByRecipeIds = Object.values(recipesByProductionMethod)
+            .reduce((accum, recipes) => {
+                recipes
+                    .forEach(recipe => {
+                        accum[recipe.id] = recipe;
+                    });
+
+                return accum;
+            }, {} as Record<string, z.infer<typeof recipeValidator>>);
+
+        writeToOutput(recipesByRecipeIds);
+    }
+});
+
+// ::file 2: recipe IDs by product IDs
+processAndSaveConvertedData({
+    convertedDataPathAlias: 'noop',
+    outputDataPathAlias: 'recipes.recipe IDs by product IDs',
+    processor({ writeToOutput }) {
+        const recipeIdsByProductIds: Record<string, string | string[]> = {}
+
+        function addRecipeIdByProductId(productId: string, recipeId: string): void {
+            const matchByProductId: undefined | typeof recipeIdsByProductIds[string] = recipeIdsByProductIds[productId]
+            if (matchByProductId === undefined) {
+                // if the product ID hasn't been added - add it
+                recipeIdsByProductIds[productId] = recipeId;
+            } else if (typeof matchByProductId === 'string') {
+                // if the product ID was added and it's value is a string,
+                // then it's value is a recipe ID.
+                // convert value to array so that a single product ID can map to multiple recipes
+
+                // check if we're not adding a duplicate recipe ID
+                if (recipeId !== matchByProductId) {
+                    recipeIdsByProductIds[productId] = [matchByProductId, recipeId];
+                }
+            } else {
+                // if the product ID was added and it's an array,
+                // then it already holds multiple recipe IDs.
+                // just push ours in
+
+                // check if we're not adding a duplicate recipe ID
+                if (!matchByProductId.includes(recipeId)) {
+                    matchByProductId.push(recipeId);
+                }
+            }
+        }
+
+        for (const recipes of Object.values(recipesByProductionMethod)) {
+            for (const recipe of recipes) {
+                switch (recipe.type) {
+                    case 'latheRecipe':
+                        if (recipe.result !== undefined) {
+                            addRecipeIdByProductId(recipe.result, recipe.id);
+                        }
+
+                        if (recipe.resultReagents !== undefined) {
+                            for (const reagentId of Object.keys(recipe.resultReagents)) {
+                                addRecipeIdByProductId(reagentId, recipe.id);
+                            }
+                        }
+                        break;
+                    default:
+                        logError("failed to generate a list of recipe IDs by product IDs: unknown recipe type: " + recipe.type, {
+                            throwErr: true,
+                            additional: recipe
+                        });
+                        throw ''//type guard
+                }
+            }
+        }
+
+        writeToOutput(recipeIdsByProductIds);
+    }
+});
+
+// ::file 3: recipe IDs by [production] method
+
+
+
 
 // =================
 
@@ -488,7 +611,7 @@ function processAndSaveConvertedDataForEntity(
         outputDataPathAlias: dataPathAlias,
         processor({ files, parseFiles, writeToOutput }) {
             const entities = parseFiles(files,
-                entityFilteringBasicValidator,
+                entityDefiningValidator,
                 entityValidator
             );
 
