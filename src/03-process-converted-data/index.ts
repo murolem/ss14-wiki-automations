@@ -280,11 +280,6 @@ processAndSaveConvertedData({
                         const recipeCloned = deepCloneObjectUsingJson(recipe) as typeof recipe;
 
                         accum[recipe.id] = recipeCloned;
-
-                        // remove ID cause recipes are mapped by IDs
-                        // so there's no need to keep it.
-                        // @ts-ignore safe as long as we don't refer to it
-                        delete recipeCloned.id;
                     });
 
                 return accum;
