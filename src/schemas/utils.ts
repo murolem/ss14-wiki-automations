@@ -32,10 +32,12 @@ export function resolveInheritance<T extends Record<string, unknown>>(
     {
         debugLogChain = false,
         excludeProperties = [],
+        inheritedPropertiesToDiscard = [],
         _depth = 0
     }: Partial<{
         debugLogChain: boolean,
         excludeProperties: string[],
+        inheritedPropertiesToDiscard: string[],
         _depth: number
     }> = {}
 ): T {
@@ -127,6 +129,14 @@ export function resolveInheritance<T extends Record<string, unknown>>(
         );
     }
 
+    // remove properties from the inheritance chain before merge
+    // that need to be removed.
+    for (const propertyToRemove of inheritedPropertiesToDiscard) {
+        if (propertyToRemove in resultDoc) {
+            delete resultDoc[propertyToRemove];
+        }
+    }
+
     // after the "base" is fully constructed,
     // merge the main doc on top
 
@@ -135,7 +145,7 @@ export function resolveInheritance<T extends Record<string, unknown>>(
         doc
     );
 
-    // remove any props needed to be excluded
+    // remove any props needed to be excluded from the final doc
     for (const propertyToExclude of excludeProperties) {
         if (propertyToExclude in resultDoc) {
             delete resultDoc[propertyToExclude];

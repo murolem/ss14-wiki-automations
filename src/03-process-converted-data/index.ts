@@ -145,7 +145,9 @@ const latheRecipesByLatheId = processAndSaveConvertedData({
             // resolve inheritance where needed, 
             .map((recipe, i, entries) => {
                 if (recipe.parent) {
-                    return resolveInheritance(recipe, parsedRecipes, 'parent', 'id');
+                    return resolveInheritance(recipe, parsedRecipes, 'parent', 'id', {
+                        inheritedPropertiesToDiscard: ['abstract']
+                    });
                 } else {
                     return recipe;
                 }
@@ -450,7 +452,7 @@ const entitiesProcessed = enititesListExcludingInheritanceSpecific
             // for inheritance resolving, use the full list of entities
             return resolveInheritance(entry, enititesList, 'parent', 'id', {
                 debugLogChain: extendedLogging["processConvertedData.inheritance-chain"],
-                excludeProperties: ['abstract']
+                inheritedPropertiesToDiscard: ['abstract']
             });
         } else {
             return entry;
