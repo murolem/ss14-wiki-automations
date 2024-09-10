@@ -419,7 +419,7 @@ async function processPage({
 
             await editPage(
                 wikiDataPath.wikiPage,
-                `AUTOMATED: sync to UPSTREAM commit #${ss14RepoCurrentCommitShortHash}${runUrl ? ` using action ${runUrl}` : ''}`,
+                `AUTOMATED: sync to UPSTREAM up to commit #${ss14RepoCurrentCommitShortHash}${runUrl ? ` using action ${runUrl}` : ''}`,
                 JSON.stringify(content, null, 4)
             );
 
