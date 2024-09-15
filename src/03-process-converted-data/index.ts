@@ -129,6 +129,12 @@ const lathesRecipeIdsByLathe = (() => {
     return lathesRecipes;
 })();
 
+type RecipeMethod = string;
+
+type RecipesByMethod = Record<
+    RecipeMethod,
+    Array<z.infer<typeof recipeValidator>>
+>;
 
 // lathe items recipes grouped by lathe
 const latheRecipesByLatheId = processAndSaveConvertedData({
@@ -139,7 +145,7 @@ const latheRecipesByLatheId = processAndSaveConvertedData({
         const parsedRecipes = parseFiles(files, recipeValidator);
 
         // recipes grouped by lathe for all lathes, processed
-        const recipesByLatheId: Record<string, Array<z.infer<typeof recipeValidator>>> = parsedRecipes
+        const recipesByLatheId: RecipesByMethod = parsedRecipes
             // create copies so that we do not modify the parsed recipes array
             .map(recipe => deepCloneObjectUsingJson(recipe) as z.infer<typeof recipeValidator>)
             // resolve inheritance where needed, 
@@ -172,7 +178,7 @@ const latheRecipesByLatheId = processAndSaveConvertedData({
 
                 return recipe;
             })
-            // convert to a record with lathe IDs being the keys, and lathe recipes by item IDs they produce being the values.
+            // convert to a record with the final type
             .reduce((accum, recipe) => {
                 if (recipe.result === undefined && recipe.resultReagents === undefined) {
                     logWarn(chalk.yellow(`${chalk.bold('WARN:')} skipping recipe ${chalk.bold(recipe.id)} because it doesn't have a product: neither an item nor reagents`));
@@ -225,15 +231,17 @@ const latheRecipesByLatheId = processAndSaveConvertedData({
                     }
 
                     // add recipe to lathe
-                    if (!accum[latheId]) {
-                        accum[latheId] = []
+                    let recipesByLathe = accum[latheId];
+                    if (!recipesByLathe) {
+                        recipesByLathe = []
+                        accum[latheId] = recipesByLathe;
                     }
 
-                    accum[latheId].push(recipeCloned);
+                    recipesByLathe.push(recipeCloned);
                 }
 
                 return accum;
-            }, {} as Record<string, Array<z.infer<typeof recipeValidator>>>);
+            }, {} as typeof recipesByLatheId);
 
 
         writeToOutput(recipesByLatheId);
@@ -247,7 +255,7 @@ const latheRecipesByLatheId = processAndSaveConvertedData({
 //          grouping them by production method.                                                  =
 // === = === = === = === = === = === = === = === = === = === = === = === = === = === = === = === =
 
-const recipesByProductionMethod: Record<string, z.infer<typeof recipeValidator>[]> = {}
+const recipesByMethod: RecipesByMethod = {}
 
 // function getRecipeArrayByMethodFromRecipesByProductionMethod(productionMethod: string): typeof recipesByProductionMethod[string] {
 //     let arr: undefined | typeof recipesByProductionMethod[string] = recipesByProductionMethod[productionMethod];
@@ -259,10 +267,10 @@ const recipesByProductionMethod: Record<string, z.infer<typeof recipeValidator>[
 //     return arr;
 // }
 
-
+// copy lathe recipes over to the unified recipes record
 Object.entries(latheRecipesByLatheId)
-    .forEach(([latheId, latheRecipes]) => {
-        recipesByProductionMethod[latheId] = [...latheRecipes];
+    .forEach(([latheId, recipes]) => {
+        recipesByMethod[latheId] = deepCloneObjectUsingJson(recipes) as typeof recipes;
     });
 
 // === = = === = = === = = === = = === 
@@ -274,20 +282,16 @@ processAndSaveConvertedData({
     convertedDataPathAlias: 'noop',
     outputDataPathAlias: 'recipes.recipes by recipe IDs',
     processor({ writeToOutput }) {
-        const recipesByRecipeIds = Object.values(recipesByProductionMethod)
-            .reduce((accum, recipes) => {
-                recipes
-                    .forEach(recipe => {
-                        // make a clone so we can make changes to it
-                        const recipeCloned = deepCloneObjectUsingJson(recipe) as typeof recipe;
+        const result = deepCloneObjectUsingJson(recipesByMethod) as typeof recipesByMethod;
 
-                        accum[recipe.id] = recipeCloned;
-                    });
+        for (const recipes of Object.values(result)) {
+            for (const recipe of Object.values(recipes)) {
+                // get rid of availability here because it will be added elsewhere
+                delete recipe.availability;
+            }
+        }
 
-                return accum;
-            }, {} as Record<string, z.infer<typeof recipeValidator>>);
-
-        writeToOutput(recipesByRecipeIds);
+        writeToOutput(result);
     }
 });
 
@@ -324,7 +328,7 @@ processAndSaveConvertedData({
             }
         }
 
-        for (const recipes of Object.values(recipesByProductionMethod)) {
+        for (const recipes of Object.values(recipesByMethod)) {
             for (const recipe of recipes) {
                 switch (recipe.type) {
                     case 'latheRecipe':
@@ -352,30 +356,36 @@ processAndSaveConvertedData({
     }
 });
 
-// ::file 3: recipe IDs by [production] method
+// ::file 3: recipe IDs by [production] method and availability
 processAndSaveConvertedData({
     convertedDataPathAlias: 'noop',
-    outputDataPathAlias: 'recipes.recipe IDs by method',
+    outputDataPathAlias: 'recipes.recipe IDs by method and availability',
     processor({ writeToOutput }) {
-        const recipeIdsByMethods: Record<string, string[]> = {}
+        const recipeIdsByMethodAndAvailability: Record<string, Record<string, string[]>> = {}
 
-        function addRecipeIdByMethod(method: string, recipeId: string): void {
-            let matchByMethod: undefined | string[] = recipeIdsByMethods[method];
-            if (matchByMethod === undefined) {
-                matchByMethod = [];
-                recipeIdsByMethods[method] = matchByMethod;
+        function addRecipeId(method: string, availability: string, recipeId: string): void {
+            let recipesByMethod = recipeIdsByMethodAndAvailability[method];
+            if (recipesByMethod === undefined) {
+                recipesByMethod = {};
+                recipeIdsByMethodAndAvailability[method] = recipesByMethod;
             }
 
-            matchByMethod.push(recipeId);
+            let recipesByAvailability = recipesByMethod[availability];
+            if (recipesByAvailability === undefined) {
+                recipesByAvailability = [];
+                recipesByMethod[availability] = recipesByAvailability;
+            }
+
+            recipesByAvailability.push(recipeId);
         }
 
-        for (const [method, recipes] of Object.entries(recipesByProductionMethod)) {
+        for (const [method, recipes] of Object.entries(recipesByMethod)) {
             for (const recipe of recipes) {
-                addRecipeIdByMethod(method, recipe.id);
+                addRecipeId(method, recipe.availability!, recipe.id);
             }
         }
 
-        writeToOutput(recipeIdsByMethods);
+        writeToOutput(recipeIdsByMethodAndAvailability);
     }
 });
 

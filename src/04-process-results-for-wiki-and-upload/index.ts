@@ -100,8 +100,8 @@ async function main() {
     });
 
     await processPage({
-        projectOutputDataPathAlias: 'recipes.recipe IDs by method',
-        wikiDataPathAlias: 'recipes.recipe IDs by method',
+        projectOutputDataPathAlias: 'recipes.recipe IDs by method and availability',
+        wikiDataPathAlias: 'recipes.recipe IDs by method and availability',
     });
 
     // entities

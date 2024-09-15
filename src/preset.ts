@@ -153,10 +153,10 @@ export const dataPaths = {
     },
 
     // all recipes
-    "recipes.recipe IDs by method": {
+    "recipes.recipe IDs by method and availability": {
         type: 'file',
-        projectOutputFilePath: path.join('Recipes', 'recipe IDs by method.json'),
-        wikiPage: 'Module:Item recipe/recipe IDs by method.json'
+        projectOutputFilePath: path.join('Recipes', 'recipe IDs by method and availability.json'),
+        wikiPage: 'Module:Item recipe/recipe IDs by method and availability.json'
     },
 
 
