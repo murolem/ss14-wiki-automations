@@ -282,16 +282,24 @@ processAndSaveConvertedData({
     convertedDataPathAlias: 'noop',
     outputDataPathAlias: 'recipes.recipes by recipe IDs',
     processor({ writeToOutput }) {
-        const result = deepCloneObjectUsingJson(recipesByMethod) as typeof recipesByMethod;
+        const recipesByRecipeIds = Object.values(recipesByMethod)
+            .reduce((accum, recipes) => {
+                recipes
+                    .forEach(recipe => {
+                        // make a clone so we can make changes to it
+                        const recipeCloned = deepCloneObjectUsingJson(recipe) as typeof recipe;
 
-        for (const recipes of Object.values(result)) {
-            for (const recipe of Object.values(recipes)) {
-                // get rid of availability here because it will be added elsewhere
-                delete recipe.availability;
-            }
-        }
+                        // assign to ID
+                        accum[recipe.id] = recipeCloned;
 
-        writeToOutput(result);
+                        // remove availability
+                        delete recipeCloned.availability;
+                    });
+
+                return accum;
+            }, {} as Record<string, z.infer<typeof recipeValidator>>);
+
+        writeToOutput(recipesByRecipeIds);
     }
 });
 
