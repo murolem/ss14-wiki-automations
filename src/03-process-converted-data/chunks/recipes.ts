@@ -267,17 +267,24 @@ export default function process() {
         processor({ writeToOutput }) {
             const recipesByRecipeIds = Object.values(recipesByMethod)
                 .reduce((accum, recipes) => {
-                    recipes
-                        .forEach(recipe => {
-                            // make a clone so we can make changes to it
-                            const recipeCloned = deepCloneObjectUsingJson(recipe) as typeof recipe;
+                    for (const recipeOriginalDoNotEdit of recipes) {
+                        // make a clone so we can make changes to it
+                        const recipe = deepCloneObjectUsingJson(recipeOriginalDoNotEdit) as typeof recipeOriginalDoNotEdit;
 
-                            // assign to ID
-                            accum[recipe.id] = recipeCloned;
+                        // prefix reagent products
+                        if (recipe.resultReagents) {
+                            for (const [reagent, amount] of Object.entries(recipe.resultReagents)) {
+                                delete recipe.resultReagents[reagent];
+                                recipe.resultReagents[`Reagent.${reagent}`] = amount;
+                            }
+                        }
 
-                            // remove availability
-                            delete recipeCloned.availability;
-                        });
+                        // assign to ID
+                        accum[recipe.id] = recipe;
+
+                        // remove availability
+                        delete recipe.availability;
+                    }
 
                     return accum;
                 }, {} as Record<string, z.infer<typeof recipeValidator>>);
@@ -329,7 +336,7 @@ export default function process() {
 
                             if (recipe.resultReagents !== undefined) {
                                 for (const reagentId of Object.keys(recipe.resultReagents)) {
-                                    addRecipeIdByProductId(reagentId, recipe.id);
+                                    addRecipeIdByProductId(`Reagent.${reagentId}`, recipe.id);
                                 }
                             }
                             break;
