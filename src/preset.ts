@@ -91,21 +91,21 @@ export const dataPaths = {
         projectInputPath: path.join('Locale')
     },
 
-    reagents: {
-        type: 'dir',
-        ss14Path: path.join('Resources', 'Prototypes', 'Reagents'),
-        projectInputPath: path.join('Reagents'),
-        projectConvertedPath: path.join('Reagents'),
-        projectOutputFilePath: path.join('Reagents', 'reagents.json')
-    },
+    // reagents: {
+    //     type: 'dir',
+    //     ss14Path: path.join('Resources', 'Prototypes', 'Reagents'),
+    //     projectInputPath: path.join('Reagents'),
+    //     projectConvertedPath: path.join('Reagents'),
+    //     projectOutputFilePath: path.join('Reagents', 'reagents.json')
+    // },
 
-    reactions: {
-        type: 'dir',
-        ss14Path: path.join('Resources', 'Prototypes', 'Recipes', 'Reactions'),
-        projectInputPath: path.join('Recipes', 'Reactions'),
-        projectConvertedPath: path.join('Recipes', 'Reactions'),
-        projectOutputFilePath: path.join('Recipes', 'reactions.json')
-    },
+    // reactions: {
+    //     type: 'dir',
+    //     ss14Path: path.join('Resources', 'Prototypes', 'Recipes', 'Reactions'),
+    //     projectInputPath: path.join('Recipes', 'Reactions'),
+    //     projectConvertedPath: path.join('Recipes', 'Reactions'),
+    //     projectOutputFilePath: path.join('Recipes', 'reactions.json')
+    // },
 
     // ================
 
@@ -159,146 +159,157 @@ export const dataPaths = {
         wikiPage: 'Module:Item recipe/recipe IDs by method and availability.json'
     },
 
-
     // ================
+    // items
 
-    "entities.source.foldable": {
+    "item.source.entities.foldable": {
         type: 'file',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'foldable.yml'),
-        projectInputPath: path.join('Entities', 'foldable.yml'),
-        projectConvertedPath: path.join('Entities', 'foldable.json'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'foldable.json'),
+        projectInputPath: path.join('Items', 'Entities', 'foldable.yml'),
+        projectConvertedPath: path.join('Items', 'Entities', 'foldable.json'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'foldable.json'),
     },
 
-    "entities.source.clothing": {
+    "item.source.entities.clothing": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Clothing'),
-        projectInputPath: path.join('Entities', 'Clothing'),
-        projectConvertedPath: path.join('Entities', 'Clothing'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'clothing.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Clothing'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Clothing'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'clothing.json'),
     },
 
-    "entities.source.objects": {
+    "item.source.entities.objects": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Objects'),
-        projectInputPath: path.join('Entities', 'Objects'),
-        projectConvertedPath: path.join('Entities', 'Objects'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'objects.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Objects'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Objects'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'objects.json'),
     },
 
-    "entities.source.structures": {
+    "item.source.entities.structures": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Structures'),
-        projectInputPath: path.join('Entities', 'Structures'),
-        projectConvertedPath: path.join('Entities', 'Structures'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'structures.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Structures'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Structures'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'structures.json'),
     },
 
-    "entities.source.tiles": {
+    "item.source.entities.tiles": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Tiles'),
-        projectInputPath: path.join('Entities', 'Tiles'),
-        projectConvertedPath: path.join('Entities', 'Tiles'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'tiles.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Tiles'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Tiles'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'tiles.json'),
     },
 
-    "entities.source.mobs": {
+    "item.source.entities.mobs": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Mobs'),
-        projectInputPath: path.join('Entities', 'Mobs'),
-        projectConvertedPath: path.join('Entities', 'Mobs'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'mobs.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Mobs'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Mobs'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'mobs.json'),
     },
 
-    "entities.source.body.organs": {
+    "item.source.entities.body.organs": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Body', 'Organs'),
-        projectInputPath: path.join('Entities', 'Body', 'Organs'),
-        projectConvertedPath: path.join('Entities', 'Body', 'Organs'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'body-organs.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Body', 'Organs'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Body', 'Organs'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'body-organs.json'),
     },
 
-    "entities.source.debugging": {
+    "item.source.entities.debugging": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Debugging'),
-        projectInputPath: path.join('Entities', 'Entities', 'Debugging'),
-        projectConvertedPath: path.join('Entities', 'Entities', 'Debugging'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'debugging.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Entities', 'Debugging'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Entities', 'Debugging'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'debugging.json'),
     },
 
-    "entities.source.body.parts": {
+    "item.source.entities.body.parts": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Body', 'Parts'),
-        projectInputPath: path.join('Entities', 'Body', 'Parts'),
-        projectConvertedPath: path.join('Entities', 'Body', 'Parts'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'body-parts.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Body', 'Parts'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Body', 'Parts'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'body-parts.json'),
     },
 
-    "entities.source.store.presets": {
+    "item.source.entities.store.presets": {
         type: 'file',
         ss14Path: path.join('Resources', 'Prototypes', 'Store', 'presets.yml'),
-        projectInputPath: path.join('Entities', 'Store', 'presets.yml'),
-        projectConvertedPath: path.join('Entities', 'Mobs', 'presets.json'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'store-presents.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Store', 'presets.yml'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Mobs', 'presets.json'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'store-presents.json'),
     },
 
     // entities that are containers
     // and have something in em'!
-    "entities.source.catalog.fills": {
+    "item.source.entities.catalog.fills": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Catalog', 'Fills'),
-        projectInputPath: path.join('Entities', 'Catalog', 'Fills'),
-        projectConvertedPath: path.join('Entities', 'Catalog', 'Fills'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'catalog-fills.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Catalog', 'Fills'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Catalog', 'Fills'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'catalog-fills.json'),
     },
 
     // something-something only used for inheritance
-    "entities.source.inventory-templates.inventorybase": {
+    "item.source.entities.inventory-templates.inventorybase": {
         type: 'file',
         ss14Path: path.join('Resources', 'Prototypes', 'InventoryTemplates', 'inventorybase.yml'),
-        projectInputPath: path.join('Entities', 'InventoryTemplates', 'inventorybase.yml'),
-        projectConvertedPath: path.join('Entities', 'InventoryTemplates', 'inventorybase.json'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'inventory_templates-inventorybase.json'),
+        projectInputPath: path.join('Items', 'Entities', 'InventoryTemplates', 'inventorybase.yml'),
+        projectConvertedPath: path.join('Items', 'Entities', 'InventoryTemplates', 'inventorybase.json'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'inventory_templates-inventorybase.json'),
     },
 
     // another thing only used for inheritance
-    "entities.source.markers": {
+    "item.source.entities.markers": {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Entities', 'Markers'),
-        projectInputPath: path.join('Entities', 'Markers'),
-        projectConvertedPath: path.join('Entities', 'Markers'),
-        projectOutputFilePath: path.join('Entities', 'per-data-path', 'markers.json'),
+        projectInputPath: path.join('Items', 'Entities', 'Markers'),
+        projectConvertedPath: path.join('Items', 'Entities', 'Markers'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'Per data path', 'markers.json'),
     },
 
-    "entities.before-processing.all-entities-array": {
-        type: 'file',
-        projectOutputFilePath: path.join('Entities', 'before-processing.all-entities-array.json'),
+    "item.source.reagents": {
+        type: 'dir',
+        ss14Path: path.join('Resources', 'Prototypes', 'Reagents'),
+        ss14PathExcludeGlobs: ['Materials'],
+        projectInputPath: path.join('Items', 'Reagents'),
+        projectConvertedPath: path.join('Items', 'Reagents'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Reagents', 'reagents.json'),
     },
 
-    "entities.processed.all-entities-array": {
+    // all entities parsed by a validator
+    "item.processed.entities.all-entities-raw-array": {
         type: 'file',
-        projectOutputFilePath: path.join('Entities', 'processed.all-entities-array.json'),
+        projectOutputFilePath: path.join('Items', 'Before processing', 'Entities', 'all-entities-array.json'),
     },
 
-    "entities.processed.entity-ids-by-lowercase-entity-names": {
+    // all entities fully processed
+    "item.processed.entities.entities-array": {
         type: 'file',
-        projectOutputFilePath: path.join('Entities', 'processed.entity-ids-by-lowercase-entity-names.json'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'all-entities-array.json'),
     },
 
-    "entities.processed.entity-names-by-entity-ids": {
+    "item.processed.entities.entity-ids-by-lowercase-entity-names": {
         type: 'file',
-        projectOutputFilePath: path.join('Entities', 'processed.entity-names-by-entity-ids.json'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'entity-ids-by-lowercase-entity-names.json'),
     },
 
-    "entities.wiki.entity-ids-by-lowercase-entity-names": {
+    "item.processed.entities.entity-names-by-entity-ids": {
         type: 'file',
-        projectOutputFilePath: path.join('Entities', 'from-wiki.entity-ids-by-lowercase-entity-names.json'),
+        projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'entity-names-by-entity-ids.json'),
+    },
+
+    "item.from-wiki.entities.entity-ids-by-lowercase-entity-names": {
+        type: 'file',
+        projectOutputFilePath: path.join('Items', 'From wiki', 'Entities', 'entity-ids-by-lowercase-entity-names.json'),
         wikiPage: 'Module:Item/item ids by item lowercase names.json'
     },
 
-    "entities.wiki.entity-names-by-entity-ids": {
+    "item.from-wiki.entities.entity-names-by-entity-ids": {
         type: 'file',
-        projectOutputFilePath: path.join('Entities', 'from-wiki.entity-names-by-entity-ids.json'),
+        projectOutputFilePath: path.join('Items', 'From wiki', 'Entities', 'entity-names-by-entity-ids.json'),
         wikiPage: 'Module:Item/item names by item ids.json'
     },
 

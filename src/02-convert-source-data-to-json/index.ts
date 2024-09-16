@@ -23,19 +23,21 @@ convertAndSaveInputData('recipes.lathes');
 convertAndSaveInputData('recipes.lathes.machines', PASSTHROUGH_YAML_SCHEMA);
 convertAndSaveInputData('recipes.lathes.categories', PASSTHROUGH_YAML_SCHEMA);
 
-convertAndSaveInputData('entities.source.foldable', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.clothing', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.objects', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.structures', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.tiles', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.mobs', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.body.organs', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.body.parts', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.debugging', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.store.presets', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.catalog.fills', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.inventory-templates.inventorybase', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
-convertAndSaveInputData('entities.source.markers', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.foldable', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.clothing', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.objects', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.structures', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.tiles', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.mobs', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.body.organs', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.body.parts', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.debugging', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.store.presets', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.catalog.fills', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.inventory-templates.inventorybase', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+convertAndSaveInputData('item.source.entities.markers', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
+
+convertAndSaveInputData('item.source.reagents', EXPLICIT_PASSTHROUGH_YAML_SCHEMA);
 
 
 convertAndSaveInputData('research.techs.parsed', PASSTHROUGH_YAML_SCHEMA);

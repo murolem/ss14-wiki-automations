@@ -22,7 +22,7 @@ import { z } from 'zod';
  * 2. Second and further objects, including the `doc` objects itself, are "layered on top", 
  * one after another, using the algorithm describe below.
  * 
- * For the algorithm used in name conflicts, refer to {@link mergeJsonObjects}.
+ * For the algorithm used to resolving name conflicts, refer to {@link mergeJsonObjects}.
  */
 export function resolveInheritance<T extends Record<string, unknown>>(
     doc: T,
@@ -31,13 +31,30 @@ export function resolveInheritance<T extends Record<string, unknown>>(
     idFieldName: keyof T,
     {
         debugLogChain = false,
-        excludeProperties = [],
-        inheritedPropertiesToDiscard = [],
+        discardProperties = [],
+        discardInheritedProperties = [],
         _depth = 0
     }: Partial<{
+        /** Whether to log the inheritance chain. */
         debugLogChain: boolean,
-        excludeProperties: string[],
-        inheritedPropertiesToDiscard: string[],
+
+        /** 
+         * Properties to remove from the resulting document. 
+         */
+        discardProperties: string[],
+
+        /** 
+         * Inherited properties to remove from the resulting document.
+         * 
+         * Useful for preserving properties that were on the original document.
+         */
+        discardInheritedProperties: string[],
+
+        /**
+         * Current recursion depth.
+         * 
+         * **Used internally, do not set.**
+         */
         _depth: number
     }> = {}
 ): T {
@@ -131,7 +148,7 @@ export function resolveInheritance<T extends Record<string, unknown>>(
 
     // remove properties from the inheritance chain before merge
     // that need to be removed.
-    for (const propertyToRemove of inheritedPropertiesToDiscard) {
+    for (const propertyToRemove of discardInheritedProperties) {
         if (propertyToRemove in resultDoc) {
             delete resultDoc[propertyToRemove];
         }
@@ -146,7 +163,7 @@ export function resolveInheritance<T extends Record<string, unknown>>(
     );
 
     // remove any props needed to be excluded from the final doc
-    for (const propertyToExclude of excludeProperties) {
+    for (const propertyToExclude of discardProperties) {
         if (propertyToExclude in resultDoc) {
             delete resultDoc[propertyToExclude];
         }

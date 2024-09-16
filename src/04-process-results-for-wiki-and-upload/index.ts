@@ -75,6 +75,7 @@ async function editPage(title: string, summary: string, content: string) {
         promise.resolve(data);
     });
 
+    // @ts-ignore for tests
     // promise.resolve();
 
     return promise;
@@ -107,13 +108,13 @@ async function main() {
     // entities
 
     await processPage({
-        projectOutputDataPathAlias: 'entities.processed.entity-names-by-entity-ids',
-        wikiDataPathAlias: 'entities.wiki.entity-names-by-entity-ids'
+        projectOutputDataPathAlias: 'item.processed.entities.entity-names-by-entity-ids',
+        wikiDataPathAlias: 'item.from-wiki.entities.entity-names-by-entity-ids'
     });
 
     await processPage({
-        projectOutputDataPathAlias: 'entities.processed.entity-ids-by-lowercase-entity-names',
-        wikiDataPathAlias: 'entities.wiki.entity-ids-by-lowercase-entity-names'
+        projectOutputDataPathAlias: 'item.processed.entities.entity-ids-by-lowercase-entity-names',
+        wikiDataPathAlias: 'item.from-wiki.entities.entity-ids-by-lowercase-entity-names'
     });
 
     // research

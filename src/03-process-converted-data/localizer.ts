@@ -23,7 +23,7 @@ for (const { absFilepath } of localeFiles) {
 }
 
 /**
- * Returns a localized string for a given key.
+ * Lookups a localized string for a given key.
  * @param key Localized string key.
  * @throws Error if no localized string is defined with a given key.
  */
@@ -62,6 +62,8 @@ function assertLocalizationKeyIsString(key: unknown): string {
 /**
  * Localizes a record property by key (for shallow properties), 
  * or uses a given getter/setter function to localize properties on deeper level.
+ * 
+ * @throws Error if no localization key was found. This is only for when `property` was set.
  */
 export function localizeRecordProperty<
     TDoc extends Record<string, unknown>

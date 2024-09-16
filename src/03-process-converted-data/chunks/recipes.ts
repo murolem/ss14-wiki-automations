@@ -135,7 +135,7 @@ export default function process() {
                 .map((recipe, i, entries) => {
                     if (recipe.parent) {
                         return resolveInheritance(recipe, parsedRecipes, 'parent', 'id', {
-                            inheritedPropertiesToDiscard: ['abstract']
+                            discardInheritedProperties: ['abstract']
                         });
                     } else {
                         return recipe;

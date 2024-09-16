@@ -121,7 +121,10 @@ for (const [dataPathAlias, dataPath] of dataPathsToImportByAlias) {
         if (dataPath.ss14PathExcludeGlobs) {
             const relPathsToExclude = globSync(dataPath.ss14PathExcludeGlobs, { cwd: dataPathSs14AbsPath });
 
-            filesToImport = filesToImport.filter(({ relFilepath }) => !relPathsToExclude.includes(relFilepath));
+            filesToImport = filesToImport.filter(({ relFilepath, relDirpath }) => {
+                return !relPathsToExclude.includes(relFilepath)
+                    && !relPathsToExclude.includes(relDirpath);
+            });
         }
 
         const { filesCopiedCount } = copyListOfFilesRecursively(filesToImport, dataPathProjectInputAbsPath);
