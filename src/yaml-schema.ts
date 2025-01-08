@@ -19,6 +19,13 @@ const BASE_YAML_SCHEMA = yaml.DEFAULT_SCHEMA.extend([
         resolve() { return true },
         construct(data) { return data }
     }),
+
+    // just a string
+    new yaml.Type('!type:String', {
+        kind: 'scalar',
+        resolve() { return true },
+        construct(data) { return data }
+    }),
 ]);
 
 export type CustomTagsProcessor = (data: unknown, tag: string) => unknown;
