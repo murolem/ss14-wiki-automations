@@ -20,11 +20,11 @@ const entityComponentKnownComponents = z.union([
         /** Contains items that can be made by default or need to be researched first. */
         type: z.literal("Lathe"),
 
-        /** Item IDs of items that are available to be printed by default. */
-        staticRecipes: z.array(z.string()).optional(),
+        /** Recipe pack IDs of items that are available to be printed by default. */
+        staticPacks: z.array(z.string()).optional(),
 
-        /** Item IDs of items that are available to be printed only after they have been researched. */
-        dynamicRecipes: z.array(z.string()).optional(),
+        /** Recipe pack IDs of items that are available to be printed only after they have been researched. */
+        dynamicPacks: z.array(z.string()).optional(),
 
         materialUseMultiplier: z.number().optional(),
 
@@ -39,17 +39,17 @@ const entityComponentKnownComponents = z.union([
         runningState: z.string().optional(),
         unlitIdleState: z.string().optional(),
         unlitRunningState: z.string().optional(),
-    }).strict(),
+    }),
 
     // todo make strict if needed
     entityComponentBase.extend({
         /** Contains recipes that are available when a lathe is emagged. */
         type: z.literal("EmagLatheRecipes"),
 
-        emagStaticRecipes: z.array(z.string()).optional(),
+        emagStaticPacks: z.array(z.string()).optional(),
 
-        emagDynamicRecipes: z.array(z.string()).optional(),
-    }).strict(),
+        emagDynamicPacks: z.array(z.string()).optional(),
+    }),
 ]);
 
 const entityComponentUnknownComponents = entityComponentBase.extend({
@@ -82,7 +82,7 @@ export const entityValidator = entityDefiningValidator.extend({
     ]).optional(),
 
     components: entityComponent.array().optional()
-}).passthrough();
+});
 
 
 // variation resulting from 03-processing

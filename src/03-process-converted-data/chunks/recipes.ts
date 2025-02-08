@@ -1,6 +1,6 @@
 import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
 import { entityValidator } from '$src/schemas/entities/entity';
-import { latheCategoryValidator } from '$src/schemas/recipes/lathe';
+import { latheCategoryValidator, lathePackValidator } from '$src/schemas/recipes/lathe';
 import { recipeValidator } from '$src/schemas/recipes/recipe';
 import { resolveInheritance } from '$src/schemas/utils';
 import { deepCloneObjectUsingJson, roundToDigit } from '$src/utils';
@@ -41,75 +41,111 @@ export default function process() {
         }
     });
 
-    // recipes that lathes have grouped by availability
+    // lathe recipe packs
+    const lathesPacks = processAndSaveConvertedData({
+        convertedDataPathAlias: 'recipes.lathes.packs',
+        outputDataPathAlias: 'recipes.lathes.packs',
+        processor({ files, parseFiles, writeToOutput }) {
+            const resultingEntries = parseFiles(files, lathePackValidator);
+
+            writeToOutput(resultingEntries);
+
+            return resultingEntries;
+        }
+    });
+
+    // lathe recipes (grouped by availability)
     const lathesRecipeIdsByLathe = (() => {
-        const lathesRecipes: Record<string, {
+        type LatheInfo = {
             staticRecipes?: string[],
             dynamicRecipes?: string[],
             emagStaticRecipes?: string[],
             emagDynamicRecipes?: string[],
-            hasRecipeWithId(itemId: string): boolean,
             staticAndDynamicRecipesMaterialUseMultiplier: number,
-            staticAndDynamicRecipesTimeMultiplier: number
-        }> = {};
+            staticAndDynamicRecipesTimeMultiplier: number,
+            hasRecipeWithId(recipeId: string): boolean
+        }
+
+        const latheInfoByLatheId: Record<string, LatheInfo> = {};
+
+        /** Check whether lathe has a recipe. */
+        function hasRecipeId(latheId: string, recipeId: string): boolean {
+            const latheInfo = latheInfoByLatheId[latheId];
+            if (!latheInfo) {
+                logError(`lathe with ID '${latheId}' not found`, { throwErr: true });
+            }
+
+            return latheInfo.staticRecipes?.includes(recipeId)
+                || latheInfo.dynamicRecipes?.includes(recipeId)
+                || latheInfo.emagStaticRecipes?.includes(recipeId)
+                || latheInfo.emagDynamicRecipes?.includes(recipeId)
+                || false;
+        }
+
+        /** Extracts recipes (IDs) from a recipe pack by its ID. */
+        function extractRecipesFromRecipePack(packId: string): string[] {
+            const pack = lathesPacks.find(pack => pack.id === packId);
+            if (!pack) {
+                logError(`pack with ID '${packId}' not found`, { throwErr: true });
+                throw ''//type guard
+            }
+
+            return pack.recipes;
+        }
+
+        /** Extracts recipes (IDs) from recipe packs by their IDs. */
+        function extractRecipesFromRecipePacks(packIds: string[]): string[] {
+            return packIds.flatMap(extractRecipesFromRecipePack);
+        }
 
         for (const lathe of lathesMachines) {
-            const latheRecipes = {
-                hasRecipeWithId(recipeId: string): boolean {
-                    return ([
-                        'staticRecipes',
-                        'dynamicRecipes',
-                        'emagStaticRecipes',
-                        'emagDynamicRecipes'
-                    ] as Array<keyof typeof lathesRecipes[string]>)
-                        // @ts-ignore
-                        .some(recipeCategory => lathesRecipes[lathe.id][recipeCategory]?.includes(recipeId));
-                },
-                staticAndDynamicRecipesMaterialUseMultiplier: 1,
-                staticAndDynamicRecipesTimeMultiplier: 1
-            } as typeof lathesRecipes[string];
-
             if (!lathe.id) {
                 logError("lathe ID is undefined", lathe, { throwErr: true });
                 throw ''//type guard
             }
 
-            lathesRecipes[lathe.id] = latheRecipes;
+            const latheInfo: LatheInfo = {
+                staticAndDynamicRecipesMaterialUseMultiplier: 1,
+                staticAndDynamicRecipesTimeMultiplier: 1,
+                hasRecipeWithId: recipeId => hasRecipeId(lathe.id!, recipeId)
+            };
+
+            latheInfoByLatheId[lathe.id] = latheInfo;
 
             // ================
 
             const latheComponent = lathe.components?.find(component => component.type === 'Lathe');
             if (latheComponent) {
-                if ('staticRecipes' in latheComponent) {
-                    latheRecipes.staticRecipes = latheComponent.staticRecipes;
+                if ('staticPacks' in latheComponent) {
+                    latheInfo.staticRecipes = extractRecipesFromRecipePacks(latheComponent.staticPacks!);
                 }
 
-                if ('dynamicRecipes' in latheComponent) {
-                    latheRecipes.dynamicRecipes = latheComponent.dynamicRecipes;
+                if ('dynamicPacks' in latheComponent) {
+                    latheInfo.dynamicRecipes = extractRecipesFromRecipePacks(latheComponent.dynamicPacks!);
                 }
 
                 if ('timeMultiplier' in latheComponent) {
-                    latheRecipes.staticAndDynamicRecipesTimeMultiplier = latheComponent.timeMultiplier!;
+                    latheInfo.staticAndDynamicRecipesTimeMultiplier = latheComponent.timeMultiplier!;
                 }
 
                 if ('materialUseMultiplier' in latheComponent) {
-                    latheRecipes.staticAndDynamicRecipesMaterialUseMultiplier = latheComponent.materialUseMultiplier!;
+                    latheInfo.staticAndDynamicRecipesMaterialUseMultiplier = latheComponent.materialUseMultiplier!;
                 }
             }
 
             const emagLatheComponent = lathe.components?.find(component => component.type === 'EmagLatheRecipes');
             if (emagLatheComponent) {
-                if ('emagStaticRecipes' in emagLatheComponent) {
-                    latheRecipes.emagStaticRecipes = emagLatheComponent.emagStaticRecipes;
+                if ('emagStaticPacks' in emagLatheComponent) {
+                    latheInfo.emagStaticRecipes = extractRecipesFromRecipePacks(emagLatheComponent.emagStaticPacks!);
                 }
 
-                if ('emagDynamicRecipes' in emagLatheComponent) {
-                    latheRecipes.emagDynamicRecipes = emagLatheComponent.emagDynamicRecipes;
+                if ('emagDynamicPacks' in emagLatheComponent) {
+                    latheInfo.emagDynamicRecipes = extractRecipesFromRecipePacks(emagLatheComponent.emagDynamicPacks!);
                 }
             }
         }
 
-        return lathesRecipes;
+        return latheInfoByLatheId;
     })();
 
     type RecipeMethod = string;

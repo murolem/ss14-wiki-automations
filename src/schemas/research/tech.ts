@@ -28,4 +28,4 @@ export const researchTechValidator = z.object({
 
     /** ids of techs needed for this tech to be unlockable */
     technologyPrerequisites: z.string().array().optional()
-}).strict();
+});

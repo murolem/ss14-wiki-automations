@@ -52,7 +52,7 @@ export const latheRecipeValidator = z.object({
 
         /** Icon state (?). Maybe literal. */
         state: z.string()
-    }).strict().optional(),
+    }).optional(),
 
     /** 
      * The recipe. 
@@ -64,7 +64,7 @@ export const latheRecipeValidator = z.object({
         z.string(),
         z.number()
     ).optional()
-}).strict();
+});
 
 // export const latheRecipeValidatorAfterProcessing = latheRecipeValidator.omit({
 //     type: true,
@@ -96,4 +96,11 @@ export const latheCategoryValidator = z.object({
 
     /** Category name (to be localized). */
     name: z.string()
-}).strict();
+});
+
+export type LathePackSchema = z.infer<typeof lathePackValidator>;
+export const lathePackValidator = z.object({
+    type: z.literal('latheRecipePack'),
+    id: z.string(),
+    recipes: z.array(z.string())
+})

@@ -20,6 +20,7 @@ if (fs.existsSync(projectRelPaths.convertedData)) {
 // ======== generate jsons ========
 
 convertAndSaveInputData('recipes.lathes');
+convertAndSaveInputData('recipes.lathes.packs', PASSTHROUGH_YAML_SCHEMA);
 convertAndSaveInputData('recipes.lathes.machines', PASSTHROUGH_YAML_SCHEMA);
 convertAndSaveInputData('recipes.lathes.categories', PASSTHROUGH_YAML_SCHEMA);
 

@@ -114,10 +114,19 @@ export const dataPaths = {
         type: 'dir',
         ss14Path: path.join('Resources', 'Prototypes', 'Recipes', 'Lathes'),
         // recipe categories
-        ss14PathExcludeGlobs: ['categories.yml'],
-        projectInputPath: path.join('Recipes', 'Lathes', 'Recipes by lathe'),
-        projectConvertedPath: path.join('Recipes', 'Lathes', 'Recipes by lathe'),
+        ss14PathExcludeGlobs: ['categories.yml', 'Packs'],
+        projectInputPath: path.join('Recipes', 'Lathes', 'Recipes_by_category'),
+        projectConvertedPath: path.join('Recipes', 'Lathes', 'Recipes_by_category'),
         projectOutputFilePath: path.join('Recipes', 'Lathes', 'lathes.json'),
+    },
+
+    // lathe recipe packs
+    "recipes.lathes.packs": {
+        type: 'dir',
+        ss14Path: path.join('Resources', 'Prototypes', 'Recipes', 'Lathes', 'Packs'),
+        projectInputPath: path.join('Recipes', 'Lathes', 'Packs'),
+        projectConvertedPath: path.join('Recipes', 'Lathes', 'Packs'),
+        projectOutputFilePath: path.join('Recipes', 'Lathes', 'recipe-packs.json'),
     },
 
     // lathe recipe categories
