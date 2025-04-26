@@ -10,8 +10,11 @@
     ],
     "skipLibCheck": true,
     "paths": {
+      "$logger": [
+        "./src/lib/logger.ts"
+      ],
       "$utils/*": [
-        "./src/utils/*"
+        "./src/lib/utils/*"
       ],
       "$components/*": [
         "./src/components/*"

@@ -4,7 +4,7 @@ import Logger from '@aliser/logger';
 import chalk from 'chalk';
 import { z } from 'zod';
 import { deepCloneObjectUsingJson, roundToDigit } from '$src/utils';
-import { dataPaths, extendedLogging, projectRelPaths } from '$src/preset';
+import { dataPaths, extendedLogging, stepDir } from '$src/preset';
 import { resolveInheritance } from '$src/schemas/utils';
 import { researchTechValidator } from '$src/schemas/research/tech';
 import { researchDisciplineValidator } from '$src/schemas/research/discipline';
@@ -22,10 +22,10 @@ import processReagents from './chunks/items/reagents';
 
 logInfo(chalk.bold("processing converted data"));
 
-if (fs.existsSync(projectRelPaths.outputData)) {
-    fs.emptyDirSync(projectRelPaths.outputData);
+if (fs.existsSync(stepDir.outputData)) {
+    fs.emptyDirSync(stepDir.outputData);
 } else {
-    fs.ensureDirSync(projectRelPaths.outputData)
+    fs.ensureDirSync(stepDir.outputData)
 }
 
 // ==============

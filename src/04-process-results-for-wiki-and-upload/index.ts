@@ -4,7 +4,7 @@ import MwBot from "nodemw";
 import dotenv from 'dotenv';
 import { PageEditedResult } from 'nodemw/lib/types';
 import { areJsonObjectsEqual, DeferredPromise, getLocalGitRepoHeadShortCommitHash } from '$src/utils';
-import { dataPaths, projectRelPaths } from '$src/preset';
+import { dataPaths, stepDir } from '$src/preset';
 import path from 'path';
 import fs from 'fs-extra';
 const logger = new Logger("04-upload-results-to-wiki");
@@ -82,7 +82,7 @@ async function editPage(title: string, summary: string, content: string) {
 }
 
 async function main() {
-    ss14RepoCurrentCommitShortHash = getLocalGitRepoHeadShortCommitHash(projectRelPaths.ss14Repo);
+    ss14RepoCurrentCommitShortHash = getLocalGitRepoHeadShortCommitHash(stepDir.ss14Repo);
 
     logInfo(chalk.bold(`SS14 HEAD at ${chalk.green("#" + ss14RepoCurrentCommitShortHash)}`));
 
@@ -365,7 +365,7 @@ async function processPage({
     }
 
     const wikiPageUrl = constructWikiPageUrl(wikiDataPath.wikiPage);
-    const projectOutputAbsFilePath = path.resolve(path.join(projectRelPaths.outputData, projectOutputDataPath.projectOutputFilePath));
+    const projectOutputAbsFilePath = path.resolve(path.join(stepDir.outputData, projectOutputDataPath.projectOutputFilePath));
 
     logInfo(chalk.gray(`local source: ${projectOutputAbsFilePath}`));
     logInfo(chalk.gray(`wiki endpoint: ${encodeURI(wikiPageUrl)}`));

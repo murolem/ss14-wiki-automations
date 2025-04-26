@@ -1,4 +1,4 @@
-import { dataPaths, preferredLocale, projectRelPaths } from '$src/preset';
+import { dataPaths, preferredLocale, stepDir } from '$src/preset';
 import { getFilesInDirectoryRecursively } from '$src/utils';
 import { FluentBundle, FluentResource } from '@fluent/bundle';
 import path from 'path';
@@ -14,7 +14,7 @@ const { logInfo, logError } = logger;
  * consuming all FTL files inside the locale dir in the imported files.
  */
 
-const localeFiles = getFilesInDirectoryRecursively(path.join(projectRelPaths.inputData, dataPaths.locale.projectInputPath));
+const localeFiles = getFilesInDirectoryRecursively(path.join(stepDir.inputData, dataPaths.locale.projectInputPath));
 
 const localization = new FluentBundle(preferredLocale);
 for (const { absFilepath } of localeFiles) {

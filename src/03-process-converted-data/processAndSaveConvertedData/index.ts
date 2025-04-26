@@ -1,4 +1,4 @@
-import { DataPath, dataPaths, extendedLogging, projectRelPaths } from '$src/preset';
+import { DataPath, dataPaths, extendedLogging, stepDir } from '$src/preset';
 import { assertPathExists, convertFilepathToFileEntryFromRecursiveFileFunctions, FileEntryFromRecursiveFileFunctions, getFilesInDirectoryRecursively, isRecord, LastElementOf } from '$src/utils';
 import chalk from 'chalk';
 import { z, ZodType } from 'zod';
@@ -76,7 +76,7 @@ export function processAndSaveConvertedData<
 
 
     const dataPathConvertedDataAbsPath = path.resolve(path.join(
-        projectRelPaths.convertedData, convertedDataPath.projectConvertedPath
+        stepDir.convertedData, convertedDataPath.projectConvertedPath
     ));
 
     if (!isNoopForConvertedData) {
@@ -90,12 +90,12 @@ export function processAndSaveConvertedData<
         assertPathExists(dataPathConvertedDataAbsPath, `failed to process and save converted data for data path ${chalk.bold(outputDataPathAlias)}: converted data path doesn't exist`);
 
         files = convertedDataPath.type === 'file'
-            ? [convertFilepathToFileEntryFromRecursiveFileFunctions(dataPathConvertedDataAbsPath, projectRelPaths.convertedData)]
+            ? [convertFilepathToFileEntryFromRecursiveFileFunctions(dataPathConvertedDataAbsPath, stepDir.convertedData)]
             : getFilesInDirectoryRecursively(dataPathConvertedDataAbsPath);
     }
 
     const dataPathOutputDataAbsFilePath = path.resolve(path.join(
-        projectRelPaths.outputData, outputDataPath.projectOutputFilePath
+        stepDir.outputData, outputDataPath.projectOutputFilePath
     ));
     const dataPathOutputDataAbsFilePathParsed = path.parse(dataPathOutputDataAbsFilePath);
 
