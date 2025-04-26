@@ -54,11 +54,13 @@ export class Logger {
         this.logPrefix = logPrefix;
     }
 
+    /** Set global log level. */
     static setLogLevel(level: LogLevel): void {
         logLevel = level;
         logLevelNum = logLevels[logLevel];
     }
 
+    /** Set instance log prefix. */
     setLogPrefix = (prefix: string): void => {
         this.logPrefix = prefix;
     }
