@@ -1,4 +1,4 @@
-import { localizeRecordProperty } from '$src/03-process-converted-data/localizer';
+import { localizeRecordProperty } from '$src/03-process-converted-data/lib/localizer';
 import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
 import { researchDisciplineValidator } from '$src/schemas/research/discipline';
 import { researchTechValidator } from '$src/schemas/research/tech';

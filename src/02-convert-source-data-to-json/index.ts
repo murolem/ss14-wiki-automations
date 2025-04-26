@@ -5,7 +5,9 @@ import fs from 'fs-extra';
 
 fs.emptyDirSync(stepAbsDirPaths.convertedData);
 
-convertPath(sourceSubstepDirPaths.recipes_lathe);
-convertPath(sourceSubstepDirPaths.recipes_lathe_packs);
-convertPath(sourceSubstepDirPaths.recipes_lathe_categories);
-convertPath(sourceSubstepDirPaths.recipes_lathe_machines);
+convertPath(sourceSubstepDirPaths.prototypes);
+
+// convertPath(sourceSubstepDirPaths.recipes_lathe);
+// convertPath(sourceSubstepDirPaths.recipes_lathe_packs);
+// convertPath(sourceSubstepDirPaths.recipes_lathe_categories);
+// convertPath(sourceSubstepDirPaths.recipes_lathe_machines);

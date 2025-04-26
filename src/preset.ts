@@ -35,7 +35,7 @@ export const stepAbsDirPaths = {
     /** 
      * Input data that was processed, producing a valuable output.
      */
-    outputData: path.join(tempDirAbsPath, '03-parsed-data'),
+    outputData: path.join(tempDirAbsPath, '03-output-data'),
 } satisfies Record<string, string>
 
 /** 
@@ -49,6 +49,8 @@ export const stepAbsDirPaths = {
  */
 export const sourceSubstepDirPaths = {
     locale: 'locale',
+
+    prototypes: toOsPath('Resources/Prototypes'),
 
     reagents: 'reagents',
     items_reagents: 'items_reagents', // ?
@@ -146,3 +148,15 @@ export const sourceSubstepDirPaths = {
     //     wikiPage: 'Module:Research/disciplines by discipline IDs.json'
     // }
 } satisfies Record<string, string>;
+
+/**
+ * A map of substep names to their respective directories in the processed step directory.
+ * 
+ * These are used mainly for debug purposes to demonstrate the state of data in between processing stages.
+ */
+export const outputSubstepDirPaths = {
+    /** Prototypes after the first parsing step. Nothing is done to them yet. */
+    prototypesRaw: toOsPath('prototypes/01-prototypes-raw.json'),
+    /** Prototypes with inheritance resolved. These are considered "fully loaded" and ready to be used for whatever. */
+    prototypesWithInheritanceResolved: toOsPath('prototypes/02-prototypes-with-inheritance-resolved.json'),
+}

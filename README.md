@@ -29,9 +29,11 @@ On the next step, every json file in YML directory will be converted to JSON.
 
 ### Convert source data
 
-A YML directory from first stop is copied as is. Next, a search is performed for yml files.
+A YML directory from copy step is searched for YML files.
 
-Each found yml file is converted to json on the spot (removing original yml file).
+Each found YML file is converted to JSON and saved to the converted directory under the same path.
+
+If YML file is empty (including containing only comments), it's saved as an empty array.
 
 ### Process converted data
 

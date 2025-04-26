@@ -10,6 +10,9 @@
     ],
     "skipLibCheck": true,
     "paths": {
+      "$schemas/*": [
+        "./src/schemas/*"
+      ],
       "$logger": [
         "./src/lib/logger.ts"
       ],

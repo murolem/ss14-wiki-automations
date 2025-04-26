@@ -8,6 +8,7 @@ import { yamlSchema } from './yamlSchema';
 import path from 'path';
 import { isYamlFile } from './utils/isYamlFile';
 import { replacePathExtension } from './utils/replacePathExtension';
+import { readFilesRecursive } from '$utils/readFilesRecursive';
 
 const logger = new Logger("02-convertPath");
 const { logDebug, logInfo, logWarn, logFatal } = logger;
@@ -67,10 +68,9 @@ function convertDirectoryPath(absSourcePath: string, absTargetPath: string, skip
 
     fs.ensureDirSync(absTargetPath);
 
-    for (const relPath of fs.readdirSync(absSourcePath, { recursive: true })) {
+    for (const relPath of readFilesRecursive(absSourcePath)) {
         const absSourceFilePath = toOsPath(`${absSourcePath}/${relPath}`);
-        if (fs.statSync(absSourceFilePath).isDirectory()
-            || !isYamlFile(absSourceFilePath)) {
+        if (!isYamlFile(absSourceFilePath)) {
             continue;
         }
 
@@ -98,17 +98,16 @@ function convertFilePath(absSourcePath: string, absTargetPath: string, skipExist
         throw ''
     }
 
-    // Get document, or throw exception on error
-    let result: unknown = {};
+    let result: unknown = [];
     try {
         result = yaml.load(
             fs.readFileSync(absSourcePath, 'utf8'),
             { schema: yamlSchema }
         );
 
-        if (result === undefined) {
-            logWarn("^ empty YML document");
-            result = {}
+        if (result === undefined || result === null) {
+            logWarn(`^ empty YML document ${absSourcePath}`);
+            result = []
         }
     } catch (err) {
         if (err instanceof YAMLException

@@ -1,5 +1,5 @@
 import { ItemGroupProcessResult } from '$src/03-process-converted-data/chunks/items';
-import { localizeRecordProperty, lookupLocalizedStringByKey } from '$src/03-process-converted-data/localizer';
+import { localizeRecordProperty, lookupLocalizedStringByKey } from '$src/03-process-converted-data/lib/localizer';
 import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
 import { extendedLogging } from '$src/preset';
 import { reagentValidator } from '$src/schemas/reagent/reagent';

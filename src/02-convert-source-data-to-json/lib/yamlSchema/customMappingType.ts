@@ -20,7 +20,11 @@ export const generateAnyMappingTypeHandler = (
             logFatal({
                 msg: `failed to parse a custom mapping type while parsing YAML: expected data to be an object (aka mapping type), received ${typeof data}.`,
                 throw: true,
-                data: data
+                data: {
+                    tag,
+                    data
+                },
+                stringifyData: true
             });
             throw ''//type guard
         }
@@ -34,8 +38,13 @@ export const generateAnyMappingTypeHandler = (
         // check for collision with the data just in case 
         if (newTypePropertyName in (data as object)) {
             logFatal({
-                msg: `failed to parse a custom mapping type while parsing YAML: data contains a property with key '${newTypePropertyName}', which is used to copy the custom tag into. Change the tag used for the schema to fix the error (also condolences, this probably fucks up a lot of stuff for you :despair: )`,
-                throw: true, data: data
+                msg: `failed to parse a custom mapping type while parsing YAML: data contains a property with key '${newTypePropertyName}', which is used to copy the custom tag into. Change the tag used for the schema to fix the error`,
+                throw: true,
+                data: {
+                    tag,
+                    data
+                },
+                stringifyData: true
             });
             throw '' // type guard
         }

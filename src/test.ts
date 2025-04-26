@@ -1,3 +1,3 @@
-import { isYamlFile } from '$src/02-convert-source-data-to-json/lib/utils/isYamlFile';
+import { loadPrototypes } from '$src/03-process-converted-data/lib/loadPrototypes';
 
-console.log(isYamlFile('foo.yml'));
+loadPrototypes();
