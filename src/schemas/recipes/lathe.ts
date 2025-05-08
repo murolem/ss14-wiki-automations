@@ -18,7 +18,10 @@ export const latheRecipeValidator = z.object({
     abstract: z.boolean().optional(),
 
     /** Parent recipe the current one is based upon. */
-    parent: z.string().optional(),
+    parent: z.union([
+        z.string(),
+        z.array(z.string())
+    ]).optional(),
 
     /** Recipe ID. */
     id: z.string(),
