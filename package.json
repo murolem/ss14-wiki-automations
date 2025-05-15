@@ -10,10 +10,10 @@
     "ss14-repo:clone-no-checkout": "rimraf temp && mkdir temp && cd temp && mkdir 00-ss14-repo && cd 00-ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/",
     "ss14-repo:clone-checkout:stable": "npm run ss14-repo:clone-no-checkout && cd temp && cd 00-ss14-repo && git fetch --depth=1 origin stable && git checkout stable",
     "ss14-repo:clone-checkout:master": "npm run ss14-repo:clone-no-checkout && cd temp && cd 00-ss14-repo && git fetch --depth=1 origin master && git checkout master",
-    "copy-source-data": "vite-node src/01-copy-source-data/index.ts",
-    "convert-source-data-to-json": "vite-node src/02-convert-source-data-to-json/index.ts",
-    "process-converted-data": "vite-node src/03-process-converted-data/index.ts",
-    "process-results-for-wiki-and-upload": "vite-node src/04-process-results-for-wiki-and-upload/index.ts",
+    "copy-source-data": "tsx src/01-copy-source-data/index.ts",
+    "convert-source-data-to-json": "tsx src/02-convert-source-data-to-json/index.ts",
+    "process-converted-data": "tsx src/03-process-converted-data/index.ts",
+    "process-results-for-wiki-and-upload": "tsx src/04-process-results-for-wiki-and-upload/index.ts",
     "start": "npm run type-check && npm run ss14-repo:clone-checkout:master && npm run start:noclone",
     "start:noclone:nowiki": "npm run copy-source-data && npm run convert-source-data-to-json && npm run process-converted-data",
     "start:noclone": "npm run start:noclone:nowiki && npm run process-results-for-wiki-and-upload",
@@ -21,7 +21,7 @@
     "build": "concurrently --passthrough-arguments --kill-others-on-fail \"npm:build:*(!watch) -- {@}\" --",
     "build:index1": "npm run build-task -- ./src/index1.ts",
     "build:index2": "npm run build-task -- ./src/index2.ts",
-    "build-task": "vite-node --config vite-node.config.ts ./tasks/build.ts -- ",
+    "build-task": "tsx --config vite-node.config.ts ./tasks/build.ts -- ",
     "sendit": "npm run type-check && npm run add && npm run commit && npm run push",
     "add": "git add .",
     "commit": "cz",
@@ -59,6 +59,8 @@
     "jsonpath-plus": "^9.0.0",
     "nodemw": "^0.22.0",
     "rimraf": "^6.0.1",
+    "source-map-support": "^0.5.21",
+    "tsx": "^4.19.4",
     "zod": "^3.23.8"
   }
 }

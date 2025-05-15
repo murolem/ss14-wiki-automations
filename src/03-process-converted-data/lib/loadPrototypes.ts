@@ -1,4 +1,4 @@
-import { Prototype, prototypeArraySchema } from '$schemas/prototype';
+import { type Prototype, prototypeArraySchema } from '$schemas/prototype';
 import { outputSubstepDirPaths, sourceSubstepDirPaths, stepAbsDirPaths } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
@@ -23,21 +23,21 @@ export function loadPrototypes(): Prototype[] {
         return prototypes;
     }
 
-    const prototypesPath = toOsPath(`${stepAbsDirPaths.convertedData}/${sourceSubstepDirPaths.prototypes}`);
+    const prototypesDirPath = toOsPath(`${stepAbsDirPaths.convertedData}/${sourceSubstepDirPaths.prototypes}`);
 
-    logInfo(`loading prototypes for the first time: ${prototypesPath}`);
+    logInfo(`loading prototypes for the first time: ${prototypesDirPath}`);
 
-    if (!fs.existsSync(prototypesPath)) {
+    if (!fs.existsSync(prototypesDirPath)) {
         logFatal({
-            msg: `failed to load prototypes: path doesn't exist: ${prototypesPath}`,
+            msg: `failed to load prototypes: path doesn't exist: ${prototypesDirPath}`,
             throw: true
         });
     }
 
-    for (const relPath of readFilesRecursive(prototypesPath)) {
+    for (const relPath of readFilesRecursive(prototypesDirPath)) {
         logDebug(`  found ${relPath}`);
 
-        const absPath = toOsPath(`${prototypesPath}/${relPath}`);
+        const absPath = toOsPath(`${prototypesDirPath}/${relPath}`);
 
         const parsedResult = prototypeArraySchema.safeParse(fs.readJsonSync(absPath));
         if (!parsedResult.success) {
@@ -82,7 +82,7 @@ export function loadPrototypes(): Prototype[] {
 
     logDebug('writing to disk');
 
-    const savePath = toOsPath(`${stepAbsDirPaths.outputData}/${outputSubstepDirPaths.prototypesRaw}`);
+    const savePath = toOsPath(`${stepAbsDirPaths.outputData}/${outputSubstepDirPaths.prototypes_raw}`);
     fs.ensureDirSync(path.parse(savePath).dir);
     fs.writeJsonSync(
         savePath,

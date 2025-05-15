@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
-import Logger from '@aliser/logger';
+import { Logger } from '$logger';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
 import jsonDiff from 'json-diff';
-const logger = new Logger("utils (/src)");
+const logger = new Logger("src/utils");
 const { logInfo, logError } = logger;
 
 // source: https://stackoverflow.com/a/76276541

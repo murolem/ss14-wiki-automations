@@ -36,6 +36,11 @@ export const stepAbsDirPaths = {
      * Input data that was processed, producing a valuable output.
      */
     outputData: path.join(tempDirAbsPath, '03-output-data'),
+
+    /** 
+     * Input data that was processed, producing a valuable output.
+     */
+    wikiUploadData: path.join(tempDirAbsPath, '04-wiki-upload-data'),
 } satisfies Record<string, string>
 
 /** 
@@ -156,7 +161,15 @@ export const sourceSubstepDirPaths = {
  */
 export const outputSubstepDirPaths = {
     /** Prototypes after the first parsing step. Nothing is done to them yet. */
-    prototypesRaw: toOsPath('prototypes/01-prototypes-raw.json'),
-    /** Prototypes with inheritance resolved. These are considered "fully loaded" and ready to be used for whatever. */
-    prototypesWithInheritanceResolved: toOsPath('prototypes/02-prototypes-with-inheritance-resolved.json'),
+    prototypes_raw: toOsPath(`prototypes/01-prototypes-raw.json`),
+
+    entities: 'entities',
+    entities_raw: `01-entities-raw.json`,
+    entities_inheritance_resolved: `02-entities-inheritance-resolved.json`,
+}
+
+export const uploadSubstepDirPaths = {
+    entities: toOsPath('entities'),
+    entities_ids_to_names: 'ids-to-names.json',
+    entities_lc_names_to_ids: 'lc-names-to-ids.json',
 }

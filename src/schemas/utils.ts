@@ -1,7 +1,7 @@
 import { mergeJsonObjects } from '$src/utils';
-import Logger from '@aliser/logger';
 import chalk from 'chalk';
-const logger = new Logger("utils (/src/schemas)");
+import { Logger } from '$logger';
+const logger = new Logger("schemas/utils");
 const { logInfo, logError } = logger;
 import { z } from 'zod';
 
@@ -74,9 +74,10 @@ export function resolveInheritance<T extends Record<string, unknown>>(
             .parse(parentsDocIds);
     } catch (err) {
         // otherwise we expect an array
-        logError(`failed to resolve inheritance: expected parents field name to be a string for a single parent or an array for multiple, got ${typeof parentsDocIds}`, {
-            throwErr: true,
-            additional: {
+        logError({
+            msg: `failed to resolve inheritance: expected parents field name to be a string for a single parent or an array for multiple, got ${typeof parentsDocIds}`,
+            throw: true,
+            data: {
                 doc,
                 parentFieldName,
                 idFieldName
@@ -90,9 +91,10 @@ export function resolveInheritance<T extends Record<string, unknown>>(
         z.string().parse(docId);
     } catch (err) {
         // otherwise we expect an array
-        logError(`failed to resolve inheritance: expected document to have its ID defined in field ${chalk.bold(idFieldName)}`, {
-            throwErr: true,
-            additional: {
+        logError({
+            msg: `failed to resolve inheritance: expected document to have its ID defined in field ${chalk.bold(idFieldName)}`,
+            throw: true,
+            data: {
                 doc,
                 parentFieldName,
                 idFieldName
@@ -122,9 +124,10 @@ export function resolveInheritance<T extends Record<string, unknown>>(
 
         const matchingParentDoc = parentsPool.find(doc => doc[idFieldName] === parentDocId);
         if (!matchingParentDoc) {
-            logError(`failed to resolve inheritance: parent with ID ${chalk.bold(parentDocId)} was not found`, {
-                throwErr: true,
-                additional: {
+            logError({
+                msg: `failed to resolve inheritance: parent with ID ${chalk.bold(parentDocId)} was not found`,
+                throw: true,
+                data: {
                     doc,
                     parentFieldName,
                     idFieldName

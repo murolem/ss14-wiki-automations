@@ -1,5 +1,5 @@
-import yaml, { TypeConstructorOptions } from 'js-yaml';
-import { BASE_YAML_SCHEMA, MappingTagHandler } from './base';
+import yaml, { type TypeConstructorOptions } from 'js-yaml';
+import { BASE_YAML_SCHEMA, type MappingTagHandler } from './base';
 import { Logger } from '$logger';
 
 const logger = new Logger("customMappingType");
