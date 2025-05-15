@@ -1,12 +1,17 @@
 import { loadPrototypes } from './lib/loadPrototypes';
-import { outputSubstepDirPaths, sourceSubstepDirPaths } from '$src/preset';
 import { stepAbsDirPaths } from '$src/preset';
+import processEntities from './lib/process/entities';
 import fs from 'fs-extra';
 
 fs.emptyDirSync(stepAbsDirPaths.outputData);
 
 // initial load & parse; not needed, but good to have here.
 loadPrototypes();
+
+processEntities();
+// processRecipes();
+
+// const items =
 
 // convertPath(sourceSubstepDirPaths.prototypes);
 

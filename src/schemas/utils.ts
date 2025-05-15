@@ -23,6 +23,8 @@ import { z } from 'zod';
  * one after another, using the algorithm describe below.
  * 
  * For the algorithm used to resolving name conflicts, refer to {@link mergeJsonObjects}.
+ * 
+ * TODO redo to behave the same way the actual implementation works. currently its implemented on a guess, so it's likely it's not entirely accurate to how it's done in the game. actual implementation probably lingers around RobustToolbox\Robust.Shared\Serialization\Manager but I don't have the brainpower to understand whatever the fuck is going on there (not saying its shit or anything its just too advanced for me atm).
  */
 export function resolveInheritance<T extends Record<string, unknown>>(
     doc: T,

@@ -1,5 +1,9 @@
 # ss14-wiki-automations
 
+## Todo
+
+-   Support for both stable and master (current) branch. Hard part - figure out a way to upload these to wiki separately?
+
 ## Developing
 
 The program runs regularly using GitHub actions.
