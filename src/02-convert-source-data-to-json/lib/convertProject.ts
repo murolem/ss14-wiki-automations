@@ -1,4 +1,4 @@
-import { stepAbsDirPaths } from '$src/preset';
+import { projectStepDirpaths, type Project } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
@@ -9,31 +9,27 @@ import path from 'path';
 import { isYamlFile } from './utils/isYamlFile';
 import { replacePathExtension } from './utils/replacePathExtension';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
+import { ensureDirectoryExistsEmpty } from '$utils/ensureDirectoryExistsEmpty';
 
-const logger = new Logger("02-convertPath");
+const logger = new Logger("convert/convertProject");
 const { logDebug, logInfo, logWarn, logFatal } = logger;
 
 /**
- * Convert given path (file or dir; relative to the SS14 repo) from YML to JSON.
- * 
- * If path is a file, it's assumed to be a JSON file. 
- * If path is a directory, it's searched for JSON files.
- * 
- * Converted files are saved to converted step directory under the same relative path (relative to the step directory).
- * Any non-YML files are ignored.
+ * Given a project, converts all found YML files in its input step directory to JSON files, 
+ * saving them to the converted step directory.
  * 
  * @param inputPath Source path relative to the source data step directory.
  * @throws {Error} If path doesn't exist.
  */
-export function convertPath(inputPath: string): void {
-    const sourcePath = toOsPath(`${stepAbsDirPaths.inputData}/${inputPath}`);
-    let targetPath = toOsPath(`${stepAbsDirPaths.convertedData}/${inputPath}`);
+export function convertProject(project: Project): void {
+    const sourcePath = projectStepDirpaths[project].input;
+    let targetPath = projectStepDirpaths[project].converted;
 
-    logInfo(`convert to JSON ${chalk.bold(inputPath)}`);
+    logInfo(`convert to JSON project ${chalk.bold(project)}`);
 
     if (!fs.existsSync(sourcePath)) {
         logFatal({
-            msg: "failed to convert path: source path doesn't exist",
+            msg: "failed to convert project: source path doesn't exist",
             throw: true,
             data: {
                 sourcePath
@@ -42,6 +38,7 @@ export function convertPath(inputPath: string): void {
         throw ''
     }
 
+    ensureDirectoryExistsEmpty(targetPath);
     if (fs.statSync(sourcePath).isDirectory()) {
         convertDirectoryPath(sourcePath, targetPath, true);
     } else {
@@ -57,7 +54,7 @@ export function convertPath(inputPath: string): void {
 function convertDirectoryPath(absSourcePath: string, absTargetPath: string, skipExistsCheck = false): void {
     if (!skipExistsCheck && !fs.existsSync(absSourcePath)) {
         logFatal({
-            msg: "failed to convert path: source path doesn't exist",
+            msg: "failed to convert directory path: source path doesn't exist",
             throw: true,
             data: {
                 sourcePath: absSourcePath
@@ -89,7 +86,7 @@ function convertDirectoryPath(absSourcePath: string, absTargetPath: string, skip
 function convertFilePath(absSourcePath: string, absTargetPath: string, skipExistsCheck = false): void {
     if (!skipExistsCheck && !fs.existsSync(absSourcePath)) {
         logFatal({
-            msg: "failed to convert path: source path doesn't exist",
+            msg: "failed to convert filepath: source path doesn't exist",
             throw: true,
             data: {
                 sourcePath: absSourcePath

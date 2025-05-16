@@ -3,7 +3,7 @@ import { stepAbsDirPaths } from '$src/preset';
 import processEntities from './lib/process/entities';
 import fs from 'fs-extra';
 
-fs.emptyDirSync(stepAbsDirPaths.outputData);
+processProject('prototypes');
 
 // initial load & parse; not needed, but good to have here.
 loadPrototypes();

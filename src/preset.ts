@@ -1,9 +1,6 @@
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
 
-const cwd = process.cwd();
-const tempDirAbsPath = path.join(cwd, 'temp');
-
 /** Controls extra logging. */
 export const extendedLogging = {
     // not impl
@@ -21,155 +18,58 @@ export const preferredLocale: string = 'en-US';
 // NOTE: this is also hardcoded into npm commands
 export const ss14RepoGitUrl = 'https://github.com/space-wizards/space-station-14.git';
 
-/** Paths used within the project. */
-export const stepAbsDirPaths = {
-    // NOTE: this is also hardcoded into npm commands
-    ss14Repo: path.join(tempDirAbsPath, '00-ss14-repo'),
+// ==========
 
-    /** Any data that's imported from the SS14 installation. */
-    inputData: path.join(tempDirAbsPath, '01-input-data'),
+const cwd = process.cwd();
+const tempDirPath = path.join(cwd, 'temp');
 
-    /** Input data converted to parsable formats. */
-    convertedData: path.join(tempDirAbsPath, '02-converted-data'),
-
-    /** 
-     * Input data that was processed, producing a valuable output.
-     */
-    outputData: path.join(tempDirAbsPath, '03-output-data'),
-
-    /** 
-     * Input data that was processed, producing a valuable output.
-     */
-    wikiUploadData: path.join(tempDirAbsPath, '04-wiki-upload-data'),
-} satisfies Record<string, string>
-
-/** 
- * A map of substep names to their respective SS14 repo directories.
- * 
- * These are used for initial data copying (any data) and transform from YML to JSON (only YML files).
- * 
- * Directories are relative to the SS14 repo folder. Data from these directories
- * will be copied under the same paths into the source data dir, with YML data also 
- * transformed to JSON and placed again under the same path but in the converted data dir.
- */
-export const sourceSubstepDirPaths = {
-    locale: 'locale',
-
-    prototypes: toOsPath('Resources/Prototypes'),
-
+export type Project = keyof typeof projectDirnames;
+/** Directory names of "projects" — logical blocks for grouping together similar resulting outputs. */
+export const projectDirnames = {
+    ss14_repo: '_ss14-repo',
+    prototypes: 'prototypes',
+    entities: 'entities',
+    items: 'items',
+    structures: 'structures',
+    item_recipes: 'item-recipes',
+    construction_recipes: 'construction-recipes',
     reagents: 'reagents',
-    items_reagents: 'items_reagents', // ?
-    reactions: 'reactions',
-
-    recipes_lathe: toOsPath('Resources/Prototypes/Recipes/Lathes'),
-    recipes_lathe_packs: toOsPath('Resources/Prototypes/Recipes/Lathes/Packs'),
-    recipes_lathe_categories: toOsPath('Resources/Prototypes/Recipes/Lathes/categories.yml'),
-    recipes_lathe_machines: toOsPath('Resources/Prototypes/Entities/Structures/Machines/lathe.yml'),
-
-    recipes_all_by_recipe_id: 'recipes_all_by_recipe_id',
-    recipes_all_by_product_id: 'recipes_all_by_product_id',
-    recipes_all_by_method_and_availability: '_________________',
-
-    entities_foldable: 'entities_foldable',
-    entities_clothing: 'entities_clothing',
-    entities_objects: 'entities_objects',
-    entities_structures: 'entities_structures',
-    entities_tiles: 'entities_tiles',
-    entities_mobs: 'entities_mobs',
-    entities_body_organs: 'entities_body_organs',
-    entities_body_parts: 'entities_body_parts',
-    entities_debugging: 'entities_debugging',
-    entities_store_presets: 'entities_store_presets',
-    entities_catalog_fills: 'entities_catalog_fills',
-    entities_inventory_templates_inventorybase: 'entities_inventory_templates_inventorybase',
-    entities_markers: 'entities_markers',
-
-    research_techs: 'research_techs',
-    research_disciplines: 'research_disciplines',
-
-
-    // // all entities parsed by a validator
-    // "item.processed.entities.all-entities-raw-array": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Items', 'Before processing', 'Entities', 'all-entities-array.json'),
-    // },
-
-    // // all entities fully processed
-    // "item.processed.entities.entities-array": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'all-entities-array.json'),
-    // },
-
-    // "item.processed.entities.entity-ids-by-lowercase-entity-names": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'entity-ids-by-lowercase-entity-names.json'),
-    // },
-
-    // "item.processed.entities.entity-names-by-entity-ids": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Items', 'Processed', 'Entities', 'entity-names-by-entity-ids.json'),
-    // },
-
-    // "item.from-wiki.entities.entity-ids-by-lowercase-entity-names": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Items', 'From wiki', 'Entities', 'entity-ids-by-lowercase-entity-names.json'),
-    //     wikiPage: 'Module:Item/item ids by item lowercase names.json'
-    // },
-
-    // "item.from-wiki.entities.entity-names-by-entity-ids": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Items', 'From wiki', 'Entities', 'entity-names-by-entity-ids.json'),
-    //     wikiPage: 'Module:Item/item names by item ids.json'
-    // },
-
-
-
-    // "research.techs.parsed": {
-    //     type: 'dir',
-    //     ss14Path: path.join('Resources', 'Prototypes', 'Research'),
-    //     ss14PathExcludeGlobs: ['disciplines.yml'],
-    //     projectInputPath: path.join('Research', 'Techs'),
-    //     projectConvertedPath: path.join('Research', 'Techs'),
-    //     projectOutputFilePath: path.join('Research', 'research.techs.parsed.json')
-    // },
-
-    // "research.techs.processed": {
-    //     type: 'dir',
-    //     projectOutputFilePath: path.join('Research', 'research.techs.processed.json'),
-    //     wikiPage: 'Module:Research/techs by tech IDs by discipline IDs.json'
-    // },
-
-    // "research.disciplines.parsed": {
-    //     type: 'file',
-    //     ss14Path: path.join('Resources', 'Prototypes', 'Research', 'disciplines.yml'),
-    //     projectInputPath: path.join('Research', 'Disciplines', 'disciplines.yml'),
-    //     projectConvertedPath: path.join('Research', 'Disciplines', 'disciplines.json'),
-    //     projectOutputFilePath: path.join('Research', 'research.disciplines.parsed.json')
-    // },
-
-    // "research.disciplines.processed": {
-    //     type: 'file',
-    //     projectOutputFilePath: path.join('Research', 'research.disciplines.processed.json'),
-    //     wikiPage: 'Module:Research/disciplines by discipline IDs.json'
-    // }
+    cargo_orders: 'cargo-orders'
 } satisfies Record<string, string>;
 
-/**
- * A map of substep names to their respective directories in the processed step directory.
- * 
- * These are used mainly for debug purposes to demonstrate the state of data in between processing stages.
+export type Step = keyof typeof stepDirnames;
+/** 
+ * Directory names for "steps" — logical steps of the process.
+ * Each project has its own set of steps inside its directory.
  */
-export const outputSubstepDirPaths = {
-    /** Prototypes after the first parsing step. Nothing is done to them yet. */
-    prototypes_raw: toOsPath(`prototypes/01-prototypes-raw.json`),
+export const stepDirnames = {
+    input: 'input',
+    converted: 'converted',
+    processed: 'processed',
+    processed_temp: 'processed-temp',
+    wiki_upload: 'wiki-upload',
+    wiki_upload_temp: 'wiki-upload-temp',
+    wiki_diff: 'wiki-diff'
+} satisfies Record<string, string>;
 
-    entities: 'entities',
-    entities_raw: `01-entities-raw.json`,
-    entities_inheritance_resolved: `02-entities-inheritance-resolved.json`,
-}
+/** Directory paths for projects. */
+export const projectDirpaths = Object
+    .entries(projectDirnames)
+    .reduce<Record<Project, string>>((accum, [key, dirname]) => {
+        accum[key as Project] = toOsPath(`${tempDirPath}/${dirname}`);
+        return accum;
+    }, {} as any);
 
-export const uploadSubstepDirPaths = {
-    entities: toOsPath('entities'),
-    entities_ids_to_names: 'ids-to-names.json',
-    entities_lc_names_to_ids: 'lc-names-to-ids.json',
-}
+/** Directory paths for project steps. */
+export const projectStepDirpaths = Object
+    .keys(projectDirnames)
+    .reduce<Record<Project, Record<Step, string>>>((accum, project) => {
+        accum[project as keyof typeof projectDirnames] = Object
+            .entries(stepDirnames)
+            .reduce<Record<Step, string>>((accum2, [step, stepDirname]) => {
+                accum2[step as Step] = toOsPath(`${projectDirpaths[project as Project]}/${stepDirname}`);
+                return accum2;
+            }, {} as any);
+
+        return accum;
+    }, {} as any);

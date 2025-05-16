@@ -1,11 +1,7 @@
-import { convertPath } from './lib/convertPath';
-import { sourceSubstepDirPaths } from '$src/preset';
-import { stepAbsDirPaths } from '$src/preset';
+import { convertProject } from './lib/convertProject';
 import fs from 'fs-extra';
 
-fs.emptyDirSync(stepAbsDirPaths.convertedData);
-
-convertPath(sourceSubstepDirPaths.prototypes);
+convertProject('prototypes');
 
 // convertPath(sourceSubstepDirPaths.recipes_lathe);
 // convertPath(sourceSubstepDirPaths.recipes_lathe_packs);

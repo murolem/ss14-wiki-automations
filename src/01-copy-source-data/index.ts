@@ -1,11 +1,7 @@
-import { copyPath } from './lib/copyPath';
-import { sourceSubstepDirPaths } from '$src/preset';
-import { stepAbsDirPaths } from '$src/preset';
-import fs from 'fs-extra';
+import { toOsPath } from '$utils/toOsPath';
+import { importToProject } from './lib/importToProject';
 
-fs.emptyDirSync(stepAbsDirPaths.inputData);
-
-copyPath(sourceSubstepDirPaths.prototypes);
+importToProject(toOsPath("Resources/Prototypes"), 'prototypes');
 
 // copyPath(sourceSubstepDirPaths.recipes_lathe);
 // copyPath(sourceSubstepDirPaths.recipes_lathe_packs);
