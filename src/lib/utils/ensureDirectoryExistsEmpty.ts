@@ -16,7 +16,7 @@ const cwd = process.cwd();
  * @param dirpath Directory path.
  * @throws {Error} If the path is outside the project directory. A safety measure to not delete `system32` or `/` because Ill somehow manage.
  */
-export function ensureDirectoryExistsEmpty(dirpath: string): void {
+export function ensureDirectoryExistsAndEmpty(dirpath: string): void {
     if (!isPathWithinDirectoryOrNested(dirpath, cwd)) {
         logFatal({
             msg: "failed to ensure an empty directory exists: directory path is outside of the process bounds",

@@ -73,3 +73,57 @@ export const projectStepDirpaths = Object
 
         return accum;
     }, {} as any);
+
+
+
+/** Describes a single output from a processing step. */
+export type ProcessingStepOutputEntry = string;
+
+/** Narrowed key type for {@link projectProcessingOutputs}. */
+export type ProjectProcessingOutputsKey = {
+    [Key in Project]: Key extends keyof typeof projectProcessingOutputs ? Key : never
+}[Project];
+
+/** 
+ * A mapping for each project to their useful outputs. 
+ * This one is for the processing step.  
+ * 
+ * Output is a filepath relative to the output substep directory.
+ */
+export const projectProcessingOutputs = {
+    prototypes: {
+        prototypesJson: "prototypes.json"
+    },
+    entities: {
+        entitiesJson: "entities.json"
+    }
+} satisfies Partial<Record<Project, Record<string, ProcessingStepOutputEntry>>>;
+
+/** Describes a single output from a wiki step. */
+export type WikiStepOutputEntry = {
+    /** File path from the output substep directory. */
+    filepath: string,
+
+    /** 
+     * Url to upload the file to.
+     * Relative to the wiki endpoint.
+    */
+    url: string
+}
+/** 
+ * A mapping for each project to their useful outputs. 
+ * This one is for the wiki step.  
+ */
+export const projectWikiOutputs = {
+    entities: {
+        entity_map_id_to_name: {
+            filepath: "entity_map_id_to_name.json",
+            url: "Module:Item/data/auto/entity_map_id_to_name.json"
+        },
+        entity_map_name_to_id: {
+            filepath: "entity_map_name_to_id.json",
+            url: "Module:Item/data/auto/entity_map_name_to_id.json"
+        }
+    }
+} satisfies Partial<Record<Project, Record<string, WikiStepOutputEntry>>>;
+

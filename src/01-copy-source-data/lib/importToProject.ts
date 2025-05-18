@@ -3,7 +3,7 @@ import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
 import chalk from 'chalk';
-import { ensureDirectoryExistsEmpty } from '$utils/ensureDirectoryExistsEmpty';
+import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsEmpty';
 
 const logger = new Logger("import/importToProject");
 const { logInfo, logFatal } = logger;
@@ -35,6 +35,6 @@ export function importToProject(ss14Path: string, project: Project): void {
         });
     }
 
-    ensureDirectoryExistsEmpty(targetPath);
+    ensureDirectoryExistsAndEmpty(targetPath);
     fs.copySync(sourcePath, targetPath);
 }

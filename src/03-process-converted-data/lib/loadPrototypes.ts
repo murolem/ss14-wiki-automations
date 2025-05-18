@@ -1,5 +1,4 @@
 import { type Prototype, prototypeArraySchema } from '$schemas/prototype';
-import { outputSubstepDirPaths, sourceSubstepDirPaths, stepAbsDirPaths } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
@@ -7,6 +6,8 @@ import { readFilesRecursive } from '$utils/readFilesRecursive';
 const logger = new Logger("loadPrototypes");
 const { logDebug, logInfo, logFatal } = logger;
 import path from 'path';
+import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
+import chalk from 'chalk';
 
 let prototypes: Prototype[] = [];
 let prototypeIds: string[] = [];
@@ -23,9 +24,9 @@ export function loadPrototypes(): Prototype[] {
         return prototypes;
     }
 
-    const prototypesDirPath = toOsPath(`${stepAbsDirPaths.convertedData}/${sourceSubstepDirPaths.prototypes}`);
+    const prototypesDirPath = projectStepDirpaths.prototypes.converted;
 
-    logInfo(`loading prototypes for the first time: ${prototypesDirPath}`);
+    logInfo(`loading prototypes for the first time; from: ${chalk.bold(prototypesDirPath)}`);
 
     if (!fs.existsSync(prototypesDirPath)) {
         logFatal({
@@ -78,11 +79,14 @@ export function loadPrototypes(): Prototype[] {
         }
     }
 
-    logInfo(`prototypes loaded: ${prototypes.length}`);
+    logInfo(`prototypes loaded: ${chalk.bold(prototypes.length)}`);
 
     logDebug('writing to disk');
 
-    const savePath = toOsPath(`${stepAbsDirPaths.outputData}/${outputSubstepDirPaths.prototypes_raw}`);
+    const savePath = path.join(
+        projectStepDirpaths.prototypes.processed,
+        projectProcessingOutputs.prototypes.prototypesJson
+    );
     fs.ensureDirSync(path.parse(savePath).dir);
     fs.writeJsonSync(
         savePath,

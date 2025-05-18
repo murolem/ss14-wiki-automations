@@ -2,7 +2,11 @@
 
 ## Todo
 
--   Support for both stable and master (current) branch. Hard part - figure out a way to upload these to wiki separately?
+-   Make sure inheritance resolver works correctly for prototypes:
+    -   Components get accumulated.
+    -   Same components get merged.
+    -   Same component fields get replaced, including arrays and maps (the latter seems to be not true currently.)
+-   ^ in short, components array should get a special treatment.
 
 ## Developing
 

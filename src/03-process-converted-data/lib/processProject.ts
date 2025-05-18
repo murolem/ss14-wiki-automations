@@ -21,7 +21,7 @@ const { logDebug, logInfo, logWarn, logFatal } = logger;
  * @param inputPath Source path relative to the source data step directory.
  * @throws {Error} If path doesn't exist.
  */
-export function convertProject(project: Project): void {
+export function processProject(project: Project): void {
     const sourcePath = projectStepDirpaths[project].input;
     let targetPath = projectStepDirpaths[project].converted;
 

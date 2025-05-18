@@ -1,14 +1,18 @@
 import { loadPrototypes } from './lib/loadPrototypes';
-import { stepAbsDirPaths } from '$src/preset';
-import processEntities from './lib/process/entities';
+// import { stepAbsDirPaths } from '$src/preset';
+// import processEntities from './lib/processors/entities';
 import fs from 'fs-extra';
+import { loadProcessors, runProcessor } from '$src/03-process-converted-data/lib/processor';
 
-processProject('prototypes');
+await loadProcessors();
 
 // initial load & parse; not needed, but good to have here.
 loadPrototypes();
 
-processEntities();
+runProcessor('entities');
+
+
+// processEntities();
 // processRecipes();
 
 // const items =
