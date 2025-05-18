@@ -27,6 +27,7 @@ export type Project = keyof typeof projectDirnames;
 /** Directory names of "projects" — logical blocks for grouping together similar resulting outputs. */
 export const projectDirnames = {
     ss14_repo: '_ss14-repo',
+    locale: 'locale',
     prototypes: 'prototypes',
     entities: 'entities',
     items: 'items',

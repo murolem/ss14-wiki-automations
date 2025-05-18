@@ -1,28 +1,28 @@
-import { type Prototype, prototypeArraySchema } from '$schemas/prototype';
+import { prototypeArraySchema, type Prototype } from '$schemas/prototype';
+import { resolveInheritance } from '$schemas/utils';
+import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
+import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
+import { readFilesRecursive } from '$utils/readFilesRecursive';
 import { toOsPath } from '$utils/toOsPath';
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
-import { readFilesRecursive } from '$utils/readFilesRecursive';
-const logger = new Logger("loadPrototypes");
-const { logDebug, logInfo, logFatal } = logger;
-import path from 'path';
-import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
-import chalk from 'chalk';
+const logger = new Logger("process/processors/prototype");
 
 let prototypes: Prototype[] = [];
 let prototypeIds: string[] = [];
 
 let loaded = false;
 
-/** 
- * Loads and returns all prototypes.
- * 
- * Once loaded, subsequent calls will return the same prototype array.
- */
-export function loadPrototypes(): Prototype[] {
-    if (loaded) {
-        return prototypes;
-    }
+registerProcessor('prototypes', ({
+    dirpath,
+    stepDirpaths,
+    outputDirpath,
+    tempDirpath,
+    logger,
+    writeJsonSync
+}) => {
+    const { logDebug, logInfo, logFatal } = logger;
 
     const prototypesDirPath = projectStepDirpaths.prototypes.converted;
 
@@ -81,22 +81,33 @@ export function loadPrototypes(): Prototype[] {
 
     logInfo(`prototypes loaded: ${chalk.bold(prototypes.length)}`);
 
-    logDebug('writing to disk');
-
-    const savePath = path.join(
-        projectStepDirpaths.prototypes.processed,
-        projectProcessingOutputs.prototypes.prototypesJson
-    );
-    fs.ensureDirSync(path.parse(savePath).dir);
-    fs.writeJsonSync(
-        savePath,
-        prototypes,
-        { spaces: 4 }
+    writeJsonSync(
+        'temp',
+        "prototypes_raw.json",
+        prototypes
     );
 
-    logDebug('write complete');
+    logInfo(chalk.bold(`resolving inheritance`));
+
+    const prototypesResolved = prototypes
+        .map(proto => resolveInheritance(proto, prototypes));
+
+    writeJsonSync(
+        'output',
+        projectProcessingOutputs.prototypes.prototypesJson,
+        prototypesResolved
+    );
 
     loaded = true;
+});
+
+export function getPrototypes() {
+    if (!loaded) {
+        logger.logFatal({
+            msg: "failed to get prototypes: prototypes are not loaded. Run the processor first.",
+            throw: true
+        })
+    }
 
     return prototypes;
 }

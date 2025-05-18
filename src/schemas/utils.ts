@@ -5,6 +5,9 @@ const logger = new Logger("schemas/utils");
 const { logInfo, logError } = logger;
 import { z } from 'zod';
 
+const idFieldName = 'id';
+const parentFieldName = 'parent';
+
 /** 
  * Given an object `doc` that inherits from other object or objects,
  * produces a new object with the inheritance chain resolved: new props added, existing props replaced/merged - 
@@ -29,8 +32,6 @@ import { z } from 'zod';
 export function resolveInheritance<T extends Record<string, unknown>>(
     doc: T,
     parentsPool: T[],
-    parentFieldName: keyof T,
-    idFieldName: keyof T,
     {
         debugLogChain = false,
         discardProperties = [],
@@ -141,8 +142,6 @@ export function resolveInheritance<T extends Record<string, unknown>>(
             resolveInheritance(
                 matchingParentDoc,
                 parentsPool,
-                parentFieldName,
-                idFieldName,
                 {
                     debugLogChain,
                     _depth: _depth + 1

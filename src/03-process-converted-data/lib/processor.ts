@@ -1,23 +1,21 @@
 import { projectDirpaths, projectStepDirpaths, type Project } from '$src/preset';
 import { Logger } from '$logger';
-import type { Prototype } from '$schemas/prototype';
-import { loadPrototypes } from '$src/03-process-converted-data/lib/loadPrototypes';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsEmpty';
 const logger = new Logger("process/registerProcessor");
-const { logInfo, logError } = logger;
+const { logInfo, logFatal } = logger;
 import fs from 'fs-extra';
 import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import path from 'path';
 
 export type ProcessorArgs = {
-    prototypes: Prototype[],
-    projectDirpath: string,
-    projectStepDirpaths: typeof projectStepDirpaths[Project],
+    dirpath: string,
+    stepDirpaths: typeof projectStepDirpaths[Project],
     outputDirpath: string,
     tempDirpath: string,
     logger: Logger,
-    writeJsonSync: ReturnType<typeof getWriteJsonSyncInstance>
+    writeJsonSync: ReturnType<typeof getWriteJsonSyncInstance>,
+    assertPathExists: typeof assertPathExists;
 }
 export type Processor = (args: ProcessorArgs) => void;
 const processors: Partial<Record<Project, Processor>> = {};
@@ -28,7 +26,7 @@ export async function loadProcessors(): Promise<void> {
 
     const processorsDirpath = toOsPath(`${import.meta.dirname}/processors`);
     if (!fs.existsSync(processorsDirpath)) {
-        logError({
+        logFatal({
             msg: `failed to load processors: processors directory does not exist: ${processorsDirpath}`,
             throw: true
         });
@@ -40,7 +38,7 @@ export async function loadProcessors(): Promise<void> {
             && path.parse(file).ext === ".ts");
 
     if (scripts.length === 0) {
-        logError({
+        logFatal({
             msg: `failed to load processors: no processors found to load`,
             throw: true,
             data: {
@@ -65,7 +63,7 @@ export async function loadProcessors(): Promise<void> {
 /** Registers a new project processor. */
 export function registerProcessor(project: Project, processor: Processor): void {
     if (processors[project]) {
-        logError({
+        logFatal({
             msg: `failed to register a processor: a processor for project '${project}' is already registered`,
             throw: true
         });
@@ -82,7 +80,7 @@ export function registerProcessor(project: Project, processor: Processor): void 
 export function getProcessor(project: Project): Processor {
     const processor = processors[project];
     if (!processor) {
-        logError({
+        logFatal({
             msg: `failed to get a processor: no processor is registered for project '${project}'`,
             throw: true
         });
@@ -99,11 +97,9 @@ export function getProcessor(project: Project): Processor {
 export function runProcessor(project: Project) {
     const processor = getProcessor(project);
 
-    const protos = loadPrototypes();
     const processorLogger = new Logger(`process/processor`);
 
     const projectDirpath = projectDirpaths[project];
-    ensureDirectoryExistsAndEmpty(projectDirpath);
 
     const outputDirpath = projectStepDirpaths[project].processed;
     ensureDirectoryExistsAndEmpty(outputDirpath);
@@ -114,13 +110,13 @@ export function runProcessor(project: Project) {
 
     processorLogger.logInfo(`starting project ${chalk.bold(project)}; path: ${chalk.gray(projectDirpaths[project])})`);
     processor({
-        prototypes: protos,
-        projectDirpath: projectDirpath,
-        projectStepDirpaths: projectStepDirpaths[project],
+        dirpath: projectDirpath,
+        stepDirpaths: projectStepDirpaths[project],
         outputDirpath: outputDirpath,
         tempDirpath: tempDirpath,
         logger: processorLogger,
-        writeJsonSync: writeJsonSync
+        writeJsonSync: writeJsonSync,
+        assertPathExists: assertPathExists
     });
     processorLogger.logInfo(`✅ project ${chalk.bold(project)} finished`);
 }
@@ -149,4 +145,22 @@ function getWriteJsonSyncInstance(outputDirpath: string, tempDirpath: string, lo
  */
 function writeJsonSync(filepath: string, data: unknown): void {
     fs.writeJsonSync(filepath, data, { spaces: 4 });
+}
+
+/** 
+ * Checks whether given path exists.
+ * 
+ * @throws {Error} If given path doesn't exists. 
+ * If {@link errorMsg} is provided, used it for the error message.
+  */
+function assertPathExists(pathStr: string, errorMsg?: string): void {
+    if (!fs.existsSync(pathStr)) {
+        logFatal({
+            msg: errorMsg ?? `path exist assertion failed: path doesn't exist: ${pathStr}`,
+            throw: true,
+            data: {
+                path: pathStr
+            }
+        });
+    }
 }
