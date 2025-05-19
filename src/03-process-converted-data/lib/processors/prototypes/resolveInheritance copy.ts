@@ -64,9 +64,13 @@ export function resolveInheritance<T extends Prototype>(
             throw ''//guard
         }
 
-        let mergeStrategyOnMap: Strategy = 'preserve'; // keep first encountered value.
+        let mergeStrategyOnMap: Strategy = _depth === 0
+            ? 'merge' // merge on the original 0-depth proto
+            : 'preserve'; // otherwise keep first encountered value.
 
-        let mergeStrategyOnArray: Strategy = 'preserve'; // keep first encountered value.
+        let mergeStrategyOnArray: Strategy = _depth === 0
+            ? 'merge' // merge on the original 0-depth proto
+            : 'preserve'; // otherwise keep first encountered value.
 
         let mergeStrategyOnArrayResolver: ArrayOnArrayStrategyResolver | undefined = undefined;
 
@@ -79,8 +83,44 @@ export function resolveInheritance<T extends Prototype>(
         // -- if its somewhere in the inheritance chain, then duplicate fields are discarded.
         if (proto.type === 'entity') {
             mergeStrategyOnArray = 'function_resolver';
-            mergeStrategyOnArrayResolver = getEntityMergeStrategyOnArrayResolver(_depth + 1);
+            mergeStrategyOnArrayResolver = (key, baseCompArr, topCompArray, fallbackToStrategy) => {
+                if (key !== 'components') {
+                    // @ts-ignore its ok
+                    return fallbackToStrategy(mergeStrategyOnArray);
+                }
+
+                for (const topComp of topCompArray) {
+                    const baseComp = baseCompArr.find(comp => comp.type === topComp.type);
+
+                    // if not a duplicate, just add it
+                    if (!baseComp) {
+                        baseCompArr.push(topComp);
+                        continue;
+                    }
+
+                    // if duplicate, merge replacing anything duplicating inside
+                    let newComp;
+                    if (_depth === 0) {
+                        // replace mode on surface proto
+                        newComp = mergeJsonObjects(baseComp, topComp, {
+                            strategyArrayOnArray: 'replace',
+                            strategyMapOnMap: 'replace'
+                        });
+                    } else {
+                        // preserve mode on parent protos
+                        newComp = mergeJsonObjects(baseComp, topComp, {
+                            strategyArrayOnArray: 'preserve',
+                            strategyMapOnMap: 'preserve'
+                        });
+                    }
+
+                    baseCompArr.push(newComp);
+                }
+
+                return baseCompArr;
+            }
         }
+
 
         res = mergeJsonObjects(
             res,
@@ -96,15 +136,7 @@ export function resolveInheritance<T extends Prototype>(
     }
 
     // merge with the initial proto
-    if (res.type === "entity") {
-        res = mergeJsonObjects(res, proto, {
-            strategyMapOnMap: _depth === 0 ? 'replace' : 'preserve',
-            strategyArrayOnArray: 'function_resolver',
-            strategyArrayOnArrayResolver: getEntityMergeStrategyOnArrayResolver(_depth)
-        });
-    } else {
-        res = mergeJsonObjects(res, proto);
-    }
+    res = mergeJsonObjects(res, proto);
 
     if (_depth === 0) {
         // always remove parent
@@ -119,42 +151,3 @@ export function resolveInheritance<T extends Prototype>(
     return res;
 }
 
-function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrategyResolver {
-    return function (key, baseCompArr, topCompArray, fallbackToStrategy) {
-        // if (key !== 'components') {
-        //     // @ts-ignore its ok
-        //     return fallbackToStrategy(fallbackMergeStrategyOnArray);
-        // }
-
-        for (const topComp of topCompArray) {
-            const baseComp = baseCompArr.find(comp => comp.type === topComp.type);
-
-            // if not a duplicate, just add it
-            if (!baseComp) {
-                baseCompArr.push(topComp);
-                continue;
-            }
-
-            // if duplicate, merge replacing anything duplicating inside
-            let newComp;
-            if (depth === 0) {
-                // replace mode on surface proto
-                newComp = mergeJsonObjects(baseComp, topComp, {
-                    strategyArrayOnArray: 'replace',
-                    strategyMapOnMap: 'replace'
-                });
-            } else {
-                // preserve mode on parent protos
-                newComp = mergeJsonObjects(baseComp, topComp, {
-                    strategyArrayOnArray: 'preserve',
-                    strategyMapOnMap: 'preserve',
-                    strategyOnPrimitive: 'preserve'
-                });
-            }
-
-            baseCompArr.push(newComp);
-        }
-
-        return baseCompArr;
-    }
-}

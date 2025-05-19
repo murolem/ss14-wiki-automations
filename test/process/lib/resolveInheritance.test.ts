@@ -140,3 +140,190 @@ describe('abstract', () => {
         })
     });
 });
+
+describe('entities', () => {
+    // most of these are based off of https://hackmd.io/@Slart/S1hsoGFm1l by @Slartibartfast, on the maints
+
+    const tagA1: Prototype = {
+        type: 'tag',
+        id: 'TagA1'
+    }
+
+    const tagA2 = {
+        type: 'tag',
+        id: 'TagA2'
+    }
+
+    const tagB = {
+        type: 'tag',
+        id: 'TagB'
+    }
+
+    const parentA: Prototype =
+    {
+
+        type: "entity",
+        id: "ParentA",
+        abstract: true,
+        components: [
+            {
+                type: 'Tag',
+                tags: ["TagA1", "TagA2"]
+            },
+            {
+                type: "MeleeWeapon", // turn the entity into a weapon
+                damage: {
+                    types: [
+                        { Heat: 10 }
+                    ]
+                }
+            }
+        ]
+    }
+
+    const parentB: Prototype = {
+        type: "entity",
+        id: "ParentB",
+        abstract: true,
+        components: [
+            {
+                type: "Tag",
+                tags: ["TagB"]
+            },
+            {
+                type: "PointLight", // make it glow
+                color: "green"
+            }
+        ]
+    }
+
+    const parentC: Prototype = {
+        type: "entity",
+        id: "ParentC",
+        abstract: true,
+        components: [
+            {
+                type: "Sprite",
+                state: "plushie_hampter" // # change the sprite state only, but not the rsi
+            }
+        ]
+    }
+
+    // A simple item with a lizard sprite.
+    // A sprite needs both the 'sprite' datafield, which contains the path to the rsi folder the image file is in.
+    // And the 'state' datafield which is the name of the.png file itself.
+    const testItem1: Prototype = {
+        type: "entity",
+        id: "TestItem1",
+        name: "test lizard 1",
+        components: [
+            {
+                type: "Sprite",
+                sprite: "Objects/Fun/toys.rsi",
+                state: "plushie_lizard"
+            }
+        ]
+    }
+
+    // The lizard sprite state is inherited first.
+    // The state is not overwritten by the hampter because it already exists.
+    const testItem2: Prototype = {
+        type: "entity",
+        parent: ["TestItem1", "ParentC"],
+        id: "TestItem2",
+        name: "test lizard 2"
+    }
+
+    // If we inherit in this order the state will be taken from ParentC.
+    // TestItem1 will then add the rsi path, but not overwrite the state.
+    const testItem3: Prototype = {
+        type: "entity",
+        parent: ["ParentC", "TestItem1"],
+        id: "TestItem3",
+        name: "test hampter 3"
+    }
+
+    // This time we manually overwrite the inherited state.
+    // The rsi remains unchanged.
+    // The result will be another hampter.
+    const testItem4: Prototype = {
+        type: "entity",
+        parent: "TestItem1",
+        id: "TestItem4",
+        name: "test hampter 4",
+        components: [
+            {
+                type: "Sprite",
+                state: "plushie_hampter"
+            }
+        ]
+    }
+
+    // This item will inherit the tags from ParentA, but not from ParentB.
+    // To fix this we have to redefine the list manually and include all three tags.
+    // The item will have both the PointLightComponent and the MeleeWeaponComponent and the corresponding datafields set in the parents.
+    const testItem5: Prototype = {
+        type: "entity",
+        parent: ["TestItem1", "ParentA", "ParentB"],
+        id: "TestItem5",
+        name: "test lizard 5",
+        components: [
+            {
+                type: "Tag",
+                tags: ["TagA1", "TagA2", "TagB"]
+            }
+        ]
+    }
+
+
+    test('second parent not overwriting a component field from first parent', () => {
+        const parents: Prototype[] = [
+            {
+                type: "entity",
+                id: "TestItem1",
+                name: "test lizard 1",
+                components: [
+                    {
+                        type: "Sprite",
+                        sprite: "Objects/Fun/toys.rsi",
+                        state: "plushie_lizard"
+                    }
+                ]
+            }
+            , {
+                type: "entity",
+                id: "ParentC",
+                abstract: true,
+                components: [
+                    {
+                        type: "Sprite",
+                        state: "plushie_hampter" // # change the sprite state only, but not the rsi
+                    }
+                ]
+            }
+        ];
+
+        const descendant: Prototype = {
+            type: "entity",
+            parent: ["TestItem1", "ParentC"],
+            id: "TestItem2",
+            name: "test lizard 2"
+        };
+
+        const parentPool: Prototype[] = [...parents, descendant];
+
+        const res = resolveInheritance(descendant, parentPool);
+        expect(res).toStrictEqual({
+            type: "entity",
+            id: "TestItem2",
+            name: "test lizard 2",
+            components: [
+                {
+                    type: "Sprite",
+                    sprite: "Objects/Fun/toys.rsi",
+                    state: "plushie_lizard"
+                }
+            ]
+        });
+    })
+})

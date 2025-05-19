@@ -239,9 +239,15 @@ describe("alternative strategies", () => {
                     return resolverReturnValue;
                 }
 
-            expect(mergeJsonObjects(base, top, { strategyArrayOnArray: resolver })).toStrictEqual({
-                foo: resolverReturnValue
-            })
+            expect(mergeJsonObjects(
+                base,
+                top,
+                {
+                    strategyArrayOnArray: 'function_resolver',
+                    strategyArrayOnArrayResolver: resolver
+                })).toStrictEqual({
+                    foo: resolverReturnValue
+                })
         });
     });
 
@@ -294,8 +300,12 @@ describe("alternative strategies", () => {
                     return resolverReturnValue;
                 }
 
-
-            expect(mergeJsonObjects(base, top, { strategyMapOnMap: resolver })).toStrictEqual({
+            expect(mergeJsonObjects(
+                base,
+                top, {
+                strategyMapOnMap: 'function_resolver',
+                strategyMapOnMapResolver: resolver
+            })).toStrictEqual({
                 foo: resolverReturnValue
             })
         });
