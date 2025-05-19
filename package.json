@@ -7,6 +7,8 @@
     "postinstall": "npx commitizen init cz-conventional-changelog --save-dev --save-exact --force",
     "dev": "vite dev",
     "type-check": "tsc",
+    "test": "vitest --run",
+    "test:watch": "vitest",
     "ss14-repo:clone-no-checkout": "rimraf temp && mkdir temp && cd temp && mkdir _ss14-repo && cd _ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/",
     "ss14-repo:clone-checkout:stable": "npm run ss14-repo:clone-no-checkout && cd temp && cd _ss14-repo && git fetch --depth=1 origin stable && git checkout stable",
     "ss14-repo:clone-checkout:master": "npm run ss14-repo:clone-no-checkout && cd temp && cd _ss14-repo && git fetch --depth=1 origin master && git checkout master",
@@ -14,37 +16,23 @@
     "convert-source-data-to-json": "tsx src/02-convert-source-data-to-json/index.ts",
     "process-converted-data": "tsx src/03-process-converted-data/index.ts",
     "process-results-for-wiki-and-upload": "tsx src/04-process-results-for-wiki-and-upload/index.ts",
-    "start": "npm run type-check && npm run ss14-repo:clone-checkout:master && npm run start:noclone",
+    "start": "npm run type-check && npm run test && npm run ss14-repo:clone-checkout:master && npm run start:noclone",
     "start:noclone:nowiki": "npm run copy-source-data && npm run convert-source-data-to-json && npm run process-converted-data",
     "start:noclone": "npm run start:noclone:nowiki && npm run process-results-for-wiki-and-upload",
-    "start:nowiki": "npm run ss14-repo:clone-checkout:master && npm run start:noclone:nowiki",
-    "build": "concurrently --passthrough-arguments --kill-others-on-fail \"npm:build:*(!watch) -- {@}\" --",
-    "build:index1": "npm run build-task -- ./src/index1.ts",
-    "build:index2": "npm run build-task -- ./src/index2.ts",
-    "build-task": "tsx --config vite-node.config.ts ./tasks/build.ts -- ",
-    "sendit": "npm run type-check && npm run add && npm run commit && npm run push",
-    "add": "git add .",
-    "commit": "cz",
-    "push": "git push origin"
+    "start:nowiki": "npm run ss14-repo:clone-checkout:master && npm run start:noclone:nowiki"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/js-yaml": "^4.0.9",
     "@types/json-diff": "^1.0.3",
     "@types/node": "^22.5.1",
-    "commander": "^12.1.0",
     "concurrently": "^8.2.2",
-    "cz-conventional-changelog": "^3.3.0",
     "rollup-plugin-cleanup": "^3.2.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
     "vite-node": "^2.0.5",
-    "vite-tsconfig-paths": "^5.0.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^3.1.3"
   },
   "dependencies": {
     "@fluent/bundle": "^0.18.0",

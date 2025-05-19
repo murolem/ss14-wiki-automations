@@ -2,7 +2,7 @@ import { ItemGroupProcessResult } from '$src/03-process-converted-data/chunks/it
 import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
 import { dataPaths, extendedLogging } from '$src/preset';
 import { entityDefiningValidator, entityValidator } from '$src/schemas/entities/entity';
-import { resolveInheritance } from '$src/schemas/utils';
+import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { deepCloneObjectUsingJson } from '$src/utils';
 import Logger from '@aliser/logger';
 import chalk from 'chalk';

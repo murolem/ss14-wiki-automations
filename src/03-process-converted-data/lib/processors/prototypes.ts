@@ -1,5 +1,5 @@
 import { prototypeArraySchema, type Prototype } from '$schemas/prototype';
-import { resolveInheritance } from '$schemas/utils';
+import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
 const logger = new Logger("process/processors/prototype");
+const { logFatal } = logger;
 
 let prototypes: Prototype[] = [];
 let prototypeIds: string[] = [];
@@ -87,10 +88,11 @@ registerProcessor('prototypes', ({
         prototypes
     );
 
-    logInfo(chalk.bold(`resolving inheritance`));
+    logInfo(chalk.gray(`resolving inheritance`));
 
     const prototypesResolved = prototypes
         .map(proto => resolveInheritance(proto, prototypes));
+    prototypes = prototypesResolved;
 
     writeJsonSync(
         'output',
@@ -101,13 +103,41 @@ registerProcessor('prototypes', ({
     loaded = true;
 });
 
-export function getPrototypes() {
+/**
+ * Checks whether prototypes have been loaded.
+ * 
+ * @throws {Error} If prototypes have not been loaded yet.
+ */
+function assertLoaded() {
     if (!loaded) {
-        logger.logFatal({
-            msg: "failed to get prototypes: prototypes are not loaded. Run the processor first.",
+        logFatal({
+            msg: `prototypes loaded assertion failed: prototypes not loadeded`,
             throw: true
-        })
+        });
     }
+}
+
+export function getPrototypes() {
+    assertLoaded();
 
     return prototypes;
+}
+
+// /** 
+//  * Returns prototype by given ID.
+//  * 
+//  * @throws {Error} If no prototype with that ID exists.
+//  */
+// export function getProtoById(id: string): Prototype {
+
+// }
+
+/** 
+ * Returns prototype by given type and ID or `null` if no prototype with that type and ID combo exists.
+ */
+export function tryGetProtoById(type: string, id: string): Prototype | null {
+    assertLoaded();
+
+    const proto = prototypes.find(proto => proto.type === type && proto.id === id);
+    return proto ?? null;
 }

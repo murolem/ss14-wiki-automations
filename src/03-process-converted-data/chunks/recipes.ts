@@ -2,7 +2,7 @@ import { processAndSaveConvertedData } from '$src/03-process-converted-data/proc
 import { entityValidator } from '$src/schemas/entities/entity';
 import { latheCategoryValidator, lathePackValidator } from '$src/schemas/recipes/lathe';
 import { recipeValidator } from '$src/schemas/recipes/recipe';
-import { resolveInheritance } from '$src/schemas/utils';
+import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { deepCloneObjectUsingJson, roundToDigit } from '$src/utils';
 import Logger from '@aliser/logger';
 import chalk from 'chalk';

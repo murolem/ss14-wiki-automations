@@ -97,6 +97,9 @@ export const projectProcessingOutputs = {
     },
     entities: {
         entitiesJson: "entities.json"
+    },
+    cargo_orders: {
+        ordersJson: "orders.json"
     }
 } satisfies Partial<Record<Project, Record<string, ProcessingStepOutputEntry>>>;
 

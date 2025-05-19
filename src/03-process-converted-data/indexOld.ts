@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { z } from 'zod';
 import { deepCloneObjectUsingJson, roundToDigit } from '$src/utils';
 import { dataPaths, extendedLogging, stepDir } from '$src/preset';
-import { resolveInheritance } from '$src/schemas/utils';
+import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance.ts';
 import { researchTechValidator } from '$src/schemas/research/tech';
 import { researchDisciplineValidator } from '$src/schemas/research/discipline';
 import { localizeRecordProperty } from '$src/03-process-converted-data/lib/localizer.ts';
