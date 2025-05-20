@@ -4,26 +4,11 @@ import { z } from 'zod';
 const logger = new Logger("schemas/proto/entity");
 const { logInfo, logFatal } = logger;
 
-const componentTypes: string[] = [];
-const knownComponentSchemas: z.ZodTypeAny[] = [];
-
-function registerComponentSchema(type: string, getSchema: (type: string) => z.ZodTypeAny): void {
-    if (componentTypes.includes(type)) {
-        logFatal({
-            msg: `faled to register a schema: schema for type '$type}' already registered`,
-            throw: true
-        });
-    }
-
-    componentTypes.push(type);
-    knownComponentSchemas.push(getSchema(type));
-}
-
 // ===========================
 
 /** Contains items that can be made by default or need to be researched first. */
-registerComponentSchema('Lathe', type => z.object({
-    type: z.literal(type),
+const latheComponentSchema = z.object({
+    type: z.literal("Lathe"),
 
     /** Recipe pack IDs of items that are available to be printed by default. */
     staticPacks: z.array(z.string()).optional(),
@@ -36,20 +21,22 @@ registerComponentSchema('Lathe', type => z.object({
     timeMultiplier: z.number().optional(),
 
     defaultProductionAmount: z.number().optional()
-}));
+})
 
 // ===========================
 
+export type EntityComponent = z.infer<typeof unknownComponentSchema>;
 const unknownComponentSchema = z.object(({
-    type: z.string().refine(type => !componentTypes.includes(type))
+    type: z.string()
 })).passthrough();
 
+export type EntityComponentNarrow = z.infer<typeof entityComponentSchema>;
 // @ts-ignore knownComponentSchemas is zero length initially so this will error anyway
-const componentSchema = z.union([
-    ...knownComponentSchemas,
+export const entityComponentSchema = z.union([
+    latheComponentSchema,
     unknownComponentSchema
 ]);
 
 export const entityPrototypeSchema = prototypeSchema.extend({
-    components: componentSchema.array().optional()
+    components: entityComponentSchema.array().optional()
 }).passthrough();

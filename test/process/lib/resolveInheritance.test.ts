@@ -59,7 +59,6 @@ describe('general', () => {
             i_want_waffles: 3
         }
 
-
         const parent2: Prototype = {
             id: 'bar',
             type: 'weh',
@@ -289,8 +288,7 @@ describe('entities', () => {
                         state: "plushie_lizard"
                     }
                 ]
-            }
-            , {
+            }, {
                 type: "entity",
                 id: "ParentC",
                 abstract: true,

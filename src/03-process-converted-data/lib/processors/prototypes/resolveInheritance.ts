@@ -2,10 +2,40 @@ import { deepCloneObjectUsingJson } from '$src/utils';
 import { Logger } from '$logger';
 const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
-import type { Prototype } from '$schemas/prototype';
-import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Strategy } from '$utils/mergeJsonObjects';
+import { prototypeSchema, type Prototype } from '$schemas/prototype';
+import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
+import { entityComponentSchema, type EntityComponent } from '$schemas/prototypes/entity';
+import chalk from 'chalk';
 
+const mergeJsonConfigParentProtos: Partial<MergeJsonConfig> = {
+    strategyArrayOnArray: 'preserve',
+    strategyMapOnMap: 'preserve',
+    strategyPrimitiveOnPrimitive: 'preserve'
+}
 
+const mergeJsonConfigOriginalProto: Partial<MergeJsonConfig> = {
+    strategyArrayOnArray: 'replace',
+    strategyMapOnMap: 'replace',
+    strategyPrimitiveOnPrimitive: 'replace'
+}
+
+const mergeJsonConfigsByProtoType: Record<
+    string,
+    { parentProtos: Partial<MergeJsonConfig>, originalProto: Partial<MergeJsonConfig> }
+> = {
+    entity: {
+        parentProtos: {
+            ...mergeJsonConfigParentProtos,
+            strategyArrayOnArray: 'function_resolver',
+            strategyArrayOnArrayResolver: getEntityMergeStrategyOnArrayResolver(1)
+        },
+        originalProto: {
+            ...mergeJsonConfigOriginalProto,
+            strategyArrayOnArray: 'function_resolver',
+            strategyArrayOnArrayResolver: getEntityMergeStrategyOnArrayResolver(0)
+        }
+    }
+}
 
 /** 
  * Resolves inheritance for a prototype.
@@ -45,78 +75,83 @@ export function resolveInheritance<T extends Prototype>(
         parents = [parents];
     }
 
-    let res = {} as any;
+    /** Chain of prototypes in order of inheritance, with original proto closing the chain. */
+    const protoChain = [
+        ...getParentPrototypesRecursive(proto, protoPool),
+        proto
+    ];
 
-    // resolve parents, construct base
-    for (const parent of parents) {
-        const parentProto = protoPool.find(entry => entry.type === proto.type && entry.id === parent);
+    let res = {} as any;
+    const mergeConfigByProtoType = mergeJsonConfigsByProtoType[proto.type];
+
+    for (const [i, chainProto] of protoChain.entries()) {
+        // final proto = original proto
+        const isFinalProto = i === protoChain.length - 1;
+
+        let mergeConfig: Partial<MergeJsonConfig>;
+        if (isFinalProto) {
+            mergeConfig = mergeConfigByProtoType
+                ? mergeConfigByProtoType.originalProto
+                : mergeJsonConfigOriginalProto;
+        } else {
+            mergeConfig = mergeConfigByProtoType
+                ? mergeConfigByProtoType.parentProtos
+                : mergeJsonConfigParentProtos;
+        }
+
+        res = mergeJsonObjects(res, chainProto, mergeConfig);
+    }
+
+    // cleanup
+
+    // always remove parent
+    delete res.parent;
+
+    // remove abstract if it was inherited
+    if (res.abstract && !proto.abstract) {
+        delete res.abstract;
+    }
+
+    return res;
+}
+
+/** 
+ * Constructs a tree of parent prototypes.
+ * Returns an array of "final" parents, from left to right.
+ * */
+function getParentPrototypesRecursive(proto: Prototype, protoPool: Prototype[]): Prototype[] {
+    if (!proto.parent) {
+        // no further parents = we are done
+        return [];
+    }
+
+    const parentProtoIds = typeof proto.parent === 'string'
+        ? [proto.parent]
+        : proto.parent;
+
+    const parentProtos: Prototype[] = [];
+    for (const parentProtoId of parentProtoIds) {
+        const parentProto = protoPool
+            .find(poolProto => poolProto.type == proto.type && poolProto.id === parentProtoId);
+
         if (!parentProto) {
             logFatal({
-                msg: "failed to resolve prototype inheritance: parent proto not found",
+                msg: `failed to get parent prototypes recursively: encountered a non-existent parent proto ID: ${chalk.bold(parentProtoId)}`,
                 throw: true,
-                data: {
-                    protoId: proto.id,
-                    parentProtoType: proto.type,
-                    parentProtoId: parent,
-                    depth: _depth
-                }
             });
             throw ''//guard
         }
 
-        let mergeStrategyOnMap: Strategy = 'preserve'; // keep first encountered value.
+        // current parent
+        parentProtos.push(parentProto);
 
-        let mergeStrategyOnArray: Strategy = 'preserve'; // keep first encountered value.
-
-        let mergeStrategyOnArrayResolver: ArrayOnArrayStrategyResolver | undefined = undefined;
-
-        // entities get special treatment because of their "components" field getting merged
-        // a special way, which is:
-        // - duplicate components get "merged"
-        // - if a merge occurs, the merge behavior for fields inside a component differs depending on whether
-        // its the "surface" proto (the one for which we are resolving inheritance originally).
-        // -- if its a surface proto, then any duplicates are getting replaced.
-        // -- if its somewhere in the inheritance chain, then duplicate fields are discarded.
-        if (proto.type === 'entity') {
-            mergeStrategyOnArray = 'function_resolver';
-            mergeStrategyOnArrayResolver = getEntityMergeStrategyOnArrayResolver(_depth + 1);
-        }
-
-        res = mergeJsonObjects(
-            res,
-            parentProto.parent
-                ? resolveInheritance(parentProto, protoPool, _depth + 1)
-                : parentProto, // leaf
-            {
-                strategyArrayOnArray: mergeStrategyOnArray,
-                strategyArrayOnArrayResolver: mergeStrategyOnArrayResolver,
-                strategyMapOnMap: mergeStrategyOnMap,
-            }
-        )
-    }
-
-    // merge with the initial proto
-    if (res.type === "entity") {
-        res = mergeJsonObjects(res, proto, {
-            strategyMapOnMap: _depth === 0 ? 'replace' : 'preserve',
-            strategyArrayOnArray: 'function_resolver',
-            strategyArrayOnArrayResolver: getEntityMergeStrategyOnArrayResolver(_depth)
-        });
-    } else {
-        res = mergeJsonObjects(res, proto);
-    }
-
-    if (_depth === 0) {
-        // always remove parent
-        delete res.parent;
-
-        // remove abstract if it was inherited
-        if (res.abstract && !proto.abstract) {
-            delete res.abstract;
+        // does the parent has more parents?
+        if (parentProto.parent) {
+            parentProtos.push(...getParentPrototypesRecursive(parentProto, protoPool));
         }
     }
 
-    return res;
+    return parentProtos;
 }
 
 function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrategyResolver {
@@ -127,7 +162,8 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
         // }
 
         for (const topComp of topCompArray) {
-            const baseComp = baseCompArr.find(comp => comp.type === topComp.type);
+            const baseComp = (baseCompArr as EntityComponent[])
+                .find(comp => (comp as EntityComponent).type === (topComp as EntityComponent).type);
 
             // if not a duplicate, just add it
             if (!baseComp) {
@@ -139,20 +175,13 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
             let newComp;
             if (depth === 0) {
                 // replace mode on surface proto
-                newComp = mergeJsonObjects(baseComp, topComp, {
-                    strategyArrayOnArray: 'replace',
-                    strategyMapOnMap: 'replace'
-                });
+                newComp = mergeJsonObjects(baseComp, topComp as EntityComponent, mergeJsonConfigOriginalProto);
             } else {
                 // preserve mode on parent protos
-                newComp = mergeJsonObjects(baseComp, topComp, {
-                    strategyArrayOnArray: 'preserve',
-                    strategyMapOnMap: 'preserve',
-                    strategyOnPrimitive: 'preserve'
-                });
+                newComp = mergeJsonObjects(baseComp, topComp as EntityComponent, mergeJsonConfigParentProtos);
             }
 
-            baseCompArr.push(newComp);
+            baseCompArr[baseCompArr.indexOf(baseComp)] = newComp;
         }
 
         return baseCompArr;
