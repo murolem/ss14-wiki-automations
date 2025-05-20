@@ -1,4 +1,4 @@
-import { prototypeArraySchema, prototypeSchema, rawPrototypeSchemasByType, type Prototype, type RawPrototypeSchemaType } from '$schemas/prototype';
+import { prototypeArraySchema, prototypeSchema, rawPrototypeSchemasByType, type ProtoId, type Prototype, type RawPrototypeSchemaType } from '$schemas/prototype';
 import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
@@ -94,8 +94,21 @@ registerProcessor('prototypes', ({
 
     logInfo(chalk.gray(`resolving inheritance`));
 
+    const protoTypeToIdToPrototypeMap = prototypes.reduce((accum, proto) => {
+        const type = proto.type;
+        let typeToProtoMap = accum[type];
+        if (!typeToProtoMap) {
+            typeToProtoMap = {}
+            accum[type] = typeToProtoMap;
+        }
+
+        typeToProtoMap[proto.id] = proto;
+
+        return accum;
+    }, {} as Record<string, Record<ProtoId, Prototype>>);
+
     const prototypesResolved = prototypes
-        .map(proto => resolveInheritance(proto, prototypes));
+        .map(proto => resolveInheritance(proto, protoTypeToIdToPrototypeMap));
     prototypes = prototypesResolved;
 
     writeJsonSync(

@@ -19,8 +19,8 @@ registerProcessor('entities', ({
 
     writeJsonSync('temp', 'entities_raw.json', entities);
 
-    entities = entities
-        .map(proto => entityPrototypeSchema.parse(proto));
+    entities = entityPrototypeSchema.array()
+        .parse(entities)
 
     writeJsonSync('output', projectProcessingOutputs.entities.entitiesJson, entities);
 });

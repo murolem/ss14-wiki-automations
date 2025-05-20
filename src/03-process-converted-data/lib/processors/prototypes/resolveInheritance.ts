@@ -2,7 +2,7 @@ import { deepCloneObjectUsingJson } from '$src/utils';
 import { Logger } from '$logger';
 const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
-import { type Prototype } from '$schemas/prototype';
+import { type ProtoId, type Prototype } from '$schemas/prototype';
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
 import { entityComponentSchema, type EntityComponent } from '$schemas/prototype/entity';
 import chalk from 'chalk';
@@ -59,12 +59,11 @@ const mergeJsonConfigsByProtoType: Record<
  * 
  * @param proto Prototype to resolve inheritance for.
  * @param protoPool An array of potential parent prototypes.
- * @param _depth [INTERNAL] Recursion depth counter.
  * @returns A new prototype with resolved inheritance.
  */
 export function resolveInheritance(
     proto: Prototype,
-    protoPool: Prototype[]
+    protoPool: Record<string /* type */, Record<ProtoId, Prototype>>
 ): Prototype {
     let parents = proto.parent;
     if (!parents) {
@@ -118,7 +117,10 @@ export function resolveInheritance(
  * Constructs a tree of parent prototypes.
  * Returns an array of "final" parents, from left to right.
  * */
-function getParentPrototypesRecursive(proto: Prototype, protoPool: Prototype[]): Prototype[] {
+function getParentPrototypesRecursive(
+    proto: Prototype,
+    protoPool: Record<string /* type */, Record<ProtoId, Prototype>>
+): Prototype[] {
     if (!proto.parent) {
         // no further parents = we are done
         return [];
@@ -130,8 +132,7 @@ function getParentPrototypesRecursive(proto: Prototype, protoPool: Prototype[]):
 
     const parentProtos: Prototype[] = [];
     for (const parentProtoId of parentProtoIds) {
-        const parentProto = protoPool
-            .find(poolProto => poolProto.type == proto.type && poolProto.id === parentProtoId);
+        const parentProto = protoPool[proto.type]?.[parentProtoId];
 
         if (!parentProto) {
             logFatal({
@@ -160,9 +161,6 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
         }
 
         for (const topComp of topCompArray) {
-            // make sure it's a component
-            entityComponentSchema.parse(topComp);
-
             const baseComp = (baseCompArr as EntityComponent[])
                 .find(comp => (comp as EntityComponent).type === (topComp as EntityComponent).type);
 
@@ -171,8 +169,6 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
                 baseCompArr.push(topComp);
                 continue;
             }
-
-            entityComponentSchema.parse(baseComp); // make sure it's a component
 
             // if duplicate, merge replacing anything duplicating inside
             let newComp;

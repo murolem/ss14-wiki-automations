@@ -39,24 +39,25 @@ registerProcessor('cargo_orders', ({
         locRecordProperty(order, { property: 'category' });
 
         const productProto = tryGetProtoByIdWithParse('entity', orderParsed.product);
-        order.description = productProto?.description ?? "";
+        if (productProto?.description) {
+            order.description = productProto.description;
+        }
 
-        order.contents = [];
         if (productProto) {
             const storageFillComp = tryGetCompWithParse(productProto, 'StorageFill');
             if (storageFillComp) {
+                order.contents = [];
                 for (const entry of storageFillComp.contents) {
-                    order.contents.push({
-                        item: entry.id,
-                        amount: entry.amount ?? 1
-                    });
+                    order.contents.push(entry);
                 }
             }
         }
 
-        // validate
+        // validate and push
         orders.push(schemaParse(cargoProductProcessedProtoSchema, order));
     }
+
+    orders.sort((a, b) => a.id.localeCompare(b.id));
 
     writeJsonSync('output', projectProcessingOutputs.cargo_orders.ordersJson, orders);
 });
