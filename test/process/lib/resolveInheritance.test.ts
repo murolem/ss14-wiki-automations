@@ -274,13 +274,42 @@ describe('entities', () => {
         ]
     }
 
+    describe("one parent → child inheritance", () => {
+        test('duplicate components (by type) - merge duplicates (no field conflicts)', () => {
+            const parents: Prototype[] = [
+                {
+                    type: "entity",
+                    id: "TestItem1",
+                    name: "test lizard 1",
+                    components: [
+                        {
+                            type: "Sprite",
+                            sprite: "Objects/Fun/toys.rsi",
+                        }
+                    ]
+                }
+            ];
 
-    test('second parent not overwriting a component field from first parent', () => {
-        const parents: Prototype[] = [
-            {
+            const descendant: Prototype = {
                 type: "entity",
-                id: "TestItem1",
-                name: "test lizard 1",
+                id: "TestItem2",
+                name: "test lizard 2",
+                parent: "TestItem1",
+                components: [
+                    {
+                        type: "Sprite",
+                        state: "plushie_lizard"
+                    }
+                ]
+            };
+
+            const parentPool: Prototype[] = [...parents, descendant];
+
+            const res = resolveInheritance(descendant, parentPool);
+            expect(res).toStrictEqual({
+                type: "entity",
+                id: "TestItem2",
+                name: "test lizard 2",
                 components: [
                     {
                         type: "Sprite",
@@ -288,40 +317,214 @@ describe('entities', () => {
                         state: "plushie_lizard"
                     }
                 ]
-            }, {
+            });
+        });
+
+        test('duplicate components (by type), duplicate field (primitive on primitive) - replace', () => {
+            const parents: Prototype[] = [
+                {
+                    type: "entity",
+                    id: "TestItem1",
+                    name: "test lizard 1",
+                    components: [
+                        {
+                            type: "Sprite",
+                            sprite: "Objects/Fun/toys.rsi",
+                        }
+                    ]
+                }
+            ];
+
+            const descendant: Prototype = {
                 type: "entity",
-                id: "ParentC",
-                abstract: true,
+                id: "TestItem2",
+                name: "test lizard 2",
+                parent: "TestItem1",
                 components: [
                     {
                         type: "Sprite",
-                        state: "plushie_hampter" // # change the sprite state only, but not the rsi
+                        sprite: "Objects/VeryFun/guns.rsi",
                     }
                 ]
-            }
-        ];
+            };
 
-        const descendant: Prototype = {
-            type: "entity",
-            parent: ["TestItem1", "ParentC"],
-            id: "TestItem2",
-            name: "test lizard 2"
-        };
+            const parentPool: Prototype[] = [...parents, descendant];
 
-        const parentPool: Prototype[] = [...parents, descendant];
+            const res = resolveInheritance(descendant, parentPool);
+            expect(res).toStrictEqual({
+                type: "entity",
+                id: "TestItem2",
+                name: "test lizard 2",
+                components: [
+                    {
+                        type: "Sprite",
+                        sprite: "Objects/VeryFun/guns.rsi",
+                    }
+                ]
+            });
+        });
 
-        const res = resolveInheritance(descendant, parentPool);
-        expect(res).toStrictEqual({
-            type: "entity",
-            id: "TestItem2",
-            name: "test lizard 2",
-            components: [
+
+        test('duplicate components (by type), duplicate field (array on array) - replace', () => {
+            const parents: Prototype[] = [
                 {
-                    type: "Sprite",
-                    sprite: "Objects/Fun/toys.rsi",
-                    state: "plushie_lizard"
+                    type: "entity",
+                    id: "TestItem1",
+                    name: "test lizard 1",
+                    components: [
+                        {
+                            type: "Sprite",
+                            sprite: "Objects/Fun/toys.rsi",
+                            layers: [
+                                { state: "shark" },
+                                { state: "shark-gun" },
+                            ]
+                        }
+                    ]
                 }
-            ]
+            ];
+
+            const descendant: Prototype = {
+                type: "entity",
+                id: "TestItem2",
+                name: "test lizard 2",
+                parent: "TestItem1",
+                components: [
+                    {
+                        type: "Sprite",
+                        sprite: "Objects/VeryFun/guns.rsi",
+                        layers: [
+                            { state: "lizard" },
+                        ]
+                    }
+                ]
+            };
+
+            const parentPool: Prototype[] = [...parents, descendant];
+
+            const res = resolveInheritance(descendant, parentPool);
+            expect(res).toStrictEqual({
+                type: "entity",
+                id: "TestItem2",
+                name: "test lizard 2",
+                components: [
+                    {
+                        type: "Sprite",
+                        sprite: "Objects/VeryFun/guns.rsi",
+                        layers: [
+                            { state: "lizard" },
+                        ]
+                    }
+                ]
+            });
+        });
+
+        test('duplicate components (by type), duplicate field (map on map) - replace', () => {
+            const parents: Prototype[] = [
+                {
+                    type: "entity",
+                    id: "MobXeno",
+                    name: "burrower",
+                    components: [
+                        {
+                            type: "MeleeWeapon",
+                            damage: {
+                                groups: {
+                                    Brute: 5
+                                }
+                            }
+                        }
+                    ]
+                }
+            ];
+
+            const descendant: Prototype = {
+                type: "entity",
+                id: "MobXenoRunner",
+                name: "runner",
+                parent: "MobXeno",
+                components: [
+                    {
+                        type: "MeleeWeapon",
+                        damage: {
+                            groups: {
+                                Brute: 15
+                            }
+                        }
+                    }
+                ]
+            };
+
+            const parentPool: Prototype[] = [...parents, descendant];
+
+            const res = resolveInheritance(descendant, parentPool);
+            expect(res).toStrictEqual({
+                type: "entity",
+                id: "MobXenoRunner",
+                name: "runner",
+                components: [
+                    {
+                        type: "MeleeWeapon",
+                        damage: {
+                            groups: {
+                                Brute: 15
+                            }
+                        }
+                    }
+                ]
+            });
         });
     })
+
+    describe("parent + parent → child inheritance", () => {
+        test('duplicate component field - preserve first parent field duplicate', () => {
+            const parents: Prototype[] = [
+                {
+                    type: "entity",
+                    id: "TestItem1",
+                    name: "test lizard 1",
+                    components: [
+                        {
+                            type: "Sprite",
+                            sprite: "Objects/Fun/toys.rsi",
+                            state: "plushie_lizard"
+                        }
+                    ]
+                }, {
+                    type: "entity",
+                    id: "ParentC",
+                    abstract: true,
+                    components: [
+                        {
+                            type: "Sprite",
+                            state: "plushie_hampter" // # change the sprite state only, but not the rsi
+                        }
+                    ]
+                }
+            ];
+
+            const descendant: Prototype = {
+                type: "entity",
+                parent: ["TestItem1", "ParentC"],
+                id: "TestItem2",
+                name: "test lizard 2"
+            };
+
+            const parentPool: Prototype[] = [...parents, descendant];
+
+            const res = resolveInheritance(descendant, parentPool);
+            expect(res).toStrictEqual({
+                type: "entity",
+                id: "TestItem2",
+                name: "test lizard 2",
+                components: [
+                    {
+                        type: "Sprite",
+                        sprite: "Objects/Fun/toys.rsi",
+                        state: "plushie_lizard"
+                    }
+                ]
+            });
+        })
+    });
 })
