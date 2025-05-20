@@ -2,10 +2,11 @@ import { deepCloneObjectUsingJson } from '$src/utils';
 import { Logger } from '$logger';
 const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
-import { type ProtoId, type Prototype } from '$schemas/prototype';
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
-import { entityComponentSchema, type EntityComponent } from '$schemas/prototype/entity';
 import chalk from 'chalk';
+import type { EntityComponent } from '$schemas/prototype/prototypes/entity';
+import type { ProtoType, ProtoId, Prototype } from '$schemas/prototype/base';
+import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
 
 const mergeJsonConfigParentProtos: Partial<MergeJsonConfig> = {
     strategyArrayOnArray: 'preserve',
@@ -35,6 +36,19 @@ const mergeJsonConfigsByProtoType: Record<
             strategyArrayOnArrayResolver: getEntityMergeStrategyOnArrayResolver(0)
         }
     }
+}
+
+export type ProtoPool = Record<ProtoType, Record<ProtoId, Prototype>>
+
+export function createProtoPool(protos: Prototype[]) {
+    const pool: ProtoPool = {};
+
+    for (const proto of protos) {
+        let protosByType = getObjPropOrCreate(pool, proto.type, () => ({}));
+        protosByType[proto.id] = proto;
+    }
+
+    return pool;
 }
 
 /** 

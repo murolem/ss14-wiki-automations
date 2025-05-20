@@ -131,8 +131,6 @@ describe('modifying merge', () => {
                 foo: ['hi', 'there']
             }
 
-            console.log(mergeJsonObjects(base, top))
-
             expect(mergeJsonObjects(base, top)).toStrictEqual({
                 foo: ['hi', 'there'],
             })

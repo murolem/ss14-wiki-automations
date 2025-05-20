@@ -1,10 +1,10 @@
-import { entityPrototypeSchema } from '$schemas/prototype/entity';
 import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { getPrototypes } from '$src/03-process-converted-data/lib/processors/prototypes';
 import { projectProcessingOutputs } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
+import { entityPrototypeSchema } from '$schemas/prototype/prototypes/entity';
 
 registerProcessor('entities', ({
     dirpath,

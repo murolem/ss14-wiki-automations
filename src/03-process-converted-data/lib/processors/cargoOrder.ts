@@ -5,9 +5,7 @@ import { filterProtosByType, getPrototypes, tryGetCompWithParse, tryGetProtoById
 import { projectProcessingOutputs } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
-import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/cargoProduct';
-import { entityPrototypeSchema } from '$schemas/prototype/entity';
-import { storageFillEntityComponentSchema } from '$schemas/prototype/entity/components/storageFill';
+import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
 import { schemaParse } from '$schemas/utils/assertSchema';
 
 registerProcessor('cargo_orders', ({

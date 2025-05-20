@@ -1,5 +1,5 @@
-import { protoIdSchema, prototypeSchema } from '$schemas/prototype';
-import { storageFillEntityComponentSchema } from '$schemas/prototype/entity/components/storageFill';
+import { prototypeSchema, protoIdSchema } from '$schemas/prototype/base';
+import { storageFillEntityComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
 import { z } from 'zod';
 
 export type CargoProductRawProtoSchema = z.infer<typeof cargoProductRawProtoSchema>;

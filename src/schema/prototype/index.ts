@@ -1,6 +1,6 @@
-import { protoIdSchema, prototypeArraySchema, prototypeSchema, type ProtoId, type Prototype } from '$schemas/prototype/base';
-import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema } from '$schemas/prototype/cargoProduct';
-import { entityPrototypeSchema } from '$schemas/prototype/entity';
+import { protoIdSchema, prototypeArraySchema, protoTypeSchema, prototypeSchema, type ProtoId, type ProtoType, type Prototype } from '$schemas/prototype/base';
+import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
+import { entityPrototypeSchema } from '$schemas/prototype/prototypes/entity';
 import { z, ZodType } from 'zod';
 
 /** "Raw" prototype types with defined schemas. */
@@ -22,11 +22,3 @@ export const rawPrototypeSchemasByType = {
 export const processedPrototypeSchemasByType = {
     cargoProduct: cargoProductProcessedProtoSchema
 } satisfies Record<string, ZodType>;
-
-export {
-    type ProtoId,
-    protoIdSchema,
-    type Prototype,
-    prototypeSchema,
-    prototypeArraySchema
-}

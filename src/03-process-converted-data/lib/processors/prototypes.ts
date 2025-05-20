@@ -1,5 +1,4 @@
-import { prototypeArraySchema, prototypeSchema, rawPrototypeSchemasByType, type ProtoId, type Prototype, type RawPrototypeSchemaType } from '$schemas/prototype';
-import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
+import { createProtoPool, resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
@@ -10,7 +9,9 @@ import { Logger } from '$logger';
 import type { z, ZodType } from 'zod';
 import type { StringOr } from '$utils/stringOr';
 import { schemaParse } from '$schemas/utils/assertSchema';
-import { entityComponentSchemaByType, type EntityComponent, type EntityPrototype, type KnownEntityComponentType } from '$schemas/prototype/entity';
+import { type KnownEntityComponentType, type EntityPrototype, type EntityComponent, entityComponentSchemaByType } from '$schemas/prototype/prototypes/entity';
+import { prototypeArraySchema, type ProtoId, type Prototype } from '$schemas/prototype/base';
+import { rawPrototypeSchemasByType, type RawPrototypeSchemaType } from '$schemas/prototype';
 const logger = new Logger("process/processors/prototype");
 const { logFatal } = logger;
 
@@ -94,21 +95,9 @@ registerProcessor('prototypes', ({
 
     logInfo(chalk.gray(`resolving inheritance`));
 
-    const protoTypeToIdToPrototypeMap = prototypes.reduce((accum, proto) => {
-        const type = proto.type;
-        let typeToProtoMap = accum[type];
-        if (!typeToProtoMap) {
-            typeToProtoMap = {}
-            accum[type] = typeToProtoMap;
-        }
-
-        typeToProtoMap[proto.id] = proto;
-
-        return accum;
-    }, {} as Record<string, Record<ProtoId, Prototype>>);
-
+    const protoPool = createProtoPool(prototypes);
     const prototypesResolved = prototypes
-        .map(proto => resolveInheritance(proto, protoTypeToIdToPrototypeMap));
+        .map(proto => resolveInheritance(proto, protoPool));
     prototypes = prototypesResolved;
 
     writeJsonSync(
@@ -128,7 +117,7 @@ registerProcessor('prototypes', ({
 function assertLoaded() {
     if (!loaded) {
         logFatal({
-            msg: `prototypes loaded assertion failed: prototypes not loadeded`,
+            msg: `prototypes loaded assertion failed: prototypes not loaded`,
             throw: true
         });
     }

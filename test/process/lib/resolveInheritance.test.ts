@@ -1,5 +1,5 @@
-import type { Prototype } from '$schemas/prototype';
-import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
+import type { Prototype } from '$schemas/prototype/base';
+import { createProtoPool, resolveInheritance, type ProtoPool } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { test, expect, describe } from 'vitest';
 
 // note: no tests for how fields merge/get replaced because that
@@ -19,7 +19,7 @@ describe('general', () => {
             bees: 'are cool'
         }
 
-        const parentPool: Prototype[] = [parent, descendant];
+        const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
         expect(resolveInheritance(descendant, parentPool)).toStrictEqual({
             id: 'bar',
@@ -42,7 +42,7 @@ describe('general', () => {
             bees: 'are cool'
         }
 
-        const parentPool: Prototype[] = [parent, descendant];
+        const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
         expect(resolveInheritance(descendant, parentPool)).toStrictEqual({
             id: 'bar',
@@ -73,7 +73,7 @@ describe('general', () => {
             meow: 'mrrr'
         }
 
-        const parentPool: Prototype[] = [parent1, parent2, descendant];
+        const parentPool: ProtoPool = createProtoPool([parent1, parent2, descendant]);
 
         expect(resolveInheritance(descendant, parentPool)).toStrictEqual({
             id: 'alakasam',
@@ -101,7 +101,7 @@ describe('abstract', () => {
             bees: 'are cool'
         }
 
-        const parentPool: Prototype[] = [parent, descendant];
+        const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
         const res = resolveInheritance(descendant, parentPool);
         expect(res).toStrictEqual({
@@ -128,7 +128,7 @@ describe('abstract', () => {
             bees: 'are cool'
         }
 
-        const parentPool: Prototype[] = [parent, descendant];
+        const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
         expect(resolveInheritance(descendant, parentPool)).toStrictEqual({
             id: 'bar',
@@ -303,7 +303,7 @@ describe('entities', () => {
                 ]
             };
 
-            const parentPool: Prototype[] = [...parents, descendant];
+            const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
             const res = resolveInheritance(descendant, parentPool);
             expect(res).toStrictEqual({
@@ -348,7 +348,7 @@ describe('entities', () => {
                 ]
             };
 
-            const parentPool: Prototype[] = [...parents, descendant];
+            const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
             const res = resolveInheritance(descendant, parentPool);
             expect(res).toStrictEqual({
@@ -400,7 +400,7 @@ describe('entities', () => {
                 ]
             };
 
-            const parentPool: Prototype[] = [...parents, descendant];
+            const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
             const res = resolveInheritance(descendant, parentPool);
             expect(res).toStrictEqual({
@@ -455,7 +455,7 @@ describe('entities', () => {
                 ]
             };
 
-            const parentPool: Prototype[] = [...parents, descendant];
+            const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
             const res = resolveInheritance(descendant, parentPool);
             expect(res).toStrictEqual({
@@ -510,7 +510,7 @@ describe('entities', () => {
                 name: "test lizard 2"
             };
 
-            const parentPool: Prototype[] = [...parents, descendant];
+            const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
             const res = resolveInheritance(descendant, parentPool);
             expect(res).toStrictEqual({

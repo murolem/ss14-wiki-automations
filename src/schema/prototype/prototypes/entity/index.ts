@@ -1,6 +1,6 @@
 import { Logger } from '$logger';
-import { prototypeSchema } from '$schemas/prototype';
-import { storageFillEntityComponentSchema } from '$schemas/prototype/entity/components/storageFill';
+import { prototypeSchema } from '$schemas/prototype/base';
+import { storageFillEntityComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
 import { z, ZodType } from 'zod';
 const logger = new Logger("schemas/proto/entity");
 const { logInfo, logFatal } = logger;
