@@ -2,9 +2,9 @@ import { deepCloneObjectUsingJson } from '$src/utils';
 import { Logger } from '$logger';
 const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
-import { prototypeSchema, type Prototype } from '$schemas/prototype';
+import { type Prototype } from '$schemas/prototype';
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
-import { entityComponentSchema, type EntityComponent } from '$schemas/prototypes/entity';
+import { type EntityComponent } from '$schemas/prototypes/entity';
 import chalk from 'chalk';
 
 const mergeJsonConfigParentProtos: Partial<MergeJsonConfig> = {
@@ -62,15 +62,14 @@ const mergeJsonConfigsByProtoType: Record<
  * @param _depth [INTERNAL] Recursion depth counter.
  * @returns A new prototype with resolved inheritance.
  */
-export function resolveInheritance<T extends Prototype>(
-    proto: T,
-    protoPool: T[],
-    _depth = 0
-): T {
+export function resolveInheritance(
+    proto: Prototype,
+    protoPool: Prototype[]
+): Prototype {
     let parents = proto.parent;
     if (!parents) {
         // no parents = no need to resolve anything
-        return deepCloneObjectUsingJson(proto) as T;
+        return deepCloneObjectUsingJson(proto) as Prototype;
     } else if (typeof parents === 'string') {
         parents = [parents];
     }
