@@ -1,4 +1,4 @@
-import { effectValidator } from '$src/schemas/reagent/effect';
+import { effectValidator } from '$src/schema/reagent/effect';
 import { z } from 'zod';
 
 export const reactiveEffectsValidator = z.record(

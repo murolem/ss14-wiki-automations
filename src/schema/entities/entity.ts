@@ -1,4 +1,4 @@
-import { entityComponentValidator } from '$src/schemas/entities/component';
+import { entityComponentValidator } from '$src/schema/entities/component';
 import { z } from 'zod';
 
 // todo make strict if needed

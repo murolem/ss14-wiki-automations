@@ -4,7 +4,7 @@ const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
 import { type Prototype } from '$schemas/prototype';
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
-import { entityComponentSchema, type EntityComponent } from '$schemas/prototypes/entity';
+import { entityComponentSchema, type EntityComponent } from '$schemas/prototype/entity';
 import chalk from 'chalk';
 
 const mergeJsonConfigParentProtos: Partial<MergeJsonConfig> = {

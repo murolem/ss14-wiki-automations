@@ -1,4 +1,4 @@
-import { entityPrototypeSchema } from '$schemas/prototypes/entity';
+import { entityPrototypeSchema } from '$schemas/prototype/entity';
 import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { getPrototypes } from '$src/03-process-converted-data/lib/processors/prototypes';

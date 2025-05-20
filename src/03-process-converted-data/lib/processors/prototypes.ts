@@ -1,4 +1,4 @@
-import { prototypeArraySchema, type Prototype } from '$schemas/prototype';
+import { prototypeArraySchema, prototypeSchema, rawPrototypeSchemasByType, type Prototype, type RawPrototypeSchemaType } from '$schemas/prototype';
 import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
@@ -7,6 +7,10 @@ import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
+import type { z, ZodType } from 'zod';
+import type { StringOr } from '$utils/stringOr';
+import { schemaParse } from '$schemas/utils/assertSchema';
+import { entityComponentSchemaByType, type EntityComponent, type EntityPrototype, type KnownEntityComponentType } from '$schemas/prototype/entity';
 const logger = new Logger("process/processors/prototype");
 const { logFatal } = logger;
 
@@ -135,9 +139,99 @@ export function getPrototypes() {
 /** 
  * Returns prototype by given type and ID or `null` if no prototype with that type and ID combo exists.
  */
-export function tryGetProtoById(type: string, id: string): Prototype | null {
+export function tryGetProtoById(
+    type: StringOr<RawPrototypeSchemaType>,
+    id: string,
+): Prototype | null {
     assertLoaded();
 
     const proto = prototypes.find(proto => proto.type === type && proto.id === id);
     return proto ?? null;
+}
+
+/** 
+ * Returns prototype by given type and ID or `null` if no prototype with that type and ID combo exists.
+ * 
+ * If prototype is found, passes it through a matching schema.
+ */
+export function tryGetProtoByIdWithParse<T extends RawPrototypeSchemaType>(
+    type: T,
+    id: string
+): z.infer<typeof rawPrototypeSchemasByType[T]> | null {
+    assertLoaded();
+
+    const proto = tryGetProtoById(type, id);
+    if (proto) {
+        const schema = rawPrototypeSchemasByType[type];
+
+        return schemaParse(schema, proto);
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Filters prototypes by type.
+ * 
+ * @param type Type to filter prototypes.
+ */
+export function filterProtosByType(type: StringOr<RawPrototypeSchemaType>): Prototype[] {
+    assertLoaded();
+
+    return prototypes
+        .filter(proto => proto.type === type);
+}
+
+/** 
+ * Filter prototypes by type and parses each to a known schema.
+ * 
+ * A schema must be defined for a prototype type.
+*/
+export function filterProtosByTypeWithParse<T extends RawPrototypeSchemaType>(
+    type: T
+): Array<z.infer<typeof rawPrototypeSchemasByType[T]>> {
+    assertLoaded();
+
+    const schema = rawPrototypeSchemasByType[type as RawPrototypeSchemaType];
+
+    return prototypes
+        .filter(proto => proto.type === type)
+        .map(proto => schemaParse(schema, proto));
+}
+
+/**
+ * Searches for a component in an entity prototype, returns match or `null`, if no such component was found.
+ * @param entityProto Entity prototype to search in.
+ * @param compType Component type to search for.
+ */
+export function tryGetComp<T extends StringOr<KnownEntityComponentType>>(
+    entityProto: EntityPrototype,
+    compType: T
+): EntityComponent | null {
+    return entityProto?.components
+        ?.find(comp => comp.type === compType)
+        ?? null;
+}
+
+/**
+ * Searches for a component in an entity prototype.
+ * - If component was found, parses it with a matching schema for given type. 
+ * - If no component was found, returns `null`.
+ * 
+ * @param entityProto Entity prototype to search in.
+ * @param compType Component type to search for.
+ */
+export function tryGetCompWithParse<T extends KnownEntityComponentType>(
+    entityProto: EntityPrototype,
+    compType: T
+): z.infer<typeof entityComponentSchemaByType[T]> | null {
+    const comp = entityProto?.components
+        ?.find(comp => comp.type === compType);
+    if (comp) {
+        const schema = entityComponentSchemaByType[compType];
+
+        return schemaParse(schema, comp);
+    } else {
+        return null;
+    }
 }

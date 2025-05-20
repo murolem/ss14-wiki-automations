@@ -1,7 +1,7 @@
 import { localizeRecordProperty } from '$src/03-process-converted-data/lib/localizer';
 import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
-import { researchDisciplineValidator } from '$src/schemas/research/discipline';
-import { researchTechValidator } from '$src/schemas/research/tech';
+import { researchDisciplineValidator } from '$src/schema/research/discipline';
+import { researchTechValidator } from '$src/schema/research/tech';
 import Logger from '@aliser/logger';
 const logger = new Logger("03/chunks/research");
 const { logInfo, logError, logWarn } = logger;

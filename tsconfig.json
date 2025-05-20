@@ -11,7 +11,7 @@
     "skipLibCheck": true,
     "paths": {
       "$schemas/*": [
-        "./src/schemas/*"
+        "./src/schema/*"
       ],
       "$logger": [
         "./src/lib/logger.ts"

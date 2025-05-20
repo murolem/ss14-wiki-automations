@@ -1,5 +1,5 @@
-import { metabolismsValidator } from '$src/schemas/reagent/metabolism';
-import { reactiveEffectsValidator } from '$src/schemas/reagent/reactiveEffect';
+import { metabolismsValidator } from '$src/schema/reagent/metabolism';
+import { reactiveEffectsValidator } from '$src/schema/reagent/reactiveEffect';
 import { z } from 'zod';
 
 export const reagentValidator = z.object({

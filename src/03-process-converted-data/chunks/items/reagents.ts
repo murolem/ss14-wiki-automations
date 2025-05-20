@@ -2,7 +2,7 @@ import { ItemGroupProcessResult } from '$src/03-process-converted-data/chunks/it
 import { localizeRecordProperty, lookupLocalizedStringByKey } from '$src/03-process-converted-data/lib/localizer';
 import { processAndSaveConvertedData } from '$src/03-process-converted-data/processAndSaveConvertedData';
 import { extendedLogging } from '$src/preset';
-import { reagentValidator } from '$src/schemas/reagent/reagent';
+import { reagentValidator } from '$src/schema/reagent/reagent';
 import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { deepCloneObjectUsingJson } from '$src/utils';
 import Logger from '@aliser/logger';
