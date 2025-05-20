@@ -4,7 +4,7 @@ const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
 import { type Prototype } from '$schemas/prototype';
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
-import { type EntityComponent } from '$schemas/prototypes/entity';
+import { entityComponentSchema, type EntityComponent } from '$schemas/prototypes/entity';
 import chalk from 'chalk';
 
 const mergeJsonConfigParentProtos: Partial<MergeJsonConfig> = {
@@ -155,12 +155,14 @@ function getParentPrototypesRecursive(proto: Prototype, protoPool: Prototype[]):
 
 function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrategyResolver {
     return function (key, baseCompArr, topCompArray, fallbackToStrategy) {
-        // if (key !== 'components') {
-        //     // @ts-ignore its ok
-        //     return fallbackToStrategy(fallbackMergeStrategyOnArray);
-        // }
+        if (key !== 'components') {
+            return fallbackToStrategy(depth === 0 ? 'replace' : 'preserve');
+        }
 
         for (const topComp of topCompArray) {
+            // make sure it's a component
+            entityComponentSchema.parse(topComp);
+
             const baseComp = (baseCompArr as EntityComponent[])
                 .find(comp => (comp as EntityComponent).type === (topComp as EntityComponent).type);
 
@@ -169,6 +171,8 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
                 baseCompArr.push(topComp);
                 continue;
             }
+
+            entityComponentSchema.parse(baseComp); // make sure it's a component
 
             // if duplicate, merge replacing anything duplicating inside
             let newComp;
