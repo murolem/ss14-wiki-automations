@@ -10,6 +10,12 @@
     ],
     "skipLibCheck": true,
     "paths": {
+      "$testUtils/*": [
+        "./test/utils/*"
+      ],
+      "$test/*": [
+        "./test/*"
+      ],
       "$schemas/*": [
         "./src/schema/*"
       ],

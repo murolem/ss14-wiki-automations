@@ -77,7 +77,7 @@ export function createProtoPool(protos: Prototype[]) {
  */
 export function resolveInheritance(
     proto: Prototype,
-    protoPool: Record<string /* type */, Record<ProtoId, Prototype>>
+    protoPool: ProtoPool
 ): Prototype {
     let parents = proto.parent;
     if (!parents) {
@@ -133,7 +133,7 @@ export function resolveInheritance(
  * */
 function getParentPrototypesRecursive(
     proto: Prototype,
-    protoPool: Record<string /* type */, Record<ProtoId, Prototype>>
+    protoPool: ProtoPool
 ): Prototype[] {
     if (!proto.parent) {
         // no further parents = we are done
@@ -169,34 +169,34 @@ function getParentPrototypesRecursive(
 }
 
 function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrategyResolver {
-    return function (key, baseCompArr, topCompArray, fallbackToStrategy) {
+    return function (key, resCompArr, topCompArray, fallbackToStrategy) {
         if (key !== 'components') {
             return fallbackToStrategy(depth === 0 ? 'replace' : 'preserve');
         }
 
         for (const topComp of topCompArray) {
-            const baseComp = (baseCompArr as EntityComponent[])
-                .find(comp => (comp as EntityComponent).type === (topComp as EntityComponent).type);
+            const compType = (topComp as EntityComponent).type;
+
+            const resComp = (resCompArr as EntityComponent[])
+                .find(comp => (comp as EntityComponent).type === compType);
 
             // if not a duplicate, just add it
-            if (!baseComp) {
-                baseCompArr.push(topComp);
+            if (!resComp) {
+                resCompArr.push(topComp);
                 continue;
             }
 
             // if duplicate, merge replacing anything duplicating inside
-            let newComp;
-            if (depth === 0) {
-                // replace mode on surface proto
-                newComp = mergeJsonObjects(baseComp, topComp as EntityComponent, mergeJsonConfigOriginalProto);
-            } else {
-                // preserve mode on parent protos
-                newComp = mergeJsonObjects(baseComp, topComp as EntityComponent, mergeJsonConfigParentProtos);
-            }
+            resCompArr[resCompArr.indexOf(resComp)] =
+                mergeJsonObjects(
+                    resComp,
+                    topComp as EntityComponent,
+                    // replace mode on surface proto, preserve mode on parent protos
+                    depth === 0 ? mergeJsonConfigOriginalProto : mergeJsonConfigParentProtos
 
-            baseCompArr[baseCompArr.indexOf(baseComp)] = newComp;
+                );
         }
 
-        return baseCompArr;
+        return resCompArr;
     }
 }

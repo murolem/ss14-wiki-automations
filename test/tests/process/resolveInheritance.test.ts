@@ -1,5 +1,6 @@
 import type { Prototype } from '$schemas/prototype/base';
 import { createProtoPool, resolveInheritance, type ProtoPool } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
+import { getIntegrityAsserter } from '$testUtils/getIntegrityAsserter';
 import { test, expect, describe } from 'vitest';
 
 // note: no tests for how fields merge/get replaced because that
@@ -12,12 +13,14 @@ describe('general', () => {
             type: 'weh',
             i_want_waffles: 3
         }
+        const parentIntegrity = getIntegrityAsserter(parent);
 
         const descendant: Prototype = {
             id: 'bar',
             type: 'weh',
             bees: 'are cool'
         }
+        const descendantIntegrity = getIntegrityAsserter(descendant);
 
         const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
@@ -25,7 +28,9 @@ describe('general', () => {
             id: 'bar',
             type: 'weh',
             bees: 'are cool'
-        })
+        });
+        parentIntegrity(parent);
+        descendantIntegrity(descendant);
     });
 
     test('1 parent → 1 descendant; unique keys', () => {
@@ -34,6 +39,7 @@ describe('general', () => {
             type: 'weh',
             i_want_waffles: 3
         }
+        const parentIntegrity = getIntegrityAsserter(parent);
 
         const descendant: Prototype = {
             id: 'bar',
@@ -41,6 +47,7 @@ describe('general', () => {
             parent: 'foo',
             bees: 'are cool'
         }
+        const descendantIntegrity = getIntegrityAsserter(descendant);
 
         const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
@@ -50,6 +57,8 @@ describe('general', () => {
             i_want_waffles: 3,
             bees: 'are cool'
         })
+        parentIntegrity(parent);
+        descendantIntegrity(descendant);
     });
 
     test('1 parent → 1 parent → 1 descendant; unique keys', () => {
@@ -58,6 +67,7 @@ describe('general', () => {
             type: 'weh',
             i_want_waffles: 3
         }
+        const parent1Integrity = getIntegrityAsserter(parent1);
 
         const parent2: Prototype = {
             id: 'bar',
@@ -66,12 +76,15 @@ describe('general', () => {
             bees: 'are cool'
         }
 
+        const parent2Integrity = getIntegrityAsserter(parent2);
+
         const descendant: Prototype = {
             id: 'alakasam',
             type: 'weh',
             parent: 'bar',
             meow: 'mrrr'
         }
+        const descendantIntegrity = getIntegrityAsserter(descendant);
 
         const parentPool: ProtoPool = createProtoPool([parent1, parent2, descendant]);
 
@@ -82,6 +95,9 @@ describe('general', () => {
             bees: 'are cool',
             meow: 'mrrr'
         })
+        parent1Integrity(parent1);
+        parent2Integrity(parent2);
+        descendantIntegrity(descendant);
     })
 })
 
@@ -93,6 +109,7 @@ describe('abstract', () => {
             abstract: true,
             i_want_waffles: 3
         }
+        const parentIntegrity = getIntegrityAsserter(parent);
 
         const descendant: Prototype = {
             id: 'bar',
@@ -100,6 +117,7 @@ describe('abstract', () => {
             parent: 'foo',
             bees: 'are cool'
         }
+        const descendantIntegrity = getIntegrityAsserter(descendant);
 
         const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
@@ -110,6 +128,8 @@ describe('abstract', () => {
             i_want_waffles: 3,
             bees: 'are cool'
         });
+        parentIntegrity(parent);
+        descendantIntegrity(descendant);
     });
 
     test('1 parent → 1 descendant; abstract both parent and descendant, abstract is kept on final', () => {
@@ -119,6 +139,7 @@ describe('abstract', () => {
             abstract: true,
             i_want_waffles: 3
         }
+        const parentIntegrity = getIntegrityAsserter(parent);
 
         const descendant: Prototype = {
             id: 'bar',
@@ -127,6 +148,7 @@ describe('abstract', () => {
             abstract: true,
             bees: 'are cool'
         }
+        const descendantIntegrity = getIntegrityAsserter(descendant);
 
         const parentPool: ProtoPool = createProtoPool([parent, descendant]);
 
@@ -137,143 +159,12 @@ describe('abstract', () => {
             i_want_waffles: 3,
             bees: 'are cool'
         })
+        parentIntegrity(parent);
+        descendantIntegrity(descendant);
     });
 });
 
 describe('entities', () => {
-    // most of these are based off of https://hackmd.io/@Slart/S1hsoGFm1l by @Slartibartfast, on the maints
-
-    const tagA1: Prototype = {
-        type: 'tag',
-        id: 'TagA1'
-    }
-
-    const tagA2 = {
-        type: 'tag',
-        id: 'TagA2'
-    }
-
-    const tagB = {
-        type: 'tag',
-        id: 'TagB'
-    }
-
-    const parentA: Prototype =
-    {
-
-        type: "entity",
-        id: "ParentA",
-        abstract: true,
-        components: [
-            {
-                type: 'Tag',
-                tags: ["TagA1", "TagA2"]
-            },
-            {
-                type: "MeleeWeapon", // turn the entity into a weapon
-                damage: {
-                    types: [
-                        { Heat: 10 }
-                    ]
-                }
-            }
-        ]
-    }
-
-    const parentB: Prototype = {
-        type: "entity",
-        id: "ParentB",
-        abstract: true,
-        components: [
-            {
-                type: "Tag",
-                tags: ["TagB"]
-            },
-            {
-                type: "PointLight", // make it glow
-                color: "green"
-            }
-        ]
-    }
-
-    const parentC: Prototype = {
-        type: "entity",
-        id: "ParentC",
-        abstract: true,
-        components: [
-            {
-                type: "Sprite",
-                state: "plushie_hampter" // # change the sprite state only, but not the rsi
-            }
-        ]
-    }
-
-    // A simple item with a lizard sprite.
-    // A sprite needs both the 'sprite' datafield, which contains the path to the rsi folder the image file is in.
-    // And the 'state' datafield which is the name of the.png file itself.
-    const testItem1: Prototype = {
-        type: "entity",
-        id: "TestItem1",
-        name: "test lizard 1",
-        components: [
-            {
-                type: "Sprite",
-                sprite: "Objects/Fun/toys.rsi",
-                state: "plushie_lizard"
-            }
-        ]
-    }
-
-    // The lizard sprite state is inherited first.
-    // The state is not overwritten by the hampter because it already exists.
-    const testItem2: Prototype = {
-        type: "entity",
-        parent: ["TestItem1", "ParentC"],
-        id: "TestItem2",
-        name: "test lizard 2"
-    }
-
-    // If we inherit in this order the state will be taken from ParentC.
-    // TestItem1 will then add the rsi path, but not overwrite the state.
-    const testItem3: Prototype = {
-        type: "entity",
-        parent: ["ParentC", "TestItem1"],
-        id: "TestItem3",
-        name: "test hampter 3"
-    }
-
-    // This time we manually overwrite the inherited state.
-    // The rsi remains unchanged.
-    // The result will be another hampter.
-    const testItem4: Prototype = {
-        type: "entity",
-        parent: "TestItem1",
-        id: "TestItem4",
-        name: "test hampter 4",
-        components: [
-            {
-                type: "Sprite",
-                state: "plushie_hampter"
-            }
-        ]
-    }
-
-    // This item will inherit the tags from ParentA, but not from ParentB.
-    // To fix this we have to redefine the list manually and include all three tags.
-    // The item will have both the PointLightComponent and the MeleeWeaponComponent and the corresponding datafields set in the parents.
-    const testItem5: Prototype = {
-        type: "entity",
-        parent: ["TestItem1", "ParentA", "ParentB"],
-        id: "TestItem5",
-        name: "test lizard 5",
-        components: [
-            {
-                type: "Tag",
-                tags: ["TagA1", "TagA2", "TagB"]
-            }
-        ]
-    }
-
     describe("one parent → child inheritance", () => {
         test('duplicate components (by type) - merge duplicates (no field conflicts)', () => {
             const parents: Prototype[] = [
@@ -289,6 +180,7 @@ describe('entities', () => {
                     ]
                 }
             ];
+            const parentsIntegrity = getIntegrityAsserter(parents);
 
             const descendant: Prototype = {
                 type: "entity",
@@ -302,6 +194,7 @@ describe('entities', () => {
                     }
                 ]
             };
+            const descendantIntegrity = getIntegrityAsserter(descendant);
 
             const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
@@ -318,6 +211,8 @@ describe('entities', () => {
                     }
                 ]
             });
+            parentsIntegrity(parents);
+            descendantIntegrity(descendant);
         });
 
         test('duplicate components (by type), duplicate field (primitive on primitive) - replace', () => {
@@ -334,6 +229,7 @@ describe('entities', () => {
                     ]
                 }
             ];
+            const parentsIntegrity = getIntegrityAsserter(parents);
 
             const descendant: Prototype = {
                 type: "entity",
@@ -347,6 +243,7 @@ describe('entities', () => {
                     }
                 ]
             };
+            const descendantIntegrity = getIntegrityAsserter(descendant);
 
             const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
@@ -362,6 +259,8 @@ describe('entities', () => {
                     }
                 ]
             });
+            parentsIntegrity(parents);
+            descendantIntegrity(descendant);
         });
 
 
@@ -383,6 +282,7 @@ describe('entities', () => {
                     ]
                 }
             ];
+            const parentsIntegrity = getIntegrityAsserter(parents);
 
             const descendant: Prototype = {
                 type: "entity",
@@ -399,6 +299,7 @@ describe('entities', () => {
                     }
                 ]
             };
+            const descendantIntegrity = getIntegrityAsserter(descendant);
 
             const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
@@ -417,6 +318,8 @@ describe('entities', () => {
                     }
                 ]
             });
+            parentsIntegrity(parents);
+            descendantIntegrity(descendant);
         });
 
         test('duplicate components (by type), duplicate field (map on map) - replace', () => {
@@ -437,6 +340,7 @@ describe('entities', () => {
                     ]
                 }
             ];
+            const parentsIntegrity = getIntegrityAsserter(parents);
 
             const descendant: Prototype = {
                 type: "entity",
@@ -454,6 +358,7 @@ describe('entities', () => {
                     }
                 ]
             };
+            const descendantIntegrity = getIntegrityAsserter(descendant);
 
             const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
@@ -473,6 +378,8 @@ describe('entities', () => {
                     }
                 ]
             });
+            parentsIntegrity(parents);
+            descendantIntegrity(descendant);
         });
     })
 
@@ -502,6 +409,7 @@ describe('entities', () => {
                     ]
                 }
             ];
+            const parentsIntegrity = getIntegrityAsserter(parents);
 
             const descendant: Prototype = {
                 type: "entity",
@@ -509,6 +417,7 @@ describe('entities', () => {
                 id: "TestItem2",
                 name: "test lizard 2"
             };
+            const descendantIntegrity = getIntegrityAsserter(descendant);
 
             const parentPool: ProtoPool = createProtoPool([...parents, descendant]);
 
@@ -525,6 +434,8 @@ describe('entities', () => {
                     }
                 ]
             });
+            parentsIntegrity(parents);
+            descendantIntegrity(descendant);
         })
     });
 })

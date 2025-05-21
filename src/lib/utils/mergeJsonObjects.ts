@@ -3,10 +3,10 @@ import { deepCloneObjectUsingJson } from '$src/utils';
 const logger = new Logger("utils/mergeJsonObjects");
 const { logFatal } = logger;
 
-export type StrategyResolver<BaseValue, TopValue> =
+export type StrategyResolver<ResValue, TopValue> =
     (
         key: string,
-        baseValue: BaseValue,
+        resValue: ResValue,
         topValue: TopValue,
         fallbackToStrategy: (strategy: Exclude<Strategy, 'function_resolver'>) => unknown
     ) => unknown
@@ -109,11 +109,11 @@ export function mergeJsonObjects(
     const resultObj = deepCloneObjectUsingJson(baseObj) as any;
     for (const [key, value] of Object.entries(topObj)) {
         if (key in baseObj) {
-            const baseValue = resultObj[key];
-            const baseValueType = typeof baseValue;
+            const resValue = resultObj[key];
+            const resValueType = typeof resValue;
 
-            const baseValueTypeNarrow: ValueTypeNarrow = baseValueType === 'object' && baseValue !== null
-                ? Array.isArray(baseValue)
+            const resValueTypeNarrow: ValueTypeNarrow = resValueType === 'object' && resValue !== null
+                ? Array.isArray(resValue)
                     ? 'array'
                     : 'map'
                 : 'primitive_or_null';
@@ -126,28 +126,28 @@ export function mergeJsonObjects(
                     : 'map'
                 : 'primitive_or_null';
 
-            let strategy = strategyTypeToType[`${baseValueTypeNarrow}_to_${valueTypeNarrow}`]
+            let strategy = strategyTypeToType[`${resValueTypeNarrow}_to_${valueTypeNarrow}`]
                 ?? strategyTypeToType.default!;
 
-            if (baseValueTypeNarrow === 'primitive_or_null' && valueTypeNarrow === 'primitive_or_null') {
+            if (resValueTypeNarrow === 'primitive_or_null' && valueTypeNarrow === 'primitive_or_null') {
                 strategy = c.strategyPrimitiveOnPrimitive;
             }
 
             // override merge strategy on array/map types if overrides are given.
             // also ensure that if merge strat is chosen, the base/top types can merge.
             if (strategy === 'merge') {
-                if (baseValueTypeNarrow === 'array' && valueTypeNarrow === 'array') {
+                if (resValueTypeNarrow === 'array' && valueTypeNarrow === 'array') {
                     strategy = c.strategyArrayOnArray;
-                } else if (baseValueTypeNarrow === 'map' && valueTypeNarrow === 'map') {
+                } else if (resValueTypeNarrow === 'map' && valueTypeNarrow === 'map') {
                     strategy = c.strategyMapOnMap;
                 } else {
                     logFatal({
                         msg: "failed to merge objects: merge strategy 'merge' chosen, but base and top types are unsupported for this strategy",
                         throw: true,
                         data: {
-                            baseValueType,
+                            baseValueType: resValueType,
                             valueType,
-                            baseValue,
+                            baseValue: resValue,
                             value
                         }
                     });
@@ -160,20 +160,20 @@ export function mergeJsonObjects(
                 resultObj[key] = value;
             } else if (strategy === 'merge') {
                 // only check for base bcs the types were checked at the overrides check
-                if (baseValueTypeNarrow === 'array') {
-                    baseValue.push(...value);
-                } else if (baseValueTypeNarrow === 'map') {
-                    resultObj[key] = mergeJsonObjects(baseValue, value);
+                if (resValueTypeNarrow === 'array') {
+                    resValue.push(...value);
+                } else if (resValueTypeNarrow === 'map') {
+                    resultObj[key] = mergeJsonObjects(resValue, value);
                 }
             } else if (strategy === 'function_resolver') {
                 // only check for base bcs the types were checked at the overrides check
-                if (baseValueTypeNarrow === 'array') {
+                if (resValueTypeNarrow === 'array') {
                     resultObj[key] = c.strategyArrayOnArrayResolver!(
                         key,
-                        baseValue,
+                        resValue,
                         value,
                         strategy => mergeJsonObjects(
-                            baseObj,
+                            resultObj,
                             topObj,
                             {
                                 ...config,
@@ -181,13 +181,13 @@ export function mergeJsonObjects(
                             }
                         )
                     );
-                } else if (baseValueTypeNarrow === 'map') {
+                } else if (resValueTypeNarrow === 'map') {
                     resultObj[key] = c.strategyMapOnMapResolver!(
                         key,
-                        baseValue,
+                        resValue,
                         value,
                         strategy => mergeJsonObjects(
-                            baseObj,
+                            resultObj,
                             topObj,
                             {
                                 ...config,
