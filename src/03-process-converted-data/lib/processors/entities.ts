@@ -20,7 +20,7 @@ registerProcessor('entities', ({
     writeJsonSync('temp', 'entities_raw.json', entities);
 
     entities = entityPrototypeSchema.array()
-        .parse(entities)
+        .parse(entities);
 
     writeJsonSync('output', projectProcessingOutputs.entities.entitiesJson, entities);
 });

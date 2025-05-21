@@ -49,6 +49,15 @@ registerProcessor('cargo_orders', ({
                     order.contents.push(entry);
                 }
             }
+
+            // const entityTableContainerFillComponent = tryGetCompWithParse(productProto, 'EntityTableContainerFill');
+            // if (entityTableContainerFillComponent) {
+            //     order.contents = [];
+            //     for (const selector of Object.values(entityTableContainerFillComponent.containers)) {
+            //         selector.tabl
+            //         order.contents.push(selector);
+            //     }
+            // }
         }
 
         // validate and push

@@ -22,12 +22,14 @@ export function schemaParse<T extends ZodType>(schema: T, data: unknown): z.infe
             logFatal({
                 msg: fromError(err).toString(),
                 throw: true,
+                stringifyData: true,
                 data
             });
         } else {
             logFatal({
                 msg: "unknown error while parsing",
                 throw: true,
+                stringifyData: true,
                 data
             });
         }

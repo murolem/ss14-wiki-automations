@@ -1,5 +1,6 @@
 import { Logger } from '$logger';
 import { prototypeSchema } from '$schemas/prototype/base';
+import { entityTableContainerFillEntityComponentSchema } from '$schemas/prototype/prototypes/entity/components/entityTableContainerFill';
 import { storageFillEntityComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
 import { z, ZodType } from 'zod';
 const logger = new Logger("schemas/proto/entity");
@@ -39,6 +40,7 @@ export type KnownEntityComponentType = KnownEntityComponent['type'];
 /** A map of component type to schema. */
 export const entityComponentSchemaByType = {
     StorageFill: storageFillEntityComponentSchema,
+    EntityTableContainerFill: entityTableContainerFillEntityComponentSchema,
     Lathe: latheComponentSchema
 } satisfies Record<string, ZodType>;
 
@@ -46,6 +48,7 @@ export const entityComponentSchemaByType = {
 /** Entity component schema for components for whom a schema is defined. */
 export const knownEntityComponentSchema = z.union([
     entityComponentSchemaByType.Lathe,
+    entityComponentSchemaByType.EntityTableContainerFill,
     entityComponentSchemaByType.StorageFill,
 ])
 
