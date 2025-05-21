@@ -8,6 +8,7 @@ import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import path from 'path';
 
+/** Processor arguments. */
 export type ProcessorArgs = {
     dirpath: string,
     stepDirpaths: typeof projectStepDirpaths[Project],
@@ -17,7 +18,9 @@ export type ProcessorArgs = {
     writeJsonSync: ReturnType<typeof getWriteJsonSyncInstance>,
     assertPathExists: typeof assertPathExists;
 }
+/** Processor. */
 export type Processor = (args: ProcessorArgs) => void;
+/** Map of projects to registered processors. */
 const processors: Partial<Record<Project, Processor>> = {};
 
 /** Loads and registers all processors. */
@@ -92,7 +95,7 @@ export function getProcessor(project: Project): Processor {
 
 /**
  * Runs processor for a given project.
-* @throws {Error} if no processor is registered for that project.
+ * @throws {Error} if no processor is registered for that project.
  */
 export function runProcessor(project: Project) {
     const processor = getProcessor(project);
@@ -121,13 +124,26 @@ export function runProcessor(project: Project) {
     processorLogger.logInfo(`✅ project ${chalk.bold(project)} finished`);
 }
 
+/**
+ * Generates a JSON-writing function specific for a given project, 
+ * represented by output/temp directory paths and a custom logger instance.
+ * 
+ * Returned function allows to pick the temp/output directory path with a separate argument.
+ * The written data is automatically formatted to have 4 spaces.
+ * Every write start and finish accommodated with a log message.
+ * 
+ * @param outputDirpath Directory path for writing useful data.
+ * @param tempDirpath Directory path for writing intermediary data.
+ * @param logger Logger instance to use with this writer.
+ * @returns A json writing function.
+ */
 function getWriteJsonSyncInstance(outputDirpath: string, tempDirpath: string, logger: Logger) {
     return (target: 'output' | 'temp', relFilepath: string, data: unknown) => {
         const baseDir = target === 'output'
             ? outputDirpath
             : tempDirpath;
 
-        const combinedPath = toOsPath(`${baseDir}/${relFilepath}`);
+        const combinedPath = path.join(baseDir, relFilepath);
 
         if (target === 'output') {
             logger.logInfo(`writing output JSON ${chalk.bold(relFilepath)}; path: ${chalk.gray(combinedPath)}`);
@@ -139,9 +155,7 @@ function getWriteJsonSyncInstance(outputDirpath: string, tempDirpath: string, lo
 }
 
 /** 
- * Writes data as a JSON sequence.
- * 
- * Automatically applies 4 spaces.
+ * Writes JSON data to disk. Automatically applies 4 spaces formatting.
  */
 function writeJsonSync(filepath: string, data: unknown): void {
     fs.writeJsonSync(filepath, data, { spaces: 4 });
@@ -150,8 +164,10 @@ function writeJsonSync(filepath: string, data: unknown): void {
 /** 
  * Checks whether given path exists.
  * 
+ * {@link errorMsg} is provided, used it for the error message.
+ * @param pathStr Path to check.
+ * @param errorMsg A custom error message.
  * @throws {Error} If given path doesn't exists. 
- * If {@link errorMsg} is provided, used it for the error message.
   */
 function assertPathExists(pathStr: string, errorMsg?: string): void {
     if (!fs.existsSync(pathStr)) {
