@@ -4,12 +4,12 @@ import fs from 'fs-extra';
 import { Logger } from '$logger';
 import chalk from 'chalk';
 import yaml, { YAMLException } from 'js-yaml';
-import { yamlSchema } from './yamlSchema';
 import path from 'path';
 import { isYamlFile } from './utils/isYamlFile';
 import { replacePathExtension } from './utils/replacePathExtension';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsEmpty';
+import { yamlSchema } from '$schemas/core/yamlSchema';
 
 const logger = new Logger("convert/convertProject");
 const { logDebug, logInfo, logWarn, logFatal } = logger;

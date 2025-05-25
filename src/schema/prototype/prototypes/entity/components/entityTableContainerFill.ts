@@ -4,6 +4,8 @@ import { protoIdSchema } from '$schemas/prototype/base';
 import { schemaParse } from '$schemas/utils/assertSchema';
 import { z } from 'zod';
 
+// = number selector =
+
 /** Picks a value based on a Binomial Distribution of N Trials given P Chance. */
 const binomialNumberSelectorSchema = z.object({
     [yamlTypeFieldName]: z.literal("BinomialNumberSelector"),
@@ -36,7 +38,8 @@ const numberSelectorSchema = z.union([
     rangeNumberSelectorSchema
 ])
 
-// const numberSelectorSchema = 
+// ===============
+// = table selectors =
 
 const entityTableConditionSchema = z.object({
     /** If true, inverts the result of the condition. */
@@ -116,7 +119,9 @@ const nestedSelectorSchema = baseEntityTableSelectorSchema.extend({
 });
 
 /** Selects nothing. */
-const noneSelectorSchema = baseEntityTableSelectorSchema.extend({});
+const noneSelectorSchema = baseEntityTableSelectorSchema.extend({
+    [yamlTypeFieldName]: z.literal("NoneSelector"),
+});
 
 /** A union of all entity table selectors. */
 const entityTableSelectorSchema = z.union([
@@ -126,6 +131,8 @@ const entityTableSelectorSchema = z.union([
     nestedSelectorSchema,
     noneSelectorSchema
 ])
+
+// =============
 
 /** `EntityTableContainerFill` entity component. */
 export const entityTableContainerFillEntityComponentSchema = z.object({

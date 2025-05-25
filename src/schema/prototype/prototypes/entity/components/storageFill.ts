@@ -12,10 +12,16 @@ const storageFillContentsEntrySchema = z.object({
     prob: z.number().optional(),
 
     /**
-     * guh
+     * Group for this entry. Grouped entities' probabilities act as weights, guaranteeing
+     * that one of them will roll.
      */
     orGroup: z.string().optional(),
+
+    /** Amount. */
     amount: z.number().optional(),
+
+    /** Max amount. If specified, creates a range with a random distribution instead 
+     * - between {@link amount} and this. */
     maxAmount: z.number().optional()
 })
 

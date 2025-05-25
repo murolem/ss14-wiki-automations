@@ -1,12 +1,15 @@
 import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { locRecordProperty } from '$src/03-process-converted-data/lib/processors/locale';
-import { filterProtosByType, getPrototypes, tryGetCompWithParse, tryGetProtoById, tryGetProtoByIdWithParse } from '$src/03-process-converted-data/lib/processors/prototypes';
 import { projectProcessingOutputs } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
 import { schemaParse } from '$schemas/utils/assertSchema';
+import { tryGetCompWithParse } from '$src/03-process-converted-data/lib/processors/prototypes/getComp';
+import { filterProtosByType, tryGetProtoByIdWithParse } from '$src/03-process-converted-data/lib/processors/prototypes/getProto';
+import { getPrototypes } from '$src/03-process-converted-data/lib/processors/prototypes/index';
+import { yamlTypeFieldName } from '$schemas/core/yamlSchema';
 
 registerProcessor('cargo_orders', ({
     dirpath: projectDirpath,
@@ -53,9 +56,11 @@ registerProcessor('cargo_orders', ({
             // const entityTableContainerFillComponent = tryGetCompWithParse(productProto, 'EntityTableContainerFill');
             // if (entityTableContainerFillComponent) {
             //     order.contents = [];
-            //     for (const selector of Object.values(entityTableContainerFillComponent.containers)) {
-            //         selector.tabl
-            //         order.contents.push(selector);
+            //     for (const [containerKey, selector] of Object.entries(entityTableContainerFillComponent.containers)) {
+            //         const type = selector[yamlTypeFieldName];
+            //         // selector
+            //         // selector.tabl
+            //         // order.contents.push(selector);
             //     }
             // }
         }
