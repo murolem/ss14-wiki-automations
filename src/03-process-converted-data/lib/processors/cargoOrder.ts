@@ -19,8 +19,6 @@ registerProcessor('cargo_orders', ({
     logger,
     writeJsonSync
 }) => {
-    const protos = getPrototypes();
-
     const ordersRaw = filterProtosByType('cargoProduct');
     writeJsonSync('temp', 'cargoProduct_raw.json', ordersRaw);
 

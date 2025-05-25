@@ -1,1 +1,1 @@
-import './prototypes';
+import './prototypes/index';
