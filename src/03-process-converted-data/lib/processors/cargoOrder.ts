@@ -69,5 +69,5 @@ registerProcessor('cargo_orders', ({
 
     orders.sort((a, b) => a.id.localeCompare(b.id));
 
-    writeJsonSync('output', projectProcessingOutputs.cargo_orders.ordersJson, orders);
+    writeJsonSync('output', projectProcessingOutputs.cargo_orders.ordersJson.filepath, orders);
 });

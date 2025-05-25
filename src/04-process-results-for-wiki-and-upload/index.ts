@@ -1,11 +1,8 @@
-import { stepAbsDirPaths } from '$src/preset';
 import fs from 'fs-extra';
 import preprocess from './lib/preprocess';
 import diff from './lib/diff';
-import upload from './lib/upload';
-
-fs.emptyDirSync(stepAbsDirPaths.wikiUploadData);
+// import upload from './lib/upload';
 
 preprocess();
-diff();
-await upload();
+await diff();
+// await upload();

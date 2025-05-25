@@ -1,5 +1,10 @@
+import { prototypeSchema } from '$schemas/prototype/base';
+import { cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
+import { entityPrototypeSchema, entityWikiMapOfIdToName, entityWikiMapOfNameToId } from '$schemas/prototype/prototypes/entity';
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
+import type { ZodTypeAny } from 'zod';
+import type { ZodType } from 'zod/v4';
 
 /** Controls extra logging. */
 export const extendedLogging = {
@@ -18,6 +23,11 @@ export const preferredLocale: string = 'en-US';
 // NOTE: this is also hardcoded into npm commands
 export const ss14RepoGitUrl = 'https://github.com/space-wizards/space-station-14.git';
 
+/** List of paths relative to the sync dir that should be excluded from the syncing process. */
+export const syncBranchPathBlacklist = [
+    "README.md"
+];
+
 // ==========
 
 const cwd = process.cwd();
@@ -27,6 +37,7 @@ export type Project = keyof typeof projectDirnames;
 /** Directory names of "projects" — logical blocks for grouping together similar resulting outputs. */
 export const projectDirnames = {
     ss14_repo: '_ss14-repo',
+    diff: '_diff',
     locale: 'locale',
     prototypes: 'prototypes',
     entities: 'entities',
@@ -76,9 +87,11 @@ export const projectStepDirpaths = Object
     }, {} as any);
 
 
-
 /** Describes a single output from a processing step. */
-export type ProcessingStepOutputEntry = string;
+export type ProcessingStepOutputEntry = {
+    filepath: string,
+    schema: ZodTypeAny
+};
 
 /** Narrowed key type for {@link projectProcessingOutputs}. */
 export type ProjectProcessingOutputsKey = {
@@ -93,13 +106,22 @@ export type ProjectProcessingOutputsKey = {
  */
 export const projectProcessingOutputs = {
     prototypes: {
-        prototypesJson: "prototypes.json"
+        prototypesJson: {
+            filepath: "prototypes.json",
+            schema: prototypeSchema.array()
+        }
     },
     entities: {
-        entitiesJson: "entities.json"
+        entitiesJson: {
+            filepath: "entities.json",
+            schema: entityPrototypeSchema.array()
+        }
     },
     cargo_orders: {
-        ordersJson: "orders.json"
+        ordersJson: {
+            filepath: "orders.json",
+            schema: cargoProductProcessedProtoSchema.array()
+        }
     }
 } satisfies Partial<Record<Project, Record<string, ProcessingStepOutputEntry>>>;
 
@@ -112,7 +134,9 @@ export type WikiStepOutputEntry = {
      * Url to upload the file to.
      * Relative to the wiki endpoint.
     */
-    url: string
+    url: string,
+
+    schema: ZodTypeAny
 }
 /** 
  * A mapping for each project to their useful outputs. 
@@ -120,13 +144,15 @@ export type WikiStepOutputEntry = {
  */
 export const projectWikiOutputs = {
     entities: {
-        entity_map_id_to_name: {
-            filepath: "entity_map_id_to_name.json",
-            url: "Module:Item/data/auto/entity_map_id_to_name.json"
+        entity_map_of_id_to_name: {
+            filepath: "entity_map_of_id_to_name.json",
+            url: "Module:Item/data/auto/entity_map_of_id_to_name.json",
+            schema: entityWikiMapOfIdToName
         },
-        entity_map_name_to_id: {
-            filepath: "entity_map_name_to_id.json",
-            url: "Module:Item/data/auto/entity_map_name_to_id.json"
+        entity_map_of_name_to_id: {
+            filepath: "entity_map_of_name_to_id.json",
+            url: "Module:Item/data/auto/entity_map_of_name_to_id.json",
+            schema: entityWikiMapOfNameToId
         }
     }
 } satisfies Partial<Record<Project, Record<string, WikiStepOutputEntry>>>;

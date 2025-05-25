@@ -103,7 +103,7 @@ registerProcessor('prototypes', ({
 
     writeJsonSync(
         'output',
-        projectProcessingOutputs.prototypes.prototypesJson,
+        projectProcessingOutputs.prototypes.prototypesJson.filepath,
         prototypesResolved
     );
 

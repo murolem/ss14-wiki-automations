@@ -33,7 +33,7 @@ registerProcessor('entities', ({
     entities = entityPrototypeSchema.array()
         .parse(entities);
 
-    writeJsonSync('output', projectProcessingOutputs.entities.entitiesJson, entities);
+    writeJsonSync('output', projectProcessingOutputs.entities.entitiesJson.filepath, entities);
 });
 
 /**

@@ -8,7 +8,7 @@ import path from 'path';
 import { isYamlFile } from './utils/isYamlFile';
 import { replacePathExtension } from './utils/replacePathExtension';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
-import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsEmpty';
+import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 import { yamlSchema } from '$schemas/core/yamlSchema';
 
 const logger = new Logger("convert/convertProject");

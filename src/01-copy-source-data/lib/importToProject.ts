@@ -3,7 +3,7 @@ import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
 import chalk from 'chalk';
-import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsEmpty';
+import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 
 const logger = new Logger("import/importToProject");
 const { logInfo, logFatal } = logger;

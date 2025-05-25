@@ -1,6 +1,6 @@
 import { projectDirpaths, projectStepDirpaths, type Project } from '$src/preset';
 import { Logger } from '$logger';
-import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsEmpty';
+import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 const logger = new Logger("process/registerProcessor");
 const { logInfo, logFatal } = logger;
 import fs from 'fs-extra';

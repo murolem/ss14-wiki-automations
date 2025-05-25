@@ -10,6 +10,9 @@
     ],
     "skipLibCheck": true,
     "paths": {
+      "$git": [
+        "./src/lib/utils/git.ts"
+      ],
       "$testUtils/*": [
         "./test/utils/*"
       ],

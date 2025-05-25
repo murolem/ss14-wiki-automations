@@ -60,10 +60,15 @@ export const entityComponentSchema = z.union([
 
 export type EntityPrototype = z.infer<typeof entityPrototypeSchema>;
 export const entityPrototypeSchema = prototypeSchema.extend({
+    name: z.string().optional(),
+
     description: z.union([
         z.string(),
         z.null()
     ]).optional(),
 
     components: entityComponentSchema.array().optional()
-}).passthrough();
+});
+
+export const entityWikiMapOfIdToName = z.record(z.string(), z.string());
+export const entityWikiMapOfNameToId = z.record(z.string(), z.string());
