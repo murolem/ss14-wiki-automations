@@ -3,8 +3,16 @@ import { cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/
 import { entityPrototypeSchema, entityWikiMapOfIdToName, entityWikiMapOfNameToId } from '$schemas/prototype/prototypes/entity';
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
-import type { ZodTypeAny } from 'zod';
-import type { ZodType } from 'zod/v4';
+import { z, type ZodTypeAny } from 'zod';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const envVarsSchema = z.object({
+    PR_MANAGE_GH_TOKEN: z.string(),
+    WIKI_LOGIN: z.string(),
+    WIKI_PASSWORD: z.string()
+});
+export const envVars = envVarsSchema.parse(process.env);
 
 /** Controls extra logging. */
 export const extendedLogging = {
@@ -27,6 +35,20 @@ export const ss14RepoGitUrl = 'https://github.com/space-wizards/space-station-14
 export const syncBranchPathBlacklist = [
     "README.md"
 ];
+
+/** 
+ * Config regarding the repo this program resides in. 
+ * Used to manage syncing branch PRs.
+*/
+export const wikiAutomationsRepo = {
+    owner: "murolem",
+    repo: "ss14-wiki-automations",
+    // name of the syncing branch
+    syncBranchName: "sync"
+}
+
+/** Name to use for git author. */
+export const automationsGitAuthor = "Meowbot";
 
 // ==========
 

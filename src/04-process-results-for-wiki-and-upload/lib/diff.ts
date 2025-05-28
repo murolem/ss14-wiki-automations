@@ -1,25 +1,33 @@
 import { Logger } from '$logger';
-import { projectDirpaths, projectStepDirpaths, projectWikiOutputs, type Project } from '$src/preset';
+import { automationsGitAuthor, projectDirpaths, projectStepDirpaths, projectWikiOutputs, syncBranchPathBlacklist, wikiAutomationsRepo, type Project } from '$src/preset';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 import fs from 'fs-extra';
 const logger = new Logger("wiki/diff");
 const { logInfo, logWarn, logFatal } = logger;
-import { git, gitConfig as baseGitConfig } from '$git';
 import { Spinner } from '$utils/spinner';
 import path from 'path';
 import chalk from 'chalk';
 import { ensuredWritePrettyJsonSync } from '$utils/writeJson';
-
+import { toOsPath } from '$utils/toOsPath';
+import { git } from '$git';
+import { changesCopyIntoSync } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesCopyIntoSync';
+import { changesGet } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesGet';
+import { changesStage } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesStage';
+import { changesCommit } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesCommit';
+import { formatDateForBranchName, formatDateForCommit, formatDateForPrTitle } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/utils/formatDate';
+import { branchClone } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/branchClone';
+import { branchCreate, branchCreateWithCheckout } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/branchCreate';
+import { changesPush } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesPush';
+import { prCreate } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/prCreate';
+import { date, spinner } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/base';
 
 /*
-* 
 * This step creates a diff between "current state of the wiki" and the desired state considering any changes.
 * 
 * "current state of the wiki" is actually a separate branch of this repo (called the syncing branch), containing an ideal state
 * of all relevant pages and files, NOT the whatever state the wiki is. The reasons for this are outlined at the end.
 * 
-* All new changes (if any), are PRed and automatically merged with the syncing branch. 
-* Then the new changes are propagated to the wiki with a link to the PR.
+* This step only does the local stuff. Actual PR is created in a separate step.
 * 
 * Reasons why not just check the wiki for any changes directly instead of having a syncing branch:
 * - It's kind of cool to have the ideal state and diffs and all that reflected on github.
@@ -34,96 +42,17 @@ import { ensuredWritePrettyJsonSync } from '$utils/writeJson';
 */
 
 export default async function () {
-    // should be already made and ready atp by the sync clone command
-    const diffDirpath = projectDirpaths.diff;
-    ensureDirectoryExistsAndEmpty(diffDirpath);
-    // if (fs.existsSync(diffDirpath)) {
-    //     logFatal({
-    //         msg: "failed to diff: diff dir is expected to exists atp",
-    //         throw: true,
-    //         data: {
-    //             diffDirpath
-    //         }
-    //     });
-    // }
+    logInfo("emptying out sync dir")
+    ensureDirectoryExistsAndEmpty(projectDirpaths.diff);
 
-    const spinner = new Spinner();
-
-    const gitConfig = {
-        ...baseGitConfig,
-        dir: diffDirpath,
-        gitdir: path.join(diffDirpath, ".git"),
-        onAuth: spinner.info,
-        onAuthFailure: spinner.error,
-        onAuthSuccess: spinner.info,
-        onMessage: spinner.info,
-        onPostCheckout: e => spinner.done(`${spinner.initialText} done!`),
-        onProgress: e => spinner.info(`${e.phase}: ${e.loaded}/${e.total}`),
-    } satisfies Partial<Parameters<typeof git.clone>[0]>;
-
-    // =============
-
-    // const repo = git(diffDirpath);
-    logInfo("cloning origin sync branch")
-
-    spinner.start("cloning")
-
-    await git.clone({
-        ...gitConfig,
-        url: "https://github.com/murolem/ss14-wiki-automations.git",
-        singleBranch: true,
-        depth: 1,
-        ref: "sync",
-    });
-
-    logInfo("copying output into sync dir");
-
-    // spinner.start("copying")
-
-    const projectWikiOutputsKeys = Object.keys(projectWikiOutputs);
-    for (let projectI = 0; projectI < projectWikiOutputsKeys.length; projectI++) {
-        const project = projectWikiOutputsKeys[projectI];
-        const projectDiffDirpath = path.join(projectDirpaths.diff, project);
-        ensureDirectoryExistsAndEmpty(projectDiffDirpath);
-
-        logInfo(`[proj ${projectI + 1} of ${projectWikiOutputsKeys.length}] project ${chalk.bold(project)}`);
-
-        const projectOutputs = projectWikiOutputs[project as keyof typeof projectWikiOutputs];
-        const projectOutputsKeys = Object.keys(projectOutputs);
-        for (let projectOutputI = 0; projectOutputI < projectOutputsKeys.length; projectOutputI++) {
-            const projectOutputKey = projectOutputsKeys[projectOutputI];
-
-            logInfo(`[out ${projectOutputI + 1} of ${projectOutputsKeys.length}] output ${chalk.italic(projectOutputKey)}`);
-
-            const output = projectOutputs[projectOutputKey as keyof typeof projectOutputs];
-            const fullFilepath = path.join(projectStepDirpaths[project as Project].wiki_upload, output.filepath);
-            if (!fs.existsSync(fullFilepath)) {
-                logInfo(chalk.gray("❌ not found, at: " + fullFilepath));
-                continue;
-            }
-
-            const diffDirFilepath = path.join(projectDiffDirpath, output.filepath);
-            fs.ensureDirSync(path.parse(diffDirFilepath).dir);
-            fs.copyFileSync(fullFilepath, diffDirFilepath);
-
-            logInfo(`✅ copied! ${chalk.gray("to: " + diffDirFilepath)}`);
-        }
+    await branchClone(wikiAutomationsRepo.syncBranchName);
+    await changesCopyIntoSync();
+    const [haveChanges, changes] = await changesGet();
+    if (!haveChanges) {
+        logInfo("✅ exiting");
+        return;
     }
 
-    const status = await git.statusMatrix({
-        ...gitConfig
-    });
-
-    console.log(status);
-
-
-
-
-
-
-    // await repo.clone("https://github.com/murolem/ss14-wiki-automations.git", ".", [
-    //     "-b 'sync'",
-    //     "--depth 1",
-    //     "--single-branch"
-    // ]);
+    await changesStage(changes);
+    await changesCommit("sync " + formatDateForCommit(date));
 }

@@ -46,7 +46,7 @@ const entityTableConditionSchema = z.object({
     invert: z.boolean()
 });
 
-const baseEntityTableSelectorSchema = z.object({
+const entitySelectorSchema = z.object({
     /** The number of times this selector is run */
     rolls: z.number().int().default(1),
 
@@ -66,7 +66,7 @@ const baseEntityTableSelectorSchema = z.object({
     requireAll: z.boolean().default(true),
 });
 
-type AllSelector = z.infer<typeof baseEntityTableSelectorSchema> & {
+type AllSelector = z.infer<typeof entitySelectorSchema> & {
     [yamlTypeFieldName]: "AllSelector",
 
     children: Array<z.infer<typeof entityTableSelectorSchema>>
@@ -74,15 +74,17 @@ type AllSelector = z.infer<typeof baseEntityTableSelectorSchema> & {
 
 /** Gets spawns from all of the child selectors. */
 // @ts-ignore head hurts
-const allSelectorSchema: z.ZodType<AllSelector> = baseEntityTableSelectorSchema.extend({
+const allSelectorSchema: z.ZodType<AllSelector> = entitySelectorSchema.extend({
     [yamlTypeFieldName]: z.literal("AllSelector"),
 
     children: z.lazy(() => z.array(entityTableSelectorSchema))
 });
 
 /** Gets the spawn for the entity prototype specified at whatever count specified. */
-const entSelector = baseEntityTableSelectorSchema.extend({
-    [yamlTypeFieldName]: z.literal("EntSelector"),
+const entSelector = entitySelectorSchema.extend({
+    // optional because its type could be inferred,
+    // see https://github.com/space-wizards/space-station-14/blob/fdbf2a229ec0b462eb1ea51cd2f00e64d8536ab3/Content.Shared/EntityTable/EntitySelectors/EntityTableTypeSerializer.cs#L33
+    [yamlTypeFieldName]: z.literal("EntSelector").optional(),
 
     id: protoIdSchema,
 
@@ -94,7 +96,7 @@ const entSelector = baseEntityTableSelectorSchema.extend({
     )
 });
 
-type GroupSelector = z.infer<typeof baseEntityTableSelectorSchema> & {
+type GroupSelector = z.infer<typeof entitySelectorSchema> & {
     [yamlTypeFieldName]: "GroupSelector",
 
     children: Array<z.infer<typeof entityTableSelectorSchema>>
@@ -102,7 +104,7 @@ type GroupSelector = z.infer<typeof baseEntityTableSelectorSchema> & {
 
 /** Gets the spawns from one of the child selectors, based on the weight of the children */
 // @ts-ignore head hurts
-const groupSelectorSchema: z.ZodType<GroupSelector> = baseEntityTableSelectorSchema.extend({
+const groupSelectorSchema: z.ZodType<GroupSelector> = entitySelectorSchema.extend({
     [yamlTypeFieldName]: z.literal("GroupSelector"),
 
     children: z.lazy(() => z.array(entityTableSelectorSchema))
@@ -112,19 +114,20 @@ const groupSelectorSchema: z.ZodType<GroupSelector> = baseEntityTableSelectorSch
  * Gets the spawns from the entity table prototype specified.
  * Can be used to reuse common tables.
  */
-const nestedSelectorSchema = baseEntityTableSelectorSchema.extend({
+const nestedSelectorSchema = entitySelectorSchema.extend({
     [yamlTypeFieldName]: z.literal("NestedSelector"),
 
     tableId: protoIdSchema
 });
 
 /** Selects nothing. */
-const noneSelectorSchema = baseEntityTableSelectorSchema.extend({
+const noneSelectorSchema = entitySelectorSchema.extend({
     [yamlTypeFieldName]: z.literal("NoneSelector"),
 });
 
 /** A union of all entity table selectors. */
 const entityTableSelectorSchema = z.union([
+    entitySelectorSchema,
     allSelectorSchema,
     entSelector,
     groupSelectorSchema,
