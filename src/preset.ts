@@ -1,6 +1,6 @@
 import { prototypeSchema } from '$schemas/prototype/base';
 import { cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
-import { entityPrototypeSchema, entityWikiMapOfIdToName, entityWikiMapOfNameToId } from '$schemas/prototype/prototypes/entity';
+import { entityPrototypeSchema, entityWikiMapOfIdToName, entityWikiMapOfLcNameToId } from '$schemas/prototype/prototypes/entity';
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
 import { z, type ZodTypeAny } from 'zod';
@@ -174,10 +174,10 @@ export const projectWikiOutputs = {
             wikipage: "Module:Item/data/auto/entity_map_of_id_to_name.json",
             schema: entityWikiMapOfIdToName
         },
-        entity_map_of_name_to_id: {
-            filepath: "entity_map_of_name_to_id.json",
-            wikipage: "Module:Item/data/auto/entity_map_of_name_to_id.json",
-            schema: entityWikiMapOfNameToId
+        entity_map_of_lc_name_to_id: {
+            filepath: "entity_map_of_lc_name_to_id.json",
+            wikipage: "Module:Item/data/auto/entity_map_of_lc_name_to_id.json",
+            schema: entityWikiMapOfLcNameToId
         }
     }
 } satisfies Partial<Record<Project, Record<string, WikiStepOutputEntry>>>;

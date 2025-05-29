@@ -71,4 +71,4 @@ export const entityPrototypeSchema = prototypeSchema.extend({
 });
 
 export const entityWikiMapOfIdToName = z.record(z.string(), z.string());
-export const entityWikiMapOfNameToId = z.record(z.string(), z.string());
+export const entityWikiMapOfLcNameToId = z.record(z.string(), z.string());

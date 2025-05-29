@@ -9,6 +9,7 @@ const { logInfo, logWarn, logFatal } = logger;
 
 async function main() {
     preprocess();
+
     const changes = await diff();
     if (!changes) {
         logInfo("✅ no changes to upload");
