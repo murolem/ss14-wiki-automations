@@ -1,11 +1,8 @@
-import { git } from '$git';
-import { gitConfig, githubConfig } from '../config';
 import { octokit, spinner } from '../base';
-import { wikiAutomationsRepo } from '$src/preset';
 import { Logger } from '$logger';
-import { formatDateForPrTitle } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/utils/formatDate';
-import { assertOkStatusCode } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/utils/assert';
-const logger = new Logger("wiki/kittens/cloneBranch");
+import { githubConfig } from '$wiki/lib/kittens/config';
+import { assertOkStatusCode } from '$wiki/lib/kittens/utils/assert';
+const logger = new Logger("wiki/kittens/prCreate");
 const { logInfo, logFatal } = logger;
 
 /** 

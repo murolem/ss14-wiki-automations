@@ -1,15 +1,13 @@
-import { resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
-import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
-import { locRecordProperty } from '$src/03-process-converted-data/lib/processors/locale';
 import { projectProcessingOutputs } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
 import { schemaParse } from '$schemas/utils/assertSchema';
-import { tryGetCompWithParse } from '$src/03-process-converted-data/lib/processors/prototypes/getComp';
-import { filterProtosByType, tryGetProtoByIdWithParse } from '$src/03-process-converted-data/lib/processors/prototypes/getProto';
-import { getPrototypes } from '$src/03-process-converted-data/lib/processors/prototypes/index';
 import { yamlTypeFieldName } from '$schemas/core/yamlSchema';
+import { registerProcessor } from '$process/lib/processor';
+import { locRecordProperty } from '$process/lib/processors/locale';
+import { tryGetCompWithParse } from '$process/lib/processors/prototypes/getComp';
+import { filterProtosByType, tryGetProtoByIdWithParse } from '$process/lib/processors/prototypes/getProto';
 
 registerProcessor('cargo_orders', ({
     dirpath: projectDirpath,

@@ -1,5 +1,5 @@
+import { createProtoPool, resolveInheritance, type ProtoPool } from '$process/lib/processors/prototypes/resolveInheritance';
 import type { Prototype } from '$schemas/prototype/base';
-import { createProtoPool, resolveInheritance, type ProtoPool } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
 import { getIntegrityAsserter } from '$testUtils/getIntegrityAsserter';
 import { test, expect, describe } from 'vitest';
 

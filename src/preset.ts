@@ -50,6 +50,9 @@ export const wikiAutomationsRepo = {
 /** Name to use for git author. */
 export const automationsGitAuthor = "Meowbot";
 
+export const wikiServer = "wiki.spacestation14.com";
+export const wikiApiPath = "/w";
+
 // ==========
 
 const cwd = process.cwd();
@@ -156,7 +159,7 @@ export type WikiStepOutputEntry = {
      * Url to upload the file to.
      * Relative to the wiki endpoint.
     */
-    url: string,
+    wikipage: string,
 
     schema: ZodTypeAny
 }
@@ -168,12 +171,12 @@ export const projectWikiOutputs = {
     entities: {
         entity_map_of_id_to_name: {
             filepath: "entity_map_of_id_to_name.json",
-            url: "Module:Item/data/auto/entity_map_of_id_to_name.json",
+            wikipage: "Module:Item/data/auto/entity_map_of_id_to_name.json",
             schema: entityWikiMapOfIdToName
         },
         entity_map_of_name_to_id: {
             filepath: "entity_map_of_name_to_id.json",
-            url: "Module:Item/data/auto/entity_map_of_name_to_id.json",
+            wikipage: "Module:Item/data/auto/entity_map_of_name_to_id.json",
             schema: entityWikiMapOfNameToId
         }
     }

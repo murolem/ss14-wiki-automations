@@ -1,22 +1,22 @@
 import { git } from '$git';
 import { gitConfig } from '../config';
 import { spinner } from '../base';
-import { wikiAutomationsRepo } from '$src/preset';
 import { Logger } from '$logger';
-const logger = new Logger("wiki/kittens/cloneBranch");
+import type { Change } from '$wiki/lib/kittens/steps/changesGet';
+const logger = new Logger("wiki/kittens/changesStage");
 const { logInfo, logFatal } = logger;
 
 /** 
  * Stages given changes.
  */
-export async function changesStage(changedPaths: string[]) {
+export async function changesStage(changes: Change[]) {
     logInfo("staging changes");
     spinner.start("staging");
 
-    for (const filepath of changedPaths) {
+    for (const change of changes) {
         await git.add({
             ...gitConfig,
-            filepath
+            filepath: change.path
         })
     }
     spinner.done();

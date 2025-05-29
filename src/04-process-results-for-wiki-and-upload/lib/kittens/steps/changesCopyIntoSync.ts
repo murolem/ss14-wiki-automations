@@ -1,13 +1,10 @@
-import { git } from '$git';
-import { gitConfig } from '../config';
-import { spinner } from '../base';
-import { projectDirpaths, projectStepDirpaths, projectWikiOutputs, wikiAutomationsRepo, type Project } from '$src/preset';
+import { projectDirpaths, projectStepDirpaths, projectWikiOutputs, type Project } from '$src/preset';
 import { Logger } from '$logger';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs-extra';
-const logger = new Logger("wiki/kittens/copyChangesFromProcessing");
+const logger = new Logger("wiki/kittens/changesCopyIntoSync");
 const { logInfo, logFatal } = logger;
 
 /** 

@@ -1,199 +1,199 @@
-import Logger from '@aliser/logger';
-import chalk from 'chalk';
-import MwBot from "nodemw";
-import dotenv from 'dotenv';
-import { PageEditedResult } from 'nodemw/lib/types';
-import { areJsonObjectsEqual, DeferredPromise, getLocalGitRepoHeadShortCommitHash } from '$src/utils';
-import { dataPaths, stepDir } from '$src/preset';
-import path from 'path';
-import fs from 'fs-extra';
-const logger = new Logger("04-upload-results-to-wiki");
-const { logInfo, logError, logWarn } = logger;
-dotenv.config();
+// import Logger from '@aliser/logger';
+// import chalk from 'chalk';
+// import MwBot from "nodemw";
+// import dotenv from 'dotenv';
+// import { PageEditedResult } from 'nodemw/lib/types';
+// import { areJsonObjectsEqual, DeferredPromise, getLocalGitRepoHeadShortCommitHash } from '$src/utils';
+// import { dataPaths, stepDir } from '$src/preset';
+// import path from 'path';
+// import fs from 'fs-extra';
+// const logger = new Logger("04-upload-results-to-wiki");
+// const { logInfo, logError, logWarn } = logger;
+// dotenv.config();
 
-logInfo(chalk.bold("final data processing step with wiki uploads"));
+// logInfo(chalk.bold("final data processing step with wiki uploads"));
 
-logInfo(chalk.gray("setting up wiki stuff"));
+// logInfo(chalk.gray("setting up wiki stuff"));
 
-const wikiLogin = process.env.WIKI_LOGIN;
-if (!wikiLogin) { logError("no wiki login defined. define 'WIKI_LOGIN' in .env file", { throwErr: true }); throw '' /* type guard */ }
+// const wikiLogin = process.env.WIKI_LOGIN;
+// if (!wikiLogin) { logError("no wiki login defined. define 'WIKI_LOGIN' in .env file", { throwErr: true }); throw '' /* type guard */ }
 
-const wikiPassword = process.env.WIKI_PASSWORD;
-if (!wikiPassword) { logError("no wiki login defined. define 'WIKI_PASSWORD' in .env file", { throwErr: true }); throw '' /* type guard */ }
+// const wikiPassword = process.env.WIKI_PASSWORD;
+// if (!wikiPassword) { logError("no wiki login defined. define 'WIKI_PASSWORD' in .env file", { throwErr: true }); throw '' /* type guard */ }
 
-const runUrl = process.env.GH_RUN_URL;
+// const runUrl = process.env.GH_RUN_URL;
 
-const wikiServer = 'wiki.spacestation14.com';
+// const wikiServer = 'wiki.spacestation14.com';
 
-let ss14RepoCurrentCommitShortHash: string;
+// let ss14RepoCurrentCommitShortHash: string;
 
-const mwClient = new MwBot({
-    protocol: "https", // Wikipedia now enforces HTTPS
-    server: "wiki.spacestation14.com", // host name of MediaWiki-powered site
-    path: "/w", // path to api.php script
-    debug: false, // is more verbose when set to true
-});
+// const mwClient = new MwBot({
+//     protocol: "https", // Wikipedia now enforces HTTPS
+//     server: "wiki.spacestation14.com", // host name of MediaWiki-powered site
+//     path: "/w", // path to api.php script
+//     debug: false, // is more verbose when set to true
+// });
 
-mwClient.logIn(wikiLogin, wikiPassword, err => {
-    if (err) {
-        throw err
-    }
+// mwClient.logIn(wikiLogin, wikiPassword, err => {
+//     if (err) {
+//         throw err
+//     }
 
-    main();
-});
+//     main();
+// });
 
-// ===============
+// // ===============
 
-function constructWikiPageUrl(page: string): string {
-    return `https://${wikiServer}/wiki/${page}`;
-}
+// function constructWikiPageUrl(page: string): string {
+//     return `https://${wikiServer}/wiki/${page}`;
+// }
 
-async function getArticle(title: string) {
-    const promise = new DeferredPromise<string | undefined>();
+// async function getArticle(title: string) {
+//     const promise = new DeferredPromise<string | undefined>();
 
-    mwClient.getArticle(title, (err, data) => {
-        if (err) {
-            promise.reject(err);
-        }
+//     mwClient.getArticle(title, (err, data) => {
+//         if (err) {
+//             promise.reject(err);
+//         }
 
-        promise.resolve(data);
-    });
+//         promise.resolve(data);
+//     });
 
-    return promise;
-}
+//     return promise;
+// }
 
-async function editPage(title: string, summary: string, content: string) {
-    const promise = new DeferredPromise<PageEditedResult | undefined>();
+// async function editPage(title: string, summary: string, content: string) {
+//     const promise = new DeferredPromise<PageEditedResult | undefined>();
 
-    logInfo(`running edit ot page: ${chalk.bold(encodeURI(constructWikiPageUrl(title)))}`);
+//     logInfo(`running edit ot page: ${chalk.bold(encodeURI(constructWikiPageUrl(title)))}`);
 
-    mwClient.edit(title, content, summary, (err, data) => {
-        if (err) {
-            promise.reject(err);
-        }
+//     mwClient.edit(title, content, summary, (err, data) => {
+//         if (err) {
+//             promise.reject(err);
+//         }
 
-        promise.resolve(data);
-    });
+//         promise.resolve(data);
+//     });
 
-    // @ts-ignore for tests
-    // promise.resolve();
+//     // @ts-ignore for tests
+//     // promise.resolve();
 
-    return promise;
-}
+//     return promise;
+// }
 
-async function main() {
-    ss14RepoCurrentCommitShortHash = getLocalGitRepoHeadShortCommitHash(stepDir.ss14Repo);
+// async function main() {
+//     ss14RepoCurrentCommitShortHash = getLocalGitRepoHeadShortCommitHash(stepDir.ss14Repo);
 
-    logInfo(chalk.bold(`SS14 HEAD at ${chalk.green("#" + ss14RepoCurrentCommitShortHash)}`));
+//     logInfo(chalk.bold(`SS14 HEAD at ${chalk.green("#" + ss14RepoCurrentCommitShortHash)}`));
 
-    // =================
+//     // =================
 
-    // recipes
+//     // recipes
 
-    await processPage({
-        projectOutputDataPathAlias: 'recipes.recipes by recipe IDs',
-        wikiDataPathAlias: 'recipes.recipes by recipe IDs',
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'recipes.recipes by recipe IDs',
+//         wikiDataPathAlias: 'recipes.recipes by recipe IDs',
+//     });
 
-    await processPage({
-        projectOutputDataPathAlias: 'recipes.recipe IDs by product IDs',
-        wikiDataPathAlias: 'recipes.recipe IDs by product IDs',
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'recipes.recipe IDs by product IDs',
+//         wikiDataPathAlias: 'recipes.recipe IDs by product IDs',
+//     });
 
-    await processPage({
-        projectOutputDataPathAlias: 'recipes.recipe IDs by method and availability',
-        wikiDataPathAlias: 'recipes.recipe IDs by method and availability',
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'recipes.recipe IDs by method and availability',
+//         wikiDataPathAlias: 'recipes.recipe IDs by method and availability',
+//     });
 
-    // entities
+//     // entities
 
-    await processPage({
-        projectOutputDataPathAlias: 'item.processed.entities.entity-names-by-entity-ids',
-        wikiDataPathAlias: 'item.from-wiki.entities.entity-names-by-entity-ids'
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'item.processed.entities.entity-names-by-entity-ids',
+//         wikiDataPathAlias: 'item.from-wiki.entities.entity-names-by-entity-ids'
+//     });
 
-    await processPage({
-        projectOutputDataPathAlias: 'item.processed.entities.entity-ids-by-lowercase-entity-names',
-        wikiDataPathAlias: 'item.from-wiki.entities.entity-ids-by-lowercase-entity-names'
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'item.processed.entities.entity-ids-by-lowercase-entity-names',
+//         wikiDataPathAlias: 'item.from-wiki.entities.entity-ids-by-lowercase-entity-names'
+//     });
 
-    // research
+//     // research
 
-    await processPage({
-        projectOutputDataPathAlias: 'research.techs.processed',
-        wikiDataPathAlias: 'research.techs.processed'
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'research.techs.processed',
+//         wikiDataPathAlias: 'research.techs.processed'
+//     });
 
-    await processPage({
-        projectOutputDataPathAlias: 'research.disciplines.processed',
-        wikiDataPathAlias: 'research.disciplines.processed'
-    });
+//     await processPage({
+//         projectOutputDataPathAlias: 'research.disciplines.processed',
+//         wikiDataPathAlias: 'research.disciplines.processed'
+//     });
 
 
-    // =================
+//     // =================
 
-    // const newItemNamesByItemIds = enititesList
-    //     .reduce((accum, entry) => {
-    //         if (entry.name) {
-    //             accum[entry.id] = entry.name;
-    //         }
+//     // const newItemNamesByItemIds = enititesList
+//     //     .reduce((accum, entry) => {
+//     //         if (entry.name) {
+//     //             accum[entry.id] = entry.name;
+//     //         }
 
-    //         return accum;
-    //     }, {} as Record<string, string>);
+//     //         return accum;
+//     //     }, {} as Record<string, string>);
 
-    // const newItemIds = Object.keys(newItemNamesByItemIds);
+//     // const newItemIds = Object.keys(newItemNamesByItemIds);
 
-    // // fake processing function so we can write our data without manually doing filesystem stuff
-    // processAndSaveConvertedData({
-    //     convertedDataPathAlias: 'noop',
-    //     outputDataPathAlias: 'entities.dump.parsed.names-record',
-    //     processor({ files, parseFiles, writeToOutput }) {
-    //         writeToOutput(newItemNamesByItemIds);
-    //     }
-    // });
+//     // // fake processing function so we can write our data without manually doing filesystem stuff
+//     // processAndSaveConvertedData({
+//     //     convertedDataPathAlias: 'noop',
+//     //     outputDataPathAlias: 'entities.dump.parsed.names-record',
+//     //     processor({ files, parseFiles, writeToOutput }) {
+//     //         writeToOutput(newItemNamesByItemIds);
+//     //     }
+//     // });
 
 
-    // logInfo(`fetching ${chalk.bold('item names by item ids')}`)
-    // const currentItemNamesByItemIds = await fetch('https://wiki.spacestation14.com/wiki/Module:Item/item names by item ids.json?action=raw')
-    //     .then(res => res.json())
-    //     .then(resJson => z.record(z.string(), z.string()).parse(resJson));
-    // // const currentItemNamesByItemIds: Record<string, string> = {}
+//     // logInfo(`fetching ${chalk.bold('item names by item ids')}`)
+//     // const currentItemNamesByItemIds = await fetch('https://wiki.spacestation14.com/wiki/Module:Item/item names by item ids.json?action=raw')
+//     //     .then(res => res.json())
+//     //     .then(resJson => z.record(z.string(), z.string()).parse(resJson));
+//     // // const currentItemNamesByItemIds: Record<string, string> = {}
 
-    // const currentItemIds = Object.keys(currentItemNamesByItemIds);
+//     // const currentItemIds = Object.keys(currentItemNamesByItemIds);
 
-    // // fake processing function so we can write our data without manually doing filesystem stuff
-    // processAndSaveConvertedData({
-    //     convertedDataPathAlias: 'noop',
-    //     outputDataPathAlias: 'entities.dump.wiki.current.item-names-by-item-ids',
-    //     processor({ files, parseFiles, writeToOutput }) {
-    //         writeToOutput(currentItemNamesByItemIds);
-    //     }
-    // });
+//     // // fake processing function so we can write our data without manually doing filesystem stuff
+//     // processAndSaveConvertedData({
+//     //     convertedDataPathAlias: 'noop',
+//     //     outputDataPathAlias: 'entities.dump.wiki.current.item-names-by-item-ids',
+//     //     processor({ files, parseFiles, writeToOutput }) {
+//     //         writeToOutput(currentItemNamesByItemIds);
+//     //     }
+//     // });
 
 
-    // const itemsIdsToAddToCurrent = newItemIds
-    //     .filter(itemId => !currentItemIds.includes(itemId));
+//     // const itemsIdsToAddToCurrent = newItemIds
+//     //     .filter(itemId => !currentItemIds.includes(itemId));
 
-    // if (itemsIdsToAddToCurrent.length === 0) {
-    //     logInfo("no new items to add");
-    // } else {
-    //     logInfo(`adding new items (${itemsIdsToAddToCurrent.length})...`);
+//     // if (itemsIdsToAddToCurrent.length === 0) {
+//     //     logInfo("no new items to add");
+//     // } else {
+//     //     logInfo(`adding new items (${itemsIdsToAddToCurrent.length})...`);
 
-    //     for (const itemId of itemsIdsToAddToCurrent) {
-    //         currentItemNamesByItemIds[itemId] = newItemNamesByItemIds[itemId]
-    //     }
-    // }
+//     //     for (const itemId of itemsIdsToAddToCurrent) {
+//     //         currentItemNamesByItemIds[itemId] = newItemNamesByItemIds[itemId]
+//     //     }
+//     // }
 
 
-    // const unknownItemIdsInCurrent = currentItemIds
-    //     .filter(itemId => !newItemIds.includes(itemId));
+//     // const unknownItemIdsInCurrent = currentItemIds
+//     //     .filter(itemId => !newItemIds.includes(itemId));
 
-    // if (unknownItemIdsInCurrent.length === 0) {
-    //     logInfo("no unknown item ids in the current wiki version")
-    // } else {
-    //     logInfo("custom or removed items present in the current wiki version: " + unknownItemIdsInCurrent.length);
-    //     logInfo('list', unknownItemIdsInCurrent, { stringifyAdditional: true })
-    // }
+//     // if (unknownItemIdsInCurrent.length === 0) {
+//     //     logInfo("no unknown item ids in the current wiki version")
+//     // } else {
+//     //     logInfo("custom or removed items present in the current wiki version: " + unknownItemIdsInCurrent.length);
+//     //     logInfo('list', unknownItemIdsInCurrent, { stringifyAdditional: true })
+//     // }
 
 
 
@@ -206,116 +206,116 @@ async function main() {
 
 
 
-    // // const itemIdsOfItemsWithDifferentMainNames = currentItemIds
-    // //     .filter(itemId => {
-    // //         const currentItemMainName = currentItemNamesByItemIds[itemId][0];
-    // //         const itemMainNameFromParsed = newItemNamesByItemIds[itemId]?.[0];
+//     // // const itemIdsOfItemsWithDifferentMainNames = currentItemIds
+//     // //     .filter(itemId => {
+//     // //         const currentItemMainName = currentItemNamesByItemIds[itemId][0];
+//     // //         const itemMainNameFromParsed = newItemNamesByItemIds[itemId]?.[0];
 
-    // //         // if item doesn't exist/custom, do not consider it to have a different name
-    // //         // since we can't compare them.
-    // //         // such items are processed in different way in another place.
-    // //         if (!itemMainNameFromParsed) {
-    // //             return false;
-    // //         } else if (currentItemMainName !== itemMainNameFromParsed) {
-    // //             return true
-    // //         }
-    // //     });
+//     // //         // if item doesn't exist/custom, do not consider it to have a different name
+//     // //         // since we can't compare them.
+//     // //         // such items are processed in different way in another place.
+//     // //         if (!itemMainNameFromParsed) {
+//     // //             return false;
+//     // //         } else if (currentItemMainName !== itemMainNameFromParsed) {
+//     // //             return true
+//     // //         }
+//     // //     });
 
-    // // if (itemIdsOfItemsWithDifferentMainNames.length === 0) {
-    // //     logInfo("no items with different main names")
-    // // } else {
-    // //     logInfo(`updating main names of some of the existing items (${itemIdsOfItemsWithDifferentMainNames.length})`);
+//     // // if (itemIdsOfItemsWithDifferentMainNames.length === 0) {
+//     // //     logInfo("no items with different main names")
+//     // // } else {
+//     // //     logInfo(`updating main names of some of the existing items (${itemIdsOfItemsWithDifferentMainNames.length})`);
 
-    // //     for (const [i, itemId] of itemIdsOfItemsWithDifferentMainNames.entries()) {
-    // //         const oldName = currentItemNamesByItemIds[itemId][0];
-    // //         const newName = newItemNamesByItemIds[itemId][0];
+//     // //     for (const [i, itemId] of itemIdsOfItemsWithDifferentMainNames.entries()) {
+//     // //         const oldName = currentItemNamesByItemIds[itemId][0];
+//     // //         const newName = newItemNamesByItemIds[itemId][0];
 
-    // //         currentItemNamesByItemIds[itemId][0] = newName;
+//     // //         currentItemNamesByItemIds[itemId][0] = newName;
 
-    // //         logInfo(`${i + 1}. ${chalk.bold(itemId)}:`)
-    // //         logInfo(`${chalk.italic("old:")} ${oldName}`)
-    // //         logInfo(`${chalk.italic("new:")} ${newName}`)
-    // //     }
-    // // }
+//     // //         logInfo(`${i + 1}. ${chalk.bold(itemId)}:`)
+//     // //         logInfo(`${chalk.italic("old:")} ${oldName}`)
+//     // //         logInfo(`${chalk.italic("new:")} ${newName}`)
+//     // //     }
+//     // // }
 
-    // // logInfo("sorting...")
+//     // // logInfo("sorting...")
 
-    // // const itemNamesRecordCurrentSortedMap = new Map();
-    // // const itemIdsRecordCurrentSorted = Object.keys(itemNamesRecordCurrent)
-    // //     .sort((a, b) => a.localeCompare(b));
+//     // // const itemNamesRecordCurrentSortedMap = new Map();
+//     // // const itemIdsRecordCurrentSorted = Object.keys(itemNamesRecordCurrent)
+//     // //     .sort((a, b) => a.localeCompare(b));
 
-    // // for (const key of itemIdsRecordCurrentSorted) {
-    // //     itemNamesRecordCurrentSortedMap.set(key, itemNamesRecordCurrent[key]);
-    // // }
+//     // // for (const key of itemIdsRecordCurrentSorted) {
+//     // //     itemNamesRecordCurrentSortedMap.set(key, itemNamesRecordCurrent[key]);
+//     // // }
 
-    // // fake processing function so we can write our data without manually doing filesystem stuff
-    // processAndSaveConvertedData({
-    //     convertedDataPathAlias: 'noop',
-    //     outputDataPathAlias: 'entities.dump.wiki.new.item-names-by-item-ids',
-    //     processor({ files, parseFiles, writeToOutput }) {
-    //         writeToOutput(currentItemNamesByItemIds);
-    //     }
-    // });
+//     // // fake processing function so we can write our data without manually doing filesystem stuff
+//     // processAndSaveConvertedData({
+//     //     convertedDataPathAlias: 'noop',
+//     //     outputDataPathAlias: 'entities.dump.wiki.new.item-names-by-item-ids',
+//     //     processor({ files, parseFiles, writeToOutput }) {
+//     //         writeToOutput(currentItemNamesByItemIds);
+//     //     }
+//     // });
 
 
-    // logInfo(`fetching ${chalk.bold('item item ids by item names')}`)
-    // const currentItemIdsByItemNames = await fetch('https://wiki.spacestation14.com/wiki/Module:Item/item ids by item names.json?action=raw')
-    //     .then(res => res.json())
-    //     .then(resJson => z.record(z.string(), z.string()).parse(resJson));
+//     // logInfo(`fetching ${chalk.bold('item item ids by item names')}`)
+//     // const currentItemIdsByItemNames = await fetch('https://wiki.spacestation14.com/wiki/Module:Item/item ids by item names.json?action=raw')
+//     //     .then(res => res.json())
+//     //     .then(resJson => z.record(z.string(), z.string()).parse(resJson));
 
-    // // fake processing function so we can write our data without manually doing filesystem stuff
-    // processAndSaveConvertedData({
-    //     convertedDataPathAlias: 'noop',
-    //     outputDataPathAlias: 'entities.dump.wiki.current.item-ids-by-item-names',
-    //     processor({ files, parseFiles, writeToOutput }) {
-    //         writeToOutput(currentItemIdsByItemNames);
-    //     }
-    // });
+//     // // fake processing function so we can write our data without manually doing filesystem stuff
+//     // processAndSaveConvertedData({
+//     //     convertedDataPathAlias: 'noop',
+//     //     outputDataPathAlias: 'entities.dump.wiki.current.item-ids-by-item-names',
+//     //     processor({ files, parseFiles, writeToOutput }) {
+//     //         writeToOutput(currentItemIdsByItemNames);
+//     //     }
+//     // });
 
-    // logInfo(`fetching old ${chalk.bold('item item names by item ids')}`)
-    // const oldCurrentItemNamesByItemIds = await fetch('https://wiki.spacestation14.com/wiki/Module:Item/item names by item id.json?action=raw')
-    //     .then(res => res.json())
-    //     .then(resJson => z.record(z.string(), z.string().array()).parse(resJson));
+//     // logInfo(`fetching old ${chalk.bold('item item names by item ids')}`)
+//     // const oldCurrentItemNamesByItemIds = await fetch('https://wiki.spacestation14.com/wiki/Module:Item/item names by item id.json?action=raw')
+//     //     .then(res => res.json())
+//     //     .then(resJson => z.record(z.string(), z.string().array()).parse(resJson));
 
-    // const extraItemIdsByItemNames = Object.entries(oldCurrentItemNamesByItemIds)
-    //     .reduce((accum, [itemId, names]) => {
-    //         if (names.length > 1) {
-    //             for (const name of names.slice(1)) {
-    //                 accum[name.toLocaleLowerCase()] = itemId
-    //             }
-    //         }
+//     // const extraItemIdsByItemNames = Object.entries(oldCurrentItemNamesByItemIds)
+//     //     .reduce((accum, [itemId, names]) => {
+//     //         if (names.length > 1) {
+//     //             for (const name of names.slice(1)) {
+//     //                 accum[name.toLocaleLowerCase()] = itemId
+//     //             }
+//     //         }
 
-    //         return accum;
-    //     }, {} as Record<string, string>);
+//     //         return accum;
+//     //     }, {} as Record<string, string>);
 
-    // logInfo('extra item ids by item names', extraItemIdsByItemNames, {
-    //     stringifyAdditional: true
-    // })
+//     // logInfo('extra item ids by item names', extraItemIdsByItemNames, {
+//     //     stringifyAdditional: true
+//     // })
 
-    // // todo check for duplicate names
-    // const newItemIdsByItemNames = Object.entries(currentItemNamesByItemIds)
-    //     .reduce((accum, [itemId, itemName]) => {
-    //         const itemNameLowercase = itemName.toLocaleLowerCase();
-    //         if (!accum[itemNameLowercase]) {
-    //             accum[itemNameLowercase] = itemId;
-    //         }
+//     // // todo check for duplicate names
+//     // const newItemIdsByItemNames = Object.entries(currentItemNamesByItemIds)
+//     //     .reduce((accum, [itemId, itemName]) => {
+//     //         const itemNameLowercase = itemName.toLocaleLowerCase();
+//     //         if (!accum[itemNameLowercase]) {
+//     //             accum[itemNameLowercase] = itemId;
+//     //         }
 
-    //         return accum;
-    //     }, {} as Record<string, string>);
+//     //         return accum;
+//     //     }, {} as Record<string, string>);
 
-    // for (const [itemName, itemId] of Object.entries(extraItemIdsByItemNames)) {
-    //     newItemIdsByItemNames[itemName] = itemId;
-    // }
+//     // for (const [itemName, itemId] of Object.entries(extraItemIdsByItemNames)) {
+//     //     newItemIdsByItemNames[itemName] = itemId;
+//     // }
 
-    // // fake processing function so we can write our data without manually doing filesystem stuff
-    // processAndSaveConvertedData({
-    //     convertedDataPathAlias: 'noop',
-    //     outputDataPathAlias: 'entities.dump.wiki.new.item-ids-by-item-names',
-    //     processor({ files, parseFiles, writeToOutput }) {
-    //         writeToOutput(newItemIdsByItemNames);
-    //     }
-    // });
-}
+//     // // fake processing function so we can write our data without manually doing filesystem stuff
+//     // processAndSaveConvertedData({
+//     //     convertedDataPathAlias: 'noop',
+//     //     outputDataPathAlias: 'entities.dump.wiki.new.item-ids-by-item-names',
+//     //     processor({ files, parseFiles, writeToOutput }) {
+//     //         writeToOutput(newItemIdsByItemNames);
+//     //     }
+//     // });
+// }
 
 
 
@@ -323,108 +323,108 @@ async function main() {
 
 
 
-// ============
+// // ============
 
-type UploadPageProcessor = (
-    args: {
-        currentContent: unknown,
-        newContent: unknown,
-        upload: (content: unknown) => Promise<void>
-    }
-) => Promise<void>;
+// type UploadPageProcessor = (
+//     args: {
+//         currentContent: unknown,
+//         newContent: unknown,
+//         upload: (content: unknown) => Promise<void>
+//     }
+// ) => Promise<void>;
 
-const uploadPageDefaultProcessor: UploadPageProcessor = async function ({ newContent, upload }) {
-    await upload(newContent);
-}
+// const uploadPageDefaultProcessor: UploadPageProcessor = async function ({ newContent, upload }) {
+//     await upload(newContent);
+// }
 
-async function processPage({
-    projectOutputDataPathAlias,
-    wikiDataPathAlias,
-    processor = uploadPageDefaultProcessor
-}: {
-    projectOutputDataPathAlias: keyof typeof dataPaths,
-    wikiDataPathAlias: keyof typeof dataPaths,
-    processor?: UploadPageProcessor
-}) {
-    logInfo(`${chalk.magenta('▮')} processing: ${chalk.bold(projectOutputDataPathAlias)}`);
+// async function processPage({
+//     projectOutputDataPathAlias,
+//     wikiDataPathAlias,
+//     processor = uploadPageDefaultProcessor
+// }: {
+//     projectOutputDataPathAlias: keyof typeof dataPaths,
+//     wikiDataPathAlias: keyof typeof dataPaths,
+//     processor?: UploadPageProcessor
+// }) {
+//     logInfo(`${chalk.magenta('▮')} processing: ${chalk.bold(projectOutputDataPathAlias)}`);
 
-    const projectOutputDataPath = dataPaths[projectOutputDataPathAlias];
-    if (!('projectOutputFilePath' in projectOutputDataPath)) {
-        logError("page upload failed: no project output file path defined in the project output data path", {
-            throwErr: true
-        });
-        throw ''//type guard 
-    }
+//     const projectOutputDataPath = dataPaths[projectOutputDataPathAlias];
+//     if (!('projectOutputFilePath' in projectOutputDataPath)) {
+//         logError("page upload failed: no project output file path defined in the project output data path", {
+//             throwErr: true
+//         });
+//         throw ''//type guard
+//     }
 
-    const wikiDataPath = dataPaths[wikiDataPathAlias];
-    if (!('wikiPage' in wikiDataPath)) {
-        logError("page upload failed: no wiki page defined in the wiki data path", {
-            throwErr: true
-        });
-        throw ''//type guard
-    }
+//     const wikiDataPath = dataPaths[wikiDataPathAlias];
+//     if (!('wikiPage' in wikiDataPath)) {
+//         logError("page upload failed: no wiki page defined in the wiki data path", {
+//             throwErr: true
+//         });
+//         throw ''//type guard
+//     }
 
-    const wikiPageUrl = constructWikiPageUrl(wikiDataPath.wikiPage);
-    const projectOutputAbsFilePath = path.resolve(path.join(stepDir.outputData, projectOutputDataPath.projectOutputFilePath));
+//     const wikiPageUrl = constructWikiPageUrl(wikiDataPath.wikiPage);
+//     const projectOutputAbsFilePath = path.resolve(path.join(stepDir.outputData, projectOutputDataPath.projectOutputFilePath));
 
-    logInfo(chalk.gray(`local source: ${projectOutputAbsFilePath}`));
-    logInfo(chalk.gray(`wiki endpoint: ${encodeURI(wikiPageUrl)}`));
+//     logInfo(chalk.gray(`local source: ${projectOutputAbsFilePath}`));
+//     logInfo(chalk.gray(`wiki endpoint: ${encodeURI(wikiPageUrl)}`));
 
-    if (!fs.existsSync(projectOutputAbsFilePath)) {
-        logError("page upload failed: local project output path doesn't exist", { throwErr: true });
-        throw '' //type guard
-    }
+//     if (!fs.existsSync(projectOutputAbsFilePath)) {
+//         logError("page upload failed: local project output path doesn't exist", { throwErr: true });
+//         throw '' //type guard
+//     }
 
-    let newContent;
-    try {
-        newContent = fs.readJsonSync(projectOutputAbsFilePath);
-    } catch (err) {
-        logError("page upload failed: failed to parse local project output path file contents to json", { throwErr: err });
-        throw '' //type guard
-    }
+//     let newContent;
+//     try {
+//         newContent = fs.readJsonSync(projectOutputAbsFilePath);
+//     } catch (err) {
+//         logError("page upload failed: failed to parse local project output path file contents to json", { throwErr: err });
+//         throw '' //type guard
+//     }
 
 
-    logInfo(chalk.gray('downloading current content'));
+//     logInfo(chalk.gray('downloading current content'));
 
-    const currentPageContentRaw = await getArticle(wikiDataPath.wikiPage);
-    let currentPageContent;
-    if (currentPageContentRaw === undefined) {
-        logInfo(chalk.yellow(`${chalk.bold('[WARN]:')} wiki page doesn't exist`));
+//     const currentPageContentRaw = await getArticle(wikiDataPath.wikiPage);
+//     let currentPageContent;
+//     if (currentPageContentRaw === undefined) {
+//         logInfo(chalk.yellow(`${chalk.bold('[WARN]:')} wiki page doesn't exist`));
 
-        currentPageContent = undefined;
-    } else {
-        try {
-            currentPageContent = JSON.parse(currentPageContentRaw);
-        } catch (err) {
-            logError("page upload failed: failed to parse page content from the wiki page to json", { throwErr: err });
-            throw '' //type guard
-        }
-    }
+//         currentPageContent = undefined;
+//     } else {
+//         try {
+//             currentPageContent = JSON.parse(currentPageContentRaw);
+//         } catch (err) {
+//             logError("page upload failed: failed to parse page content from the wiki page to json", { throwErr: err });
+//             throw '' //type guard
+//         }
+//     }
 
 
-    logInfo(chalk.gray('running processing'));
+//     logInfo(chalk.gray('running processing'));
 
-    await processor({
-        currentContent: currentPageContentRaw,
-        newContent,
-        async upload(content) {
-            const isUploadedNeeded = currentPageContentRaw === undefined || !areJsonObjectsEqual(currentPageContent, content);
-            if (!isUploadedNeeded) {
-                logInfo(chalk.bold.green("no changes to upload"));
+//     await processor({
+//         currentContent: currentPageContentRaw,
+//         newContent,
+//         async upload(content) {
+//             const isUploadedNeeded = currentPageContentRaw === undefined || !areJsonObjectsEqual(currentPageContent, content);
+//             if (!isUploadedNeeded) {
+//                 logInfo(chalk.bold.green("no changes to upload"));
 
-                return;
-            }
+//                 return;
+//             }
 
 
-            logInfo(chalk.bold.magenta("found changes to upload - uploading!"));
+//             logInfo(chalk.bold.magenta("found changes to upload - uploading!"));
 
-            await editPage(
-                wikiDataPath.wikiPage,
-                `AUTOMATED: sync to UPSTREAM up to commit #${ss14RepoCurrentCommitShortHash}${runUrl ? ` using action ${runUrl}` : ''}`,
-                JSON.stringify(content, null, 4)
-            );
+//             await editPage(
+//                 wikiDataPath.wikiPage,
+//                 `AUTOMATED: sync to UPSTREAM up to commit #${ss14RepoCurrentCommitShortHash}${runUrl ? ` using action ${runUrl}` : ''}`,
+//                 JSON.stringify(content, null, 4)
+//             );
 
-            logInfo(chalk.bold.green("upload complete!"));
-        }
-    });
-}
+//             logInfo(chalk.bold.green("upload complete!"));
+//         }
+//     });
+// }

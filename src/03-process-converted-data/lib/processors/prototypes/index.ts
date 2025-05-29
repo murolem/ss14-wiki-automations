@@ -1,5 +1,3 @@
-import { createProtoPool, resolveInheritance } from '$src/03-process-converted-data/lib/processors/prototypes/resolveInheritance';
-import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
 import { toOsPath } from '$utils/toOsPath';
@@ -13,6 +11,8 @@ import { type KnownEntityComponentType, type EntityPrototype, type EntityCompone
 import { prototypeArraySchema, type ProtoId, type Prototype } from '$schemas/prototype/base';
 import { rawPrototypeSchemasByType, type RawPrototypeSchemaType } from '$schemas/prototype';
 import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
+import { registerProcessor } from '$process/lib/processor';
+import { createProtoPool, resolveInheritance } from '$process/lib/processors/prototypes/resolveInheritance';
 const logger = new Logger("process/processors/prototype");
 const { logFatal } = logger;
 

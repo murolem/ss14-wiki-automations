@@ -1,10 +1,8 @@
 import { git } from '$git';
 import { gitConfig } from '../config';
 import { spinner } from '../base';
-import { wikiAutomationsRepo } from '$src/preset';
 import { Logger } from '$logger';
-import { formatDateForCommit } from '../utils/formatDate';
-const logger = new Logger("wiki/kittens/cloneBranch");
+const logger = new Logger("wiki/kittens/changesCommit");
 const { logInfo, logFatal } = logger;
 
 /** 

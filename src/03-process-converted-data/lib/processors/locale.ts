@@ -1,4 +1,3 @@
-import { registerProcessor } from '$src/03-process-converted-data/lib/processor';
 import { preferredLocale, projectStepDirpaths } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
@@ -7,6 +6,7 @@ import fs from 'fs-extra';
 import { getFilesInDirectoryRecursively } from '$src/utils';
 import { Logger } from '$logger';
 import { z } from 'zod';
+import { registerProcessor } from '$process/lib/processor';
 const logger = new Logger("process/processors/locale");
 const { logInfo, logFatal } = logger;
 

@@ -1,12 +1,12 @@
 import { projectDirpaths, projectStepDirpaths, type Project } from '$src/preset';
 import { Logger } from '$logger';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
-const logger = new Logger("process/registerProcessor");
-const { logInfo, logFatal } = logger;
 import fs from 'fs-extra';
 import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import path from 'path';
+const logger = new Logger("process/registerProcessor");
+const { logInfo, logFatal } = logger;
 
 /** Processor arguments. */
 export type ProcessorArgs = {

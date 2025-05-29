@@ -10,7 +10,9 @@ export class Spinner {
     private initialized: boolean = false;
 
     start = (msg: string) => {
-        this.spinner = ora();
+        this.spinner = ora({
+            discardStdin: false
+        });
         this.spinner!.start(msg);
         this.initialText = msg;
         this.initialized = true;

@@ -1,7 +1,7 @@
+import { getPrototypes } from '$process/lib/processors/prototypes/index';
 import { rawPrototypeSchemasByType, type RawPrototypeSchemaType } from '$schemas/prototype';
 import type { Prototype } from '$schemas/prototype/base';
 import { schemaParse } from '$schemas/utils/assertSchema';
-import { assertPrototypesLoaded, getPrototypes } from '$src/03-process-converted-data/lib/processors/prototypes/index';
 import type { StringOr } from '$utils/stringOr';
 import type z from 'zod';
 

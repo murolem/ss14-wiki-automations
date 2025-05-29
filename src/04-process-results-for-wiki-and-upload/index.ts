@@ -1,14 +1,25 @@
-import fs from 'fs-extra';
 import preprocess from './lib/preprocess';
 import diff from './lib/diff';
 import prMake from './lib/prMake';
 import prMergeWithCleanup from './lib/prMergeWithCleanup';
-import upload from './lib/upload';
+import wikiUpload from './lib/wikiUpload';
+import { Logger } from '$logger';
+const logger = new Logger("wiki");
+const { logInfo, logWarn, logFatal } = logger;
 
-// import upload from './lib/upload';
+async function main() {
+    preprocess();
+    const changes = await diff();
+    if (!changes) {
+        logInfo("✅ no changes to upload");
+        return;
+    }
 
-preprocess();
-await diff();
-await prMake();
-await upload();
-await prMergeWithCleanup();
+    const pr = await prMake();
+    await wikiUpload(changes, pr);
+    await prMergeWithCleanup(pr);
+
+    logInfo("✅ all done");
+}
+
+await main();

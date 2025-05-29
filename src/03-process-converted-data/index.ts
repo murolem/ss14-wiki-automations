@@ -1,4 +1,4 @@
-import { loadProcessors, runProcessor } from '$src/03-process-converted-data/lib/processor';
+import { loadProcessors, runProcessor } from '$process/lib/processor';
 
 await loadProcessors();
 

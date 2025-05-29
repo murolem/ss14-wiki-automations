@@ -1,25 +1,16 @@
+import { branchClone } from '$wiki/lib/kittens/steps/branchClone';
+import { changesCommit } from '$wiki/lib/kittens/steps/changesCommit';
+import { changesCopyIntoSync } from '$wiki/lib/kittens/steps/changesCopyIntoSync';
+import { type Change, changesGet } from '$wiki/lib/kittens/steps/changesGet';
+import { changesStage } from '$wiki/lib/kittens/steps/changesStage';
+import { formatDateForCommit } from '$wiki/lib/kittens/utils/formatDate';
+import { date } from '$wiki/lib/kittens/base';
 import { Logger } from '$logger';
-import { automationsGitAuthor, projectDirpaths, projectStepDirpaths, projectWikiOutputs, syncBranchPathBlacklist, wikiAutomationsRepo, type Project } from '$src/preset';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
-import fs from 'fs-extra';
 const logger = new Logger("wiki/diff");
 const { logInfo, logWarn, logFatal } = logger;
-import { Spinner } from '$utils/spinner';
-import path from 'path';
+import { projectDirpaths, wikiAutomationsRepo } from '$src/preset';
 import chalk from 'chalk';
-import { ensuredWritePrettyJsonSync } from '$utils/writeJson';
-import { toOsPath } from '$utils/toOsPath';
-import { git } from '$git';
-import { changesCopyIntoSync } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesCopyIntoSync';
-import { changesGet } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesGet';
-import { changesStage } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesStage';
-import { changesCommit } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesCommit';
-import { formatDateForBranchName, formatDateForCommit, formatDateForPrTitle } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/utils/formatDate';
-import { branchClone } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/branchClone';
-import { branchCreate, branchCreateWithCheckout } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/branchCreate';
-import { changesPush } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/changesPush';
-import { prCreate } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/steps/prCreate';
-import { date, spinner } from '$src/04-process-results-for-wiki-and-upload/lib/kittens/base';
 
 /*
 * This step creates a diff between "current state of the wiki" and the desired state considering any changes.
@@ -41,18 +32,24 @@ import { date, spinner } from '$src/04-process-results-for-wiki-and-upload/lib/k
 * files (such as A-Z item pages; although they are updated frequently). 
 */
 
-export default async function () {
+export default async function (): Promise<Change[] | null> {
     logInfo("emptying out sync dir")
     ensureDirectoryExistsAndEmpty(projectDirpaths.diff);
 
     await branchClone(wikiAutomationsRepo.syncBranchName);
     await changesCopyIntoSync();
     const [haveChanges, changes] = await changesGet();
-    if (!haveChanges) {
-        logInfo("✅ exiting");
-        return;
+    if (haveChanges) {
+        const changesStr = chalk.bold(changes.length
+            + " " + (changes.length === 1 ? "change" : "changes"));
+        logInfo(`found ${changesStr} to upload`);
+    } else {
+        logInfo("no changes to upload!");
+        return null;
     }
 
     await changesStage(changes);
     await changesCommit("sync " + formatDateForCommit(date));
+
+    return changes;
 }
