@@ -3,20 +3,29 @@ import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
 import { schemaParse } from '$schemas/utils/assertSchema';
-import { yamlTypeFieldName } from '$schemas/core/yamlSchema';
-import { registerProcessor } from '$process/lib/processor';
-import { locRecordProperty } from '$process/lib/processors/locale';
-import { tryGetCompWithParse } from '$process/lib/processors/prototypes/getComp';
-import { filterProtosByType, tryGetProtoByIdWithParse } from '$process/lib/processors/prototypes/getProto';
+import { generateProcessorRunner, type Processor, type ProcessorArgs } from '$shared/projectProcessor';
+import { filterProtosByType, tryGetProtoByIdWithParse } from '$process/processors/prototypes/getProto';
+import { locRecordProperty } from '$process/processors/locale';
+import { tryGetCompWithParse } from '$process/processors/prototypes/getComp';
 
-registerProcessor('cargo_orders', ({
-    dirpath: projectDirpath,
-    stepDirpaths: projectStepDirpaths,
+export default generateProcessorRunner(
+    'cargo_orders',
+    'processed',
+    'processed_temp',
+    processor
+);
+
+function processor({
+    project,
+    projectDirpath,
+    step,
+    tempStep,
     outputDirpath,
     tempDirpath,
+    stepDirpaths,
     logger,
-    writeJsonSync
-}) => {
+    writeJsonSync,
+}: ProcessorArgs) {
     const ordersRaw = filterProtosByType('cargoProduct');
     writeJsonSync('temp', 'cargoProduct_raw.json', ordersRaw);
 
@@ -68,4 +77,4 @@ registerProcessor('cargo_orders', ({
     orders.sort((a, b) => a.id.localeCompare(b.id));
 
     writeJsonSync('output', projectProcessingOutputs.cargo_orders.ordersJson.filepath, orders);
-});
+};

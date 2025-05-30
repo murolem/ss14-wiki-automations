@@ -1,4 +1,4 @@
-import { getPrototypes } from '$process/lib/processors/prototypes/index';
+import { getPrototypes } from '$process/processors/prototypes';
 import { rawPrototypeSchemasByType, type RawPrototypeSchemaType } from '$schemas/prototype';
 import type { Prototype } from '$schemas/prototype/base';
 import { schemaParse } from '$schemas/utils/assertSchema';

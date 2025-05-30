@@ -93,7 +93,14 @@ export class Logger {
 
         const colorFn = logLevelToColorFn[level];
 
-        logMethod(colorFn(`[${this.logPrefix}] [${level.toLowerCase()}] ${mainMessage}`), ...extraMessages);
+        const mainMessageRows = mainMessage.split("\n");
+        for (let i = 0; i < mainMessageRows.length; i++) {
+            logMethod(colorFn(`${chalk.bold(level.toLowerCase())}: [${this.logPrefix}] ${mainMessageRows[i]}`));
+        }
+
+        if (extraMessages.length > 0) {
+            logMethod(...extraMessages);
+        }
 
         if (params.data !== undefined) {
             if (params.stringifyData) {

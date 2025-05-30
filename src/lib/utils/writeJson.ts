@@ -5,7 +5,7 @@ export type JsonReplacer =
     ((key: unknown, value: unknown) => unknown)
     | string[];
 
-/** Same as fs.writeJsonSync, but ensures that the write directory exists and prettifies the JSON data before safe (4 spaces). */
+/** Same as fs.writeJsonSync, but ensures that the write directory exists and prettifies the JSON data before save (4 spaces). */
 export function ensuredWritePrettyJsonSync(
     pathStr: string,
     data: unknown,

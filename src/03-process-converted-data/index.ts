@@ -1,8 +1,4 @@
-import { loadProcessors, runProcessor } from '$process/lib/processor';
-
-await loadProcessors();
-
-runProcessor('locale');
-runProcessor('prototypes');
-runProcessor('entities');
-runProcessor('cargo_orders');
+(await import("./processors/locale")).default();
+(await import("./processors/prototypes")).default();
+(await import("./processors/entities")).default();
+(await import("./processors/cargoOrder")).default();

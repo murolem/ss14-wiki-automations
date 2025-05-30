@@ -4,31 +4,34 @@ import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
-import type { z, ZodType } from 'zod';
-import type { StringOr } from '$utils/stringOr';
-import { schemaParse } from '$schemas/utils/assertSchema';
-import { type KnownEntityComponentType, type EntityPrototype, type EntityComponent, entityComponentSchemaByType } from '$schemas/prototype/prototypes/entity';
 import { prototypeArraySchema, type ProtoId, type Prototype } from '$schemas/prototype/base';
-import { rawPrototypeSchemasByType, type RawPrototypeSchemaType } from '$schemas/prototype';
-import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
-import { registerProcessor } from '$process/lib/processor';
-import { createProtoPool, resolveInheritance } from '$process/lib/processors/prototypes/resolveInheritance';
+import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
+import { createProtoPool, resolveInheritance } from '$process/processors/prototypes/resolveInheritance';
 const logger = new Logger("process/processors/prototype");
 const { logFatal } = logger;
 
+let loaded = false;
 let prototypes: Prototype[] = [];
 let prototypeIds: string[] = [];
 
-let loaded = false;
+export default generateProcessorRunner(
+    'prototypes',
+    'processed',
+    'processed_temp',
+    processor
+);
 
-registerProcessor('prototypes', ({
-    dirpath,
-    stepDirpaths,
+function processor({
+    project,
+    projectDirpath,
+    step,
+    tempStep,
     outputDirpath,
     tempDirpath,
+    stepDirpaths,
     logger,
-    writeJsonSync
-}) => {
+    writeJsonSync,
+}: ProcessorArgs) {
     const { logDebug, logInfo, logFatal } = logger;
 
     const prototypesDirPath = projectStepDirpaths.prototypes.converted;
@@ -108,7 +111,7 @@ registerProcessor('prototypes', ({
     );
 
     loaded = true;
-});
+}
 
 /**
  * Checks whether prototypes have been loaded.

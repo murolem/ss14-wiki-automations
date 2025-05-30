@@ -8,9 +8,26 @@ import chalk from 'chalk';
 import { ensuredWritePrettyJsonSync, type JsonReplacer } from '$utils/writeJson';
 import { projectDirpaths, projectProcessingOutputs, projectStepDirpaths, projectWikiOutputs } from '$src/preset';
 import path from 'path';
-import { entityPrototypeSchema } from '$schemas/prototype/prototypes/entity';
+import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
 
-export default function () {
+export default generateProcessorRunner(
+    'entities',
+    'wiki_upload',
+    'wiki_upload_temp',
+    processor
+);
+
+function processor({
+    project,
+    projectDirpath,
+    step,
+    tempStep,
+    outputDirpath,
+    tempDirpath,
+    stepDirpaths,
+    logger,
+    writeJsonSync,
+}: ProcessorArgs) {
     const {
         filepath: entitiesJsonRelFilepath,
         schema: entitiesJsonSchema

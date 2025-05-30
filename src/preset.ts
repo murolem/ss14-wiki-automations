@@ -151,7 +151,7 @@ export const projectProcessingOutputs = {
 } satisfies Partial<Record<Project, Record<string, ProcessingStepOutputEntry>>>;
 
 /** Describes a single output from a wiki step. */
-export type WikiStepOutputEntry = {
+export type projectWikiOutputsOutput = {
     /** File path from the output substep directory. */
     filepath: string,
 
@@ -163,6 +163,15 @@ export type WikiStepOutputEntry = {
 
     schema: ZodTypeAny
 }
+
+export type ProjectWikiOutputNamesByProject<T extends ProjectWikiOutputsProject> = keyof ProjectWikiOutputsByProject<T>;
+
+export type ProjectWikiOutputsByProject<T extends ProjectWikiOutputsProject> = ProjectWikiOutputs[T];
+
+export type ProjectWikiOutputsProject = keyof ProjectWikiOutputs;
+
+export type ProjectWikiOutputs = typeof projectWikiOutputs;
+
 /** 
  * A mapping for each project to their useful outputs. 
  * This one is for the wiki step.  
@@ -180,5 +189,66 @@ export const projectWikiOutputs = {
             schema: entityWikiMapOfLcNameToId
         }
     }
-} satisfies Partial<Record<Project, Record<string, WikiStepOutputEntry>>>;
+} satisfies Partial<Record<Project, Record<string, projectWikiOutputsOutput>>>;
 
+/** 
+ * Maps wiki step projects to output names to absolute filepaths in the wiki output substep directory. 
+ * This is fully equivalent to {@link projectWikiDiffFilepaths} except for the filepaths.
+ * */
+export const projectWikiOutputFilepaths = Object
+    .keys(projectWikiOutputs)
+    .reduce<
+        Record<
+            ProjectWikiOutputsProject,
+            Record<
+                ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>,
+                string
+            >
+        >
+    >((accum, projectUntyped) => {
+        const project = projectUntyped as ProjectWikiOutputsProject;
+
+        accum[project] = Object
+            .entries(projectWikiOutputs[project])
+            .reduce<
+                typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
+            >((accum2, [outputName, output]) => {
+                accum2[outputName as ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>]
+                    = path.join(projectStepDirpaths[project].wiki_upload, output.filepath);
+
+                return accum2;
+            }, {} as any);
+
+        return accum;
+    }, {} as any);
+
+/** 
+ * Maps wiki step projects to output names to absolute filepaths in the diff directory. 
+ * This is fully equivalent to {@link projectWikiOutputFilepaths} except for the filepaths.
+ * */
+export const projectWikiDiffFilepaths = Object
+    .keys(projectWikiOutputs)
+    .reduce<
+        Record<
+            ProjectWikiOutputsProject,
+            Record<
+                ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>,
+                string
+            >
+        >
+    >((accum, projectUntyped) => {
+        const project = projectUntyped as ProjectWikiOutputsProject;
+
+        accum[project] = Object
+            .entries(projectWikiOutputs[project])
+            .reduce<
+                typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
+            >((accum2, [outputName, output]) => {
+                accum2[outputName as ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>]
+                    = path.join(projectDirpaths.diff, project, output.filepath);
+
+                return accum2;
+            }, {} as any);
+
+        return accum;
+    }, {} as any);

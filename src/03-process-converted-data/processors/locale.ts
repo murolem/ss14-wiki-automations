@@ -1,12 +1,11 @@
 import { preferredLocale, projectStepDirpaths } from '$src/preset';
-import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import { FluentBundle, FluentResource } from '@fluent/bundle';
 import fs from 'fs-extra';
-import { getFilesInDirectoryRecursively } from '$src/utils';
+import { assertPathExists, getFilesInDirectoryRecursively } from '$src/utils';
 import { Logger } from '$logger';
 import { z } from 'zod';
-import { registerProcessor } from '$process/lib/processor';
+import { generateProcessorRunner } from '$src/lib/shared/projectProcessor';
 const logger = new Logger("process/processors/locale");
 const { logInfo, logFatal } = logger;
 
@@ -14,34 +13,40 @@ let loaded = false;
 
 const localization = new FluentBundle(preferredLocale);
 
-registerProcessor('locale', ({
-    dirpath,
-    stepDirpaths,
-    outputDirpath,
-    tempDirpath,
-    logger,
-    writeJsonSync,
-    assertPathExists
-}) => {
-    const { logDebug, logInfo, logFatal } = logger;
+export default generateProcessorRunner(
+    'locale',
+    'processed',
+    'processed_temp',
+    ({
+        project,
+        projectDirpath,
+        step,
+        tempStep,
+        outputDirpath,
+        tempDirpath,
+        stepDirpaths,
+        logger,
+        writeJsonSync,
+    }) => {
+        const { logDebug, logInfo, logFatal } = logger;
 
-    const localeDirPath = projectStepDirpaths.locale.input;
-    logInfo(`loading locale for the first time; from: ${chalk.bold(localeDirPath)}`);
-    assertPathExists(localeDirPath);
+        const localeDirPath = projectStepDirpaths.locale.input;
+        logInfo(`loading locale for the first time; from: ${chalk.bold(localeDirPath)}`);
+        assertPathExists(localeDirPath);
 
-    const localeFiles = getFilesInDirectoryRecursively(localeDirPath);
-    let totalStrings = 0;
-    for (const { absFilepath } of localeFiles) {
-        const resource = new FluentResource(fs.readFileSync(absFilepath).toString());
-        localization.addResource(resource);
+        const localeFiles = getFilesInDirectoryRecursively(localeDirPath);
+        let totalStrings = 0;
+        for (const { absFilepath } of localeFiles) {
+            const resource = new FluentResource(fs.readFileSync(absFilepath).toString());
+            localization.addResource(resource);
 
-        totalStrings += resource.body.length;
-    }
+            totalStrings += resource.body.length;
+        }
 
-    logInfo(`locale loaded; preferred locale ${chalk.bold(preferredLocale)}'; total strings: ${chalk.bold(totalStrings)}`);
+        logInfo(`locale loaded; preferred locale ${chalk.bold(preferredLocale)}'; total strings: ${chalk.bold(totalStrings)}`);
 
-    loaded = true;
-});
+        loaded = true;
+    });
 
 
 /**

@@ -3,23 +3,34 @@ import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { entityPrototypeSchema, type EntityPrototype } from '$schemas/prototype/prototypes/entity';
 import { Logger } from '$logger';
-import { registerProcessor } from '$process/lib/processor';
-import { getPrototypes } from '$process/lib/processors/prototypes/index';
+import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
+import { getPrototypes } from '$process/processors/prototypes';
 const logger = new Logger("process/processors/entities");
 const { logInfo, logFatal } = logger;
 
+let loaded = false;
 let entities: EntityPrototype[] = [];
 
-let loaded = false;
+export default generateProcessorRunner(
+    'entities',
+    'processed',
+    'processed_temp',
+    processor
+);
 
-registerProcessor('entities', ({
-    dirpath,
-    stepDirpaths,
+function processor({
+    project,
+    projectDirpath,
+    step,
+    tempStep,
     outputDirpath,
     tempDirpath,
+    stepDirpaths,
     logger,
-    writeJsonSync
-}) => {
+    writeJsonSync,
+}: ProcessorArgs) {
+    const { logInfo, logFatal } = logger;
+
     logInfo("searching for protos");
 
     let entities = getPrototypes()
@@ -33,7 +44,7 @@ registerProcessor('entities', ({
         .parse(entities);
 
     writeJsonSync('output', projectProcessingOutputs.entities.entitiesJson.filepath, entities);
-});
+};
 
 /**
  * Checks whether entities have been loaded.

@@ -10,6 +10,12 @@
     ],
     "skipLibCheck": true,
     "paths": {
+      "$shared/*": [
+        "./src/lib/shared/*"
+      ],
+      "$assert/*": [
+        "./src/lib/utils/assert/*"
+      ],
       "$process/*": [
         "./src/03-process-converted-data/*"
       ],
