@@ -11,7 +11,7 @@ const { logFatal } = logger;
  * If not, throws an error with the passed data and the error message.
  * 
  * This function is just a wrapper around Zod .parse, 
- * making error messages more readable and also logging the erroneous data alongside.
+ * making error messages more readable while also logging the erroneous data.
  * 
  */
 export function schemaParse<T extends ZodType>(schema: T, data: unknown): z.infer<T> {

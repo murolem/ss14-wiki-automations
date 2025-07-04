@@ -112,16 +112,24 @@ export const projectStepDirpaths = Object
     }, {} as any);
 
 
+
 /** Describes a single output from a processing step. */
-export type ProcessingStepOutputEntry = {
+export type ProjectProcessingOutputsOutput = {
     filepath: string,
     schema: ZodTypeAny
 };
 
-/** Narrowed key type for {@link projectProcessingOutputs}. */
-export type ProjectProcessingOutputsKey = {
-    [Key in Project]: Key extends keyof typeof projectProcessingOutputs ? Key : never
-}[Project];
+export type ProjectProcessingOutputNameByProject<T extends ProjectProcessingOutputsProject> = keyof ProjectProcessingOutputsByProject<T>;
+
+export type ProjectProcessingOutputName = keyof {
+    [TProject in ProjectProcessingOutputsProject]: ProjectProcessingOutputsByProject<TProject>
+};
+
+export type ProjectProcessingOutputsByProject<T extends ProjectProcessingOutputsProject> = ProjectProcessingOutputs[T];
+
+export type ProjectProcessingOutputsProject = keyof ProjectProcessingOutputs;
+
+export type ProjectProcessingOutputs = typeof projectProcessingOutputs;
 
 /** 
  * A mapping for each project to their useful outputs. 
@@ -148,10 +156,40 @@ export const projectProcessingOutputs = {
             schema: cargoProductProcessedProtoSchema.array()
         }
     }
-} satisfies Partial<Record<Project, Record<string, ProcessingStepOutputEntry>>>;
+} satisfies Partial<Record<Project, Record<string, ProjectProcessingOutputsOutput>>>;
+
+/** 
+ * Maps processing step projects to output names to absolute filepaths in the processing output substep directory. 
+ * */
+export const projectProcessingOutputFilepaths = Object
+    .keys(projectProcessingOutputs)
+    .reduce<
+        Record<
+            ProjectProcessingOutputsProject,
+            Record<
+                ProjectProcessingOutputName,
+                string
+            >
+        >
+    >((accum, projectUntyped) => {
+        const project = projectUntyped as ProjectProcessingOutputsProject;
+
+        accum[project] = Object
+            .entries(projectProcessingOutputs[project])
+            .reduce<
+                typeof projectProcessingOutputFilepaths[ProjectProcessingOutputsProject]
+            >((accum2, [outputName, output]) => {
+                accum2[outputName as ProjectProcessingOutputName]
+                    = path.join(projectStepDirpaths[project].processed, output);
+
+                return accum2;
+            }, {} as any);
+
+        return accum;
+    }, {} as any);
 
 /** Describes a single output from a wiki step. */
-export type projectWikiOutputsOutput = {
+export type ProjectWikiOutputsOutput = {
     /** File path from the output substep directory. */
     filepath: string,
 
@@ -164,7 +202,11 @@ export type projectWikiOutputsOutput = {
     schema: ZodTypeAny
 }
 
-export type ProjectWikiOutputNamesByProject<T extends ProjectWikiOutputsProject> = keyof ProjectWikiOutputsByProject<T>;
+export type ProjectWikiOutputNameByProject<T extends ProjectWikiOutputsProject> = keyof ProjectWikiOutputsByProject<T>;
+
+export type ProjectWikiOutputName = keyof {
+    [TProject in ProjectWikiOutputsProject]: ProjectWikiOutputsByProject<TProject>
+};
 
 export type ProjectWikiOutputsByProject<T extends ProjectWikiOutputsProject> = ProjectWikiOutputs[T];
 
@@ -189,7 +231,7 @@ export const projectWikiOutputs = {
             schema: entityWikiMapOfLcNameToId
         }
     }
-} satisfies Partial<Record<Project, Record<string, projectWikiOutputsOutput>>>;
+} satisfies Partial<Record<Project, Record<string, ProjectWikiOutputsOutput>>>;
 
 /** 
  * Maps wiki step projects to output names to absolute filepaths in the wiki output substep directory. 
@@ -201,7 +243,7 @@ export const projectWikiOutputFilepaths = Object
         Record<
             ProjectWikiOutputsProject,
             Record<
-                ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>,
+                ProjectWikiOutputName,
                 string
             >
         >
@@ -213,7 +255,7 @@ export const projectWikiOutputFilepaths = Object
             .reduce<
                 typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
             >((accum2, [outputName, output]) => {
-                accum2[outputName as ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>]
+                accum2[outputName as ProjectWikiOutputName]
                     = path.join(projectStepDirpaths[project].wiki_upload, output.filepath);
 
                 return accum2;
@@ -232,7 +274,7 @@ export const projectWikiDiffFilepaths = Object
         Record<
             ProjectWikiOutputsProject,
             Record<
-                ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>,
+                ProjectWikiOutputName,
                 string
             >
         >
@@ -244,7 +286,7 @@ export const projectWikiDiffFilepaths = Object
             .reduce<
                 typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
             >((accum2, [outputName, output]) => {
-                accum2[outputName as ProjectWikiOutputNamesByProject<ProjectWikiOutputsProject>]
+                accum2[outputName as ProjectWikiOutputName]
                     = path.join(projectDirpaths.diff, project, output.filepath);
 
                 return accum2;
