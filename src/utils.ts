@@ -71,10 +71,10 @@ export function getFilesInDirectoryRecursively(dirPath: string): Array<FileEntry
     return relFilepathObjects
         .filter(filepathObj => filepathObj.isFile())
         .map(filepathObj => {
-            const relDirpath = path.relative(dirPath, filepathObj.path);
+            const relDirpath = path.relative(dirPath, filepathObj.parentPath);
 
             return {
-                absFilepath: path.resolve(path.join(filepathObj.path, filepathObj.name)),
+                absFilepath: path.resolve(path.join(filepathObj.parentPath, filepathObj.name)),
                 filename: filepathObj.name,
                 relDirpath,
                 relFilepath: path.join(relDirpath, filepathObj.name)
