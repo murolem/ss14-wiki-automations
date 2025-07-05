@@ -25,7 +25,7 @@ export function convertProject(project: Project): void {
     const sourcePath = projectStepDirpaths[project].input;
     let targetPath = projectStepDirpaths[project].converted;
 
-    logInfo(`convert to JSON project ${chalk.bold(project)}`);
+    logInfo(`convert project ${chalk.bold(project)} to JSON`);
 
     if (!fs.existsSync(sourcePath)) {
         logFatal({

@@ -1,4 +1,4 @@
-import { projectProcessingOutputs } from '$src/preset';
+import { getProcessingOutput } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { entityPrototypeSchema, type EntityPrototype } from '$schemas/prototype/prototypes/entity';
@@ -43,7 +43,11 @@ function processor({
     entities = entityPrototypeSchema.array()
         .parse(entities);
 
-    writeJsonSync('output', projectProcessingOutputs.entities.entitiesJson.filepath, entities);
+    writeJsonSync(
+        'output',
+        getProcessingOutput('entities', 'entities_json').relFilepath,
+        entities
+    );
 };
 
 /**

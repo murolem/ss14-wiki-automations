@@ -1,4 +1,4 @@
-import { projectDirpaths, projectStepDirpaths, projectWikiOutputs, type Project } from '$src/preset';
+import { projectDirpaths, projectStepDirpaths, wikiStepOutputs, type Project } from '$src/preset';
 import { Logger } from '$logger';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 import chalk from 'chalk';
@@ -13,33 +13,28 @@ const { logInfo, logFatal } = logger;
 export async function changesCopyIntoSync() {
     logInfo("copying changes from processing step");
 
-    const projectWikiOutputsKeys = Object.keys(projectWikiOutputs);
-    for (let projectI = 0; projectI < projectWikiOutputsKeys.length; projectI++) {
-        const project = projectWikiOutputsKeys[projectI];
-        const projectDiffDirpath = path.join(projectDirpaths.diff, project);
-        ensureDirectoryExistsAndEmpty(projectDiffDirpath);
+    const projects = wikiStepOutputs.map(e => e.project);
+    for (const [projI, project] of projects.entries()) {
+        const projectDiffAbsDirpath = path.join(projectDirpaths.diff, project);
+        ensureDirectoryExistsAndEmpty(projectDiffAbsDirpath);
 
-        logInfo(`[proj ${projectI + 1} of ${projectWikiOutputsKeys.length}] project ${chalk.bold(project)}`);
+        logInfo(`[proj ${projI + 1} of ${projects.length}] project ${chalk.bold(project)}`);
 
-        const projectOutputs = projectWikiOutputs[project as keyof typeof projectWikiOutputs];
-        const projectOutputsKeys = Object.keys(projectOutputs);
-        for (let projectOutputI = 0; projectOutputI < projectOutputsKeys.length; projectOutputI++) {
-            const projectOutputKey = projectOutputsKeys[projectOutputI];
+        const projectOutputs = wikiStepOutputs.filter(e => e.project === project);
+        for (const [outI, output] of projectOutputs.entries()) {
+            logInfo(`[out ${outI + 1} of ${projectOutputs.length}] output ${chalk.italic(output.name)}`);
 
-            logInfo(`[out ${projectOutputI + 1} of ${projectOutputsKeys.length}] output ${chalk.italic(projectOutputKey)}`);
-
-            const output = projectOutputs[projectOutputKey as keyof typeof projectOutputs];
-            const fullFilepath = path.join(projectStepDirpaths[project as Project].wiki_upload, output.filepath);
-            if (!fs.existsSync(fullFilepath)) {
-                logInfo(chalk.gray("❌ not found, at: " + fullFilepath));
+            const wikiAbsFilepath = path.join(projectStepDirpaths[project as Project].wiki_upload, output.relFilepath);
+            if (!fs.existsSync(wikiAbsFilepath)) {
+                logInfo(chalk.gray("❌ not found, at: " + wikiAbsFilepath));
                 continue;
             }
 
-            const diffDirFilepath = path.join(projectDiffDirpath, output.filepath);
-            fs.ensureDirSync(path.parse(diffDirFilepath).dir);
-            fs.copyFileSync(fullFilepath, diffDirFilepath);
+            const diffDirAbsFilepath = path.join(projectDiffAbsDirpath, output.relFilepath);
+            fs.ensureDirSync(path.parse(diffDirAbsFilepath).dir);
+            fs.copyFileSync(wikiAbsFilepath, diffDirAbsFilepath);
 
-            logInfo(`✅ copied! ${chalk.gray("to: " + diffDirFilepath)}`);
+            logInfo(`✅ copied! ${chalk.gray("to: " + diffDirAbsFilepath)}`);
         }
     }
 }

@@ -5,6 +5,7 @@ import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
 import { z, type ZodTypeAny } from 'zod';
 import dotenv from 'dotenv';
+import type { StringOr } from '$utils/stringOr';
 dotenv.config();
 
 const envVarsSchema = z.object({
@@ -113,184 +114,120 @@ export const projectStepDirpaths = Object
 
 
 
+
 /** Describes a single output from a processing step. */
-export type ProjectProcessingOutputsOutput = {
-    filepath: string,
+export type ProcessingStepOutput = {
+    project: Project,
+    name: StringOr<"">, // a nice trick to infer string literals
+    /** A filepath relative to the project step directory.  */
+    relFilepath: string,
     schema: ZodTypeAny
 };
 
-export type ProjectProcessingOutputNameByProject<T extends ProjectProcessingOutputsProject> = keyof ProjectProcessingOutputsByProject<T>;
-
-export type ProjectProcessingOutputName = keyof {
-    [TProject in ProjectProcessingOutputsProject]: ProjectProcessingOutputsByProject<TProject>
-};
-
-export type ProjectProcessingOutputsByProject<T extends ProjectProcessingOutputsProject> = ProjectProcessingOutputs[T];
-
-export type ProjectProcessingOutputsProject = keyof ProjectProcessingOutputs;
-
-export type ProjectProcessingOutputs = typeof projectProcessingOutputs;
-
+export type ProcessingStepOutputs = typeof processingStepOutputs;
+export type ProcessingStepOutputName = ProcessingStepOutputs[number]['name'];
+export type ProcessingStepOutputProject = ProcessingStepOutputs[number]['project'];
+export type ProcessingStepOutputsByProject<T extends ProcessingStepOutputProject> =
+    Extract<ProcessingStepOutputs[number], { project: T }>;
 /** 
- * A mapping for each project to their useful outputs. 
- * This one is for the processing step.  
- * 
- * Output is a filepath relative to the output substep directory.
+ * A list of processing step outputs.
  */
-export const projectProcessingOutputs = {
-    prototypes: {
-        prototypesJson: {
-            filepath: "prototypes.json",
-            schema: prototypeSchema.array()
-        }
+export const processingStepOutputs = [
+    {
+        project: 'prototypes',
+        name: 'prototypes_json',
+        relFilepath: "prototypes.json",
+        schema: prototypeSchema.array()
     },
-    entities: {
-        entitiesJson: {
-            filepath: "entities.json",
-            schema: entityPrototypeSchema.array()
-        }
+    {
+        project: 'entities',
+        name: 'entities_json',
+        relFilepath: "entities.json",
+        schema: entityPrototypeSchema.array()
     },
-    cargo_orders: {
-        ordersJson: {
-            filepath: "orders.json",
-            schema: cargoProductProcessedProtoSchema.array()
-        }
-    }
-} satisfies Partial<Record<Project, Record<string, ProjectProcessingOutputsOutput>>>;
+    {
+        project: 'cargo_orders',
+        name: 'orders_json',
+        relFilepath: "orders.json",
+        schema: cargoProductProcessedProtoSchema.array()
+    },
+] satisfies ProcessingStepOutput[];
 
-/** 
- * Maps processing step projects to output names to absolute filepaths in the processing output substep directory. 
- * */
-export const projectProcessingOutputFilepaths = Object
-    .keys(projectProcessingOutputs)
-    .reduce<
-        Record<
-            ProjectProcessingOutputsProject,
-            Record<
-                ProjectProcessingOutputName,
-                string
-            >
-        >
-    >((accum, projectUntyped) => {
-        const project = projectUntyped as ProjectProcessingOutputsProject;
-
-        accum[project] = Object
-            .entries(projectProcessingOutputs[project])
-            .reduce<
-                typeof projectProcessingOutputFilepaths[ProjectProcessingOutputsProject]
-            >((accum2, [outputName, output]) => {
-                accum2[outputName as ProjectProcessingOutputName]
-                    = path.join(projectStepDirpaths[project].processed, output);
-
-                return accum2;
-            }, {} as any);
-
-        return accum;
-    }, {} as any);
+export const getProcessingOutput = <T extends ProcessingStepOutputProject>
+    (project: T, name: ProcessingStepOutputsByProject<T>['name']) =>
+    processingStepOutputs.find(e => e.project === project && e.name === name)!;
 
 /** Describes a single output from a wiki step. */
-export type ProjectWikiOutputsOutput = {
-    /** File path from the output substep directory. */
-    filepath: string,
-
+export type WikiStepOutput = {
+    project: Project,
+    name: StringOr<"">, // a nice trick to infer string literals
+    /** A filepath relative to the project step directory.  */
+    relFilepath: string,
     /** 
      * Url to upload the file to.
      * Relative to the wiki endpoint.
     */
     wikipage: string,
-
     schema: ZodTypeAny
-}
-
-export type ProjectWikiOutputNameByProject<T extends ProjectWikiOutputsProject> = keyof ProjectWikiOutputsByProject<T>;
-
-export type ProjectWikiOutputName = keyof {
-    [TProject in ProjectWikiOutputsProject]: ProjectWikiOutputsByProject<TProject>
 };
 
-export type ProjectWikiOutputsByProject<T extends ProjectWikiOutputsProject> = ProjectWikiOutputs[T];
-
-export type ProjectWikiOutputsProject = keyof ProjectWikiOutputs;
-
-export type ProjectWikiOutputs = typeof projectWikiOutputs;
+export type WikiStepOutputs = typeof wikiStepOutputs;
+export type WikiStepOutputName = WikiStepOutputs[number]['name'];
+export type WikiStepOutputProject = WikiStepOutputs[number]['project'];
+export type WikiStepOutputsByProject<T extends WikiStepOutputProject> =
+    Extract<WikiStepOutputs[number], { project: T }>;
 
 /** 
- * A mapping for each project to their useful outputs. 
- * This one is for the wiki step.  
+ * A list of wiki step outputs.
  */
-export const projectWikiOutputs = {
-    entities: {
-        entity_map_of_id_to_name: {
-            filepath: "entity_map_of_id_to_name.json",
-            wikipage: "Module:Item/data/auto/entity_map_of_id_to_name.json",
-            schema: entityWikiMapOfIdToName
-        },
-        entity_map_of_lc_name_to_id: {
-            filepath: "entity_map_of_lc_name_to_id.json",
-            wikipage: "Module:Item/data/auto/entity_map_of_lc_name_to_id.json",
-            schema: entityWikiMapOfLcNameToId
-        }
+export const wikiStepOutputs = [
+    {
+        project: 'entities',
+        name: 'entity_map_of_id_to_name',
+        relFilepath: 'entity_map_of_id_to_name.json',
+        schema: entityWikiMapOfIdToName,
+        wikipage: 'Module:Item/data/auto/entity_map_of_id_to_name.json',
+    },
+    {
+        project: 'entities',
+        name: 'entity_map_of_lc_name_to_id',
+        relFilepath: 'entity_map_of_lc_name_to_id.json',
+        schema: entityWikiMapOfLcNameToId,
+        wikipage: 'Module:Item/data/auto/entity_map_of_lc_name_to_id.json',
     }
-} satisfies Partial<Record<Project, Record<string, ProjectWikiOutputsOutput>>>;
+] satisfies WikiStepOutput[];
 
-/** 
- * Maps wiki step projects to output names to absolute filepaths in the wiki output substep directory. 
- * This is fully equivalent to {@link projectWikiDiffFilepaths} except for the filepaths.
- * */
-export const projectWikiOutputFilepaths = Object
-    .keys(projectWikiOutputs)
-    .reduce<
-        Record<
-            ProjectWikiOutputsProject,
-            Record<
-                ProjectWikiOutputName,
-                string
-            >
-        >
-    >((accum, projectUntyped) => {
-        const project = projectUntyped as ProjectWikiOutputsProject;
+export const getWikiOutput = <T extends WikiStepOutputProject>
+    (project: T, name: WikiStepOutputsByProject<T>['name']) =>
+    wikiStepOutputs.find(e => e.project === project && e.name === name)!;
 
-        accum[project] = Object
-            .entries(projectWikiOutputs[project])
-            .reduce<
-                typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
-            >((accum2, [outputName, output]) => {
-                accum2[outputName as ProjectWikiOutputName]
-                    = path.join(projectStepDirpaths[project].wiki_upload, output.filepath);
+// /** 
+//  * Maps wiki step projects to output names to absolute filepaths in the diff directory. 
+//  * This is fully equivalent to {@link projectWikiOutputFilepaths} except for the filepaths.
+//  * */
+// export const projectWikiDiffFilepaths = Object
+//     .keys(wikiStepOutputs)
+//     .reduce<
+//         Record<
+//             ProjectWikiOutputsProject,
+//             Record<
+//                 ProjectWikiOutputName,
+//                 string
+//             >
+//         >
+//     >((accum, projectUntyped) => {
+//         const project = projectUntyped as ProjectWikiOutputsProject;
 
-                return accum2;
-            }, {} as any);
+//         accum[project] = Object
+//             .entries(wikiStepOutputs[project])
+//             .reduce<
+//                 typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
+//             >((accum2, [outputName, output]) => {
+//                 accum2[outputName as ProjectWikiOutputName]
+//                     = path.join(projectDirpaths.diff, project, output.filepath);
 
-        return accum;
-    }, {} as any);
+//                 return accum2;
+//             }, {} as any);
 
-/** 
- * Maps wiki step projects to output names to absolute filepaths in the diff directory. 
- * This is fully equivalent to {@link projectWikiOutputFilepaths} except for the filepaths.
- * */
-export const projectWikiDiffFilepaths = Object
-    .keys(projectWikiOutputs)
-    .reduce<
-        Record<
-            ProjectWikiOutputsProject,
-            Record<
-                ProjectWikiOutputName,
-                string
-            >
-        >
-    >((accum, projectUntyped) => {
-        const project = projectUntyped as ProjectWikiOutputsProject;
-
-        accum[project] = Object
-            .entries(projectWikiOutputs[project])
-            .reduce<
-                typeof projectWikiOutputFilepaths[ProjectWikiOutputsProject]
-            >((accum2, [outputName, output]) => {
-                accum2[outputName as ProjectWikiOutputName]
-                    = path.join(projectDirpaths.diff, project, output.filepath);
-
-                return accum2;
-            }, {} as any);
-
-        return accum;
-    }, {} as any);
+//         return accum;
+//     }, {} as any);

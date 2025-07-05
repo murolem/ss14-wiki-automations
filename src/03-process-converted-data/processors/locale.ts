@@ -43,7 +43,7 @@ export default generateProcessorRunner(
             totalStrings += resource.body.length;
         }
 
-        logInfo(`locale loaded; preferred locale ${chalk.bold(preferredLocale)}'; total strings: ${chalk.bold(totalStrings)}`);
+        logInfo(`locale loaded; preferred locale ${chalk.bold(preferredLocale)}; total strings: ${chalk.bold(totalStrings)}`);
 
         loaded = true;
     });

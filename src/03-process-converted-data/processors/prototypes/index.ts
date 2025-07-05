@@ -1,4 +1,4 @@
-import { projectProcessingOutputs, projectStepDirpaths } from '$src/preset';
+import { getProcessingOutput, projectStepDirpaths } from '$src/preset';
 import { readFilesRecursive } from '$utils/readFilesRecursive';
 import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
@@ -106,7 +106,7 @@ function processor({
 
     writeJsonSync(
         'output',
-        projectProcessingOutputs.prototypes.prototypesJson.filepath,
+        getProcessingOutput('prototypes', 'prototypes_json').relFilepath,
         prototypesResolved
     );
 

@@ -3,7 +3,7 @@ import type { Change, SimpleChangeType } from '$wiki/lib/kittens/steps/changesGe
 import type { Pr } from '$wiki/lib/prMake';
 import { spinner } from '$wiki/lib/kittens/base';
 import { Logger } from '$logger';
-import { projectDirnames, projectDirpaths, projectWikiOutputs, type Project } from '$src/preset';
+import { projectDirnames, projectDirpaths, wikiStepOutputs, type Project } from '$src/preset';
 import chalk from 'chalk';
 import path from 'path';
 const logger = new Logger("wiki/wikiUpload")
@@ -36,10 +36,10 @@ export default async function (changes: Change[], pr: Pr) {
         switch (change.type) {
             case 'added':
             case 'modified':
-                logInfo(`${logCounterPrefix} ${changeTypeLog} wikipage ${chalk.bold(change.wikiTitle)}, ${chalk.gray("file: " + change.absFilepath)}`);
+                logInfo(`${logCounterPrefix} ${changeTypeLog} wikipage ${chalk.bold(change.wikiTitle)}, ${chalk.gray("file: " + change.diffAbsFilepath)}`);
                 spinner.start(changeTypeLog);
 
-                const contents = fs.readFileSync(change.absFilepath, 'utf-8');
+                const contents = fs.readFileSync(change.diffAbsFilepath, 'utf-8');
 
                 await editPage(change.wikiTitle, pageEditSummary, contents);
                 spinner.done();
@@ -61,8 +61,8 @@ export default async function (changes: Change[], pr: Pr) {
 function mapChangesToWikiUrls(changes: Change[]): Array<{
     type: SimpleChangeType,
     project: Project,
-    outputKey: string,
-    absFilepath: string,
+    outputName: string,
+    diffAbsFilepath: string,
     wikiTitle: string,
 }> {
     const res: ReturnType<typeof mapChangesToWikiUrls> = [];
@@ -72,22 +72,22 @@ function mapChangesToWikiUrls(changes: Change[]): Array<{
         const project = parts[0];
         const projectFilepath = parts.slice(1).join(path.sep);
 
-        if (!Object.keys(projectWikiOutputs).includes(project)) {
+        const projectOutputs = wikiStepOutputs.filter(e => e.project === project);
+        if (projectOutputs.length === 0) {
             logWarn(`project ${chalk.bold(project)} is not defined in project wiki outputs, skipping...`);
             continue;
         }
 
-        const outputRecords = projectWikiOutputs[project as keyof typeof projectWikiOutputs];
-        for (const [outputKey, outputRecord] of Object.entries(outputRecords)) {
-            if (outputRecord.filepath === projectFilepath) {
+        for (const [i, output] of Object.entries(projectOutputs)) {
+            if (path.relative(output.relFilepath, projectFilepath) === "") {
                 // match!
 
                 res.push({
                     type: change.type,
                     project: project as Project,
-                    outputKey,
-                    absFilepath: path.resolve(path.join(projectDirpaths.diff, change.path)),
-                    wikiTitle: outputRecord.wikipage
+                    outputName: output.name,
+                    diffAbsFilepath: path.resolve(path.join(projectDirpaths.diff, change.path)),
+                    wikiTitle: output.wikipage
                 });
             }
         }

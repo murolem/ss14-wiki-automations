@@ -10,7 +10,6 @@ const { logInfo, logFatal } = logger;
  */
 export async function branchClone(branch: string) {
     logInfo(`cloning '${branch}' branch`)
-    spinner.start("cloning");
 
     await git.clone({
         ...gitConfig,

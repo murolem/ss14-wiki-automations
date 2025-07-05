@@ -129,7 +129,7 @@ export function resolveInheritance(
 
 /** 
  * Constructs a tree of parent prototypes.
- * Returns an array of "final" parents, from left to right.
+ * Returns an array of edge nodes, from left to right.
  * */
 function getParentPrototypesRecursive(
     proto: Prototype,
@@ -168,6 +168,9 @@ function getParentPrototypesRecursive(
     return parentProtos;
 }
 
+/***
+ * Generates a resolver strategy for array on array merges depending on the depth.
+ */
 function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrategyResolver {
     return function (key, resCompArr, topCompArray, fallbackToStrategy) {
         if (key !== 'components') {

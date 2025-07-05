@@ -1,4 +1,4 @@
-import { projectProcessingOutputs } from '$src/preset';
+import { getProcessingOutput } from '$src/preset';
 import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
@@ -76,5 +76,9 @@ function processor({
 
     orders.sort((a, b) => a.id.localeCompare(b.id));
 
-    writeJsonSync('output', projectProcessingOutputs.cargo_orders.ordersJson.filepath, orders);
+    writeJsonSync(
+        'output',
+        getProcessingOutput('cargo_orders', 'orders_json').relFilepath,
+        orders
+    );
 };
