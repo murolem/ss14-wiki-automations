@@ -240,7 +240,7 @@ function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
             schemaParse(output.schema, data),
             getReplacer?.(data)
         );
-        logInfo("data written!");
+        logInfo(chalk.gray("data written!"));
 
         return data;
     }
