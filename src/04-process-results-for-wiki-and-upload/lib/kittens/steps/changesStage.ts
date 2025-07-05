@@ -14,15 +14,25 @@ export async function changesStage(changes: Change[]) {
     spinner.start("staging");
 
     for (const change of changes) {
-        // skip removals since we do not need to stage them (nor can we)
-        if (change.type === 'removed') {
-            continue;
+        switch (change.type) {
+            case 'added':
+            case 'modified':
+                await git.add({
+                    ...gitConfig,
+                    filepath: change.path
+                });
+                break;
+            case 'removed':
+                await git.remove({
+                    ...gitConfig,
+                    filepath: change.path
+                });
+                break;
+            default: {
+                logFatal({ msg: `change type ${change.type} is unsupported`, throw: true });
+                throw ''// type guard
+            }
         }
-
-        await git.add({
-            ...gitConfig,
-            filepath: change.path
-        })
     }
     spinner.done();
 }

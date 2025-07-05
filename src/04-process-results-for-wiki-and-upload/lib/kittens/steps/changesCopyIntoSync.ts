@@ -13,7 +13,7 @@ const { logInfo, logFatal } = logger;
 export async function changesCopyIntoSync() {
     logInfo("copying changes from processing step");
 
-    const projects = wikiStepOutputs.map(e => e.project);
+    const projects = [...new Set(wikiStepOutputs.map(e => e.project))];
     for (const [projI, project] of projects.entries()) {
         const projectDiffAbsDirpath = path.join(projectDirpaths.diff, project);
         ensureDirectoryExistsAndEmpty(projectDiffAbsDirpath);

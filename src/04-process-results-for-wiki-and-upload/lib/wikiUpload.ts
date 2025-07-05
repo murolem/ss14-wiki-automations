@@ -25,6 +25,7 @@ export default async function (changes: Change[], pr: Pr) {
 
     await mwClientLogin();
 
+    // todo: account for changes filenames/paths/etc. these won't map to anything in the preset since if preset is changed then mapping will fail then a file will remain on the wiki.
     const mappedChanges = mapChangesToWikiUrls(changes);
 
     const pageEditSummary = `automated sync to upstream; sync PR: ${pr.data.html_url}`;
