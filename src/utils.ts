@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
-import Logger from '@aliser/logger';
+import { Logger } from '$logger';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
 import jsonDiff from 'json-diff';
-const logger = new Logger("utils (/src)");
+const logger = new Logger("src/utils");
 const { logInfo, logError } = logger;
 
 // source: https://stackoverflow.com/a/76276541
@@ -165,80 +165,6 @@ export function deepCloneObjectUsingJson(obj: object): unknown {
 /** Checks whether given object is a record: `object` type, not `null`, not an array. */
 export function isRecord(obj: object): boolean {
     return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
-}
-
-/**
- * Merges object `topObj` with object `baseObj` recursively.
- * 
- * **WARNING:** The resulting object is initialized with `baseObj` using `JSON.stringify()` and `JSON.parse()`,
- * so it would lose things that are unsupported by JSON, such as functions.
- * 
- * When a name conflict happens, the resolver kicks-in, comparing the value types of old/new prop:
- * - If the new value of a primitive type (string, number, etc.), it will replaced.
- * - If new value is an array, and the old one as well - new items will be appended to the end.
- * If the old value is something else, it will be replaced.
- * - If new value is an object (excluding arrays and `null`), and the old one as well - 
- * new properties will be inserted, resolving collisions as described.
- * If the old value is something else, it will be replaced.
- * - `null` properties are left unchanged.
- * 
- * @param baseObj 
- * @param topObj
- * 
- * @throws If any of the objects are `null`. 
- */
-export function mergeJsonObjects(baseObj: object, topObj: object) {
-    if (baseObj === null || topObj === null) {
-        new Logger("mergeObjects()").logError("failed to merge objects: one on the objects is null", {
-            throwErr: true,
-            additional: {
-                baseObj,
-                topObj
-            }
-        });
-        throw ''//type guard
-    }
-
-    const resultObj = deepCloneObjectUsingJson(baseObj) as any;
-    for (const [key, value] of Object.entries(topObj)) {
-        /** Whether the property is already present in the base object. */
-        const isPresentInBaseObj = key in baseObj;
-
-        /** 
-         * Type of the same property in the base object. `undefined` in cases where it's not present.
-         * Not that the property too can have an `undefined` value.
-         */
-        const typeOfPropertyInBaseObj = isPresentInBaseObj ? typeof (baseObj as any)[key] : undefined;
-
-        switch (typeof value) {
-            case 'object':
-                if (value === null) {
-                    if (!isPresentInBaseObj) {
-                        resultObj[key] = value;
-                    }
-                } else if (Array.isArray(value)) {
-                    if (isPresentInBaseObj && typeOfPropertyInBaseObj === 'object' && Array.isArray((baseObj as any)[key])) {
-                        resultObj[key].push(...value)
-                    } else {
-                        resultObj[key] = value;
-                    }
-                } else {
-                    // value is a record
-
-                    if (isPresentInBaseObj) {
-                        resultObj[key] = mergeJsonObjects(resultObj[key], value);
-                    } else {
-                        resultObj[key] = value;
-                    }
-                }
-
-                break;
-            default:
-                resultObj[key] = value;
-        }
-    }
-
-    return resultObj;
 }
 
 /**
