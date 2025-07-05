@@ -2,7 +2,7 @@ import { toOsPath } from '$utils/toOsPath';
 import fs from 'fs-extra';
 import { Logger } from '$logger';
 const logger = new Logger("wiki/preprocess/entities");
-const { logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatal } = logger;
 import { z } from 'zod';
 import chalk from 'chalk';
 import { ensuredWritePrettyJsonSync, type JsonReplacer } from '$utils/writeJson';
@@ -222,7 +222,11 @@ function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
             });
         }
 
-        return schemaParse(output.schema, fs.readJsonSync(absFilepath));
+        logDebug(`loading and parsing data for project ${chalk.bold(project)} step ${chalk.bold(step)} output ${chalk.bold(outputName)} \nfrom: ${absFilepath}`);
+        const data = schemaParse(output.schema, fs.readJsonSync(absFilepath));
+        logDebug("data loaded!");
+
+        return data;
     }
 
     // @ts-ignore idk how to fix this shit
@@ -230,11 +234,13 @@ function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
         data: z.infer<T['schema']>,
         getReplacer?: (data: z.infer<T['schema']>) => JsonReplacer
     ): z.infer<T['schema']> => {
+        logInfo(`writing data for project ${chalk.bold(project)} step ${chalk.bold(step)} output ${chalk.bold(outputName)} \nto: ${absFilepath}`);
         ensuredWritePrettyJsonSync(
             absFilepath,
             schemaParse(output.schema, data),
             getReplacer?.(data)
         );
+        logInfo("data written!");
 
         return data;
     }

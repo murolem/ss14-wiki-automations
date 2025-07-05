@@ -22,7 +22,7 @@ export async function changesCopyIntoSync() {
 
         const projectOutputs = wikiStepOutputs.filter(e => e.project === project);
         for (const [outI, output] of projectOutputs.entries()) {
-            logInfo(`[out ${outI + 1} of ${projectOutputs.length}] output ${chalk.italic(output.name)}`);
+            logInfo(`\t[out ${outI + 1} of ${projectOutputs.length}] output ${chalk.italic(output.name)}`);
 
             const wikiAbsFilepath = path.join(projectStepDirpaths[project as Project].wiki_upload, output.relFilepath);
             if (!fs.existsSync(wikiAbsFilepath)) {
@@ -34,7 +34,7 @@ export async function changesCopyIntoSync() {
             fs.ensureDirSync(path.parse(diffDirAbsFilepath).dir);
             fs.copyFileSync(wikiAbsFilepath, diffDirAbsFilepath);
 
-            logInfo(`✅ copied! ${chalk.gray("to: " + diffDirAbsFilepath)}`);
+            logInfo(`\t✅ copied! ${chalk.gray("to: " + diffDirAbsFilepath)}`);
         }
     }
 }

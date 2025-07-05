@@ -14,6 +14,11 @@ export async function changesStage(changes: Change[]) {
     spinner.start("staging");
 
     for (const change of changes) {
+        // skip removals since we do not need to stage them (nor can we)
+        if (change.type === 'removed') {
+            continue;
+        }
+
         await git.add({
             ...gitConfig,
             filepath: change.path

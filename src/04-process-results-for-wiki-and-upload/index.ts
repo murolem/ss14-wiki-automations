@@ -8,7 +8,7 @@ const logger = new Logger("wiki");
 const { logInfo, logWarn, logFatal } = logger;
 
 async function main() {
-    preprocess();
+    await preprocess();
 
     const changes = await diff();
     if (!changes) {

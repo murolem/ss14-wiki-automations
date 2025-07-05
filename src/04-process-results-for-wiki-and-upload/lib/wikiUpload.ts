@@ -37,12 +37,10 @@ export default async function (changes: Change[], pr: Pr) {
             case 'added':
             case 'modified':
                 logInfo(`${logCounterPrefix} ${changeTypeLog} wikipage ${chalk.bold(change.wikiTitle)}, ${chalk.gray("file: " + change.diffAbsFilepath)}`);
-                spinner.start(changeTypeLog);
 
                 const contents = fs.readFileSync(change.diffAbsFilepath, 'utf-8');
 
                 await editPage(change.wikiTitle, pageEditSummary, contents);
-                spinner.done();
 
                 break;
             case 'removed':
