@@ -1,13 +1,12 @@
 # ss14-wiki-automations
 
-## Todo
+Contains various data export scripts for the [Space Station 14 Wiki](https://wiki.spacestation14.com/wiki/Main_Page).
 
--   Make sure inheritance resolver works correctly for prototypes:
-    -   Components get accumulated.
-    -   Same components get merged.
-    -   Same component fields get replaced, including arrays and maps (the latter seems to be not true currently.)
--   ^ in short, components array should get a special treatment.
+## Process
 
+Every hour an action runs that pulls data from the [upstream SS14 repository](https://github.com/space-wizards/space-station-14), process it and uploads any changes to the wiki.
+
+<!--
 ## Developing
 
 The program runs regularly using GitHub actions.
@@ -25,7 +24,7 @@ Steps (_step name - temp dir name - description_):
 -   **Copy source data** - `01-source-data` - contains files and directories of interest. Data for each substep is saved into its own directory.
 -   **Convert source data** - `02-converted-data` - converts source date from previous step into formats usable by the program. At minimum, it's conversion of all YML files into JSON files.
 -   **Process converted data** - `03-processed-data` - processes converted data, generating data files to be used on the wiki uploading step. Each substep can generate intermediary data for analysis and debug, which will be organized into relevant folders.
--   **Upload to the wiki** - `04-wiki-upload` - process the data from previous step one final time, making it ready for wiki usage. Due to the presentational nature of the wiki and potentially partial support for generated data (possibly requiring discarding/transforming some of it), this step is separated from the previous one.
+-   **Upload to the wiki** - `04-wiki-upload` - process the data from previous step one final time, making it ready for wiki usage. Due to the presentational nature of the wiki and potentially partial support for generated Space Station 14 Wikidata (possibly requiring discarding/transforming some of it), this step is separated from the previous one.
 
 ### Copy source data
 
@@ -55,4 +54,4 @@ Data produced on previous step gets uploaded to the wiki.
 
 Any additional wiki-specific processing can happen here (like removing useless data).
 
-This is the final step.
+This is the final step. -->
