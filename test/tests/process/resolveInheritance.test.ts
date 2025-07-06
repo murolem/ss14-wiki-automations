@@ -1,4 +1,4 @@
-import { createProtoPool, resolveInheritance, type ProtoPool } from '$process/processors/prototypes/resolveInheritance';
+import { createProtoPool, resolveInheritance, type ProtoPool } from '$process/processors/prototype/resolveInheritance';
 import type { Prototype } from '$schemas/prototype/base';
 import { getIntegrityAsserter } from '$testUtils/getIntegrityAsserter';
 import { test, expect, describe } from 'vitest';

@@ -6,6 +6,7 @@ import path from 'path';
 import { z, type ZodTypeAny } from 'zod';
 import dotenv from 'dotenv';
 import type { StringOr } from '$utils/stringOr';
+import { latheRecipeProtoRawSchema } from '$schemas/prototype/prototypes/latheRecipe';
 dotenv.config();
 
 const envVarsSchema = z.object({
@@ -65,14 +66,16 @@ export const projectDirnames = {
     ss14_repo: '_ss14-repo',
     diff: '_diff',
     locale: 'locale',
-    prototypes: 'prototypes',
-    entities: 'entities',
-    items: 'items',
-    structures: 'structures',
-    item_recipes: 'item-recipes',
-    construction_recipes: 'construction-recipes',
-    reagents: 'reagents',
-    cargo_orders: 'cargo-orders'
+    prototype: 'prototype',
+    entity: 'entity',
+    lathe: 'lathe',
+    lathe_recipe: 'lathe-recipe',
+    // item: 'item',
+    // structure: 'structure',
+    // item_recipe: 'item-recipe',
+    // construction_recipe: 'construction-recipe',
+    // reagent: 'reagent',
+    cargo_order: 'cargo-order'
 } satisfies Record<string, string>;
 
 export type Step = keyof typeof stepDirnames;
@@ -134,22 +137,40 @@ export type ProcessingStepOutputsByProject<T extends ProcessingStepOutputProject
  */
 export const processingStepOutputs = [
     {
-        project: 'prototypes',
+        project: 'prototype',
         name: 'prototypes_json',
         relFilepath: "prototypes.json",
         schema: prototypeSchema.array()
     },
     {
-        project: 'entities',
+        project: 'entity',
         name: 'entities_json',
         relFilepath: "entities.json",
         schema: entityPrototypeSchema.array()
     },
     {
-        project: 'cargo_orders',
+        project: 'cargo_order',
         name: 'orders_json',
         relFilepath: "orders.json",
         schema: cargoProductProcessedProtoSchema.array()
+    },
+    {
+        project: 'lathe',
+        name: 'lathes_json',
+        relFilepath: "lathes.json",
+        schema: latheRecipeProtoRawSchema.array()
+    },
+    {
+        project: 'lathe_recipe',
+        name: 'recipes_json',
+        relFilepath: "recipes.json",
+        schema: latheRecipeProtoRawSchema.array()
+    },
+    {
+        project: 'lathe_recipe',
+        name: 'recipe_packs_json',
+        relFilepath: "recipe_packs.json",
+        schema: latheRecipeProtoRawSchema.array()
     },
 ] satisfies ProcessingStepOutput[];
 
@@ -182,14 +203,14 @@ export type WikiStepOutputsByProject<T extends WikiStepOutputProject> =
  */
 export const wikiStepOutputs = [
     {
-        project: 'entities',
+        project: 'entity',
         name: 'entity_map_of_id_to_name',
         relFilepath: 'entity_map_of_id_to_name.json',
         schema: entityWikiMapOfIdToName,
         wikipage: 'Module:Item/data/auto/entity_map_of_id_to_name.json',
     },
     {
-        project: 'entities',
+        project: 'entity',
         name: 'entity_map_of_lc_name_to_id',
         relFilepath: 'entity_map_of_lc_name_to_id.json',
         schema: entityWikiMapOfLcNameToId,

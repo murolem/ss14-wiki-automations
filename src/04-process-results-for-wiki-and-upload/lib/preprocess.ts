@@ -4,5 +4,6 @@
 */
 
 export default async function () {
-    (await import("./bunnies/entities")).default();
+    (await import("./bunnies/entity")).default();
+    // (await import("./bunnies/")).default();
 }

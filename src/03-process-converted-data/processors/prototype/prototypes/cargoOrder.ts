@@ -4,12 +4,12 @@ import fs from 'fs-extra';
 import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
 import { schemaParse } from '$schemas/utils/assertSchema';
 import { generateProcessorRunner, type Processor, type ProcessorArgs } from '$shared/projectProcessor';
-import { filterProtosByType, tryGetProtoByIdWithParse } from '$process/processors/prototypes/getProto';
+import { filterProtosByType, tryGetProtoByIdWithParse } from '$process/processors/prototype/getProto';
 import { locRecordProperty } from '$process/processors/locale';
-import { tryGetCompWithParse } from '$process/processors/prototypes/getComp';
+import { tryGetCompWithParse } from '$process/processors/prototype/getComp';
 
 export default generateProcessorRunner(
-    'cargo_orders',
+    'cargo_order',
     'processed',
     'processed_temp',
     processor
@@ -78,7 +78,7 @@ function processor({
 
     writeJsonSync(
         'output',
-        getProcessingOutput('cargo_orders', 'orders_json').relFilepath,
+        getProcessingOutput('cargo_order', 'orders_json').relFilepath,
         orders
     );
 };

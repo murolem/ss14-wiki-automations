@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import { entityPrototypeSchema, type EntityPrototype } from '$schemas/prototype/prototypes/entity';
 import { Logger } from '$logger';
 import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
-import { getPrototypes } from '$process/processors/prototypes';
+import { getPrototypes } from '$process/processors/prototype';
 const logger = new Logger("process/processors/entities");
 const { logInfo, logFatal } = logger;
 
@@ -12,7 +12,7 @@ let loaded = false;
 let entities: EntityPrototype[] = [];
 
 export default generateProcessorRunner(
-    'entities',
+    'entity',
     'processed',
     'processed_temp',
     processor
@@ -45,7 +45,7 @@ function processor({
 
     writeJsonSync(
         'output',
-        getProcessingOutput('entities', 'entities_json').relFilepath,
+        getProcessingOutput('entity', 'entities_json').relFilepath,
         entities
     );
 };

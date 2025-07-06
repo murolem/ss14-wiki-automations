@@ -6,7 +6,7 @@ import fs from 'fs-extra';
 import { Logger } from '$logger';
 import { prototypeArraySchema, type ProtoId, type Prototype } from '$schemas/prototype/base';
 import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
-import { createProtoPool, resolveInheritance } from '$process/processors/prototypes/resolveInheritance';
+import { createProtoPool, resolveInheritance } from '$process/processors/prototype/resolveInheritance';
 const logger = new Logger("process/processors/prototype");
 const { logFatal } = logger;
 
@@ -15,7 +15,7 @@ let prototypes: Prototype[] = [];
 let prototypeIds: string[] = [];
 
 export default generateProcessorRunner(
-    'prototypes',
+    'prototype',
     'processed',
     'processed_temp',
     processor
@@ -34,7 +34,7 @@ function processor({
 }: ProcessorArgs) {
     const { logDebug, logInfo, logFatal } = logger;
 
-    const prototypesDirPath = projectStepDirpaths.prototypes.converted;
+    const prototypesDirPath = projectStepDirpaths.prototype.converted;
 
     logInfo(`loading prototypes for the first time; from: ${chalk.bold(prototypesDirPath)}`);
 
@@ -106,7 +106,7 @@ function processor({
 
     writeJsonSync(
         'output',
-        getProcessingOutput('prototypes', 'prototypes_json').relFilepath,
+        getProcessingOutput('prototype', 'prototypes_json').relFilepath,
         prototypesResolved
     );
 

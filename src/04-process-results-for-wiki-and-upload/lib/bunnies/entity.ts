@@ -13,7 +13,7 @@ import { entityPrototypeSchema } from '$schemas/prototype/prototypes/entity';
 import { projectStepDirpaths, processingStepOutputs, wikiStepOutputs, type ProcessingStepOutputProject, type ProcessingStepOutputsByProject, type WikiStepOutputProject, type WikiStepOutputsByProject, type Step, type Project, type ProcessingStepOutputName, type ProcessingStepOutputs, type WikiStepOutput, type ProcessingStepOutput, type WikiStepOutputs } from '$src/preset';
 
 export default generateProcessorRunner(
-    'entities',
+    'entity',
     'wiki_upload',
     'wiki_upload_temp',
     processor
@@ -30,9 +30,9 @@ function processor({
     logger,
     writeJsonSync,
 }: ProcessorArgs) {
-    const inputCtxEntitiesJson = getProcessingContext('entities', 'entities_json');
-    const outputCtxEntityMapOfIdToName = getWikiContext('entities', 'entity_map_of_id_to_name');
-    const outputCtxEntityMapOfLcNameToId = getWikiContext('entities', 'entity_map_of_lc_name_to_id');
+    const inputCtxEntitiesJson = getProcessingContext('entity', 'entities_json');
+    const outputCtxEntityMapOfIdToName = getWikiContext('entity', 'entity_map_of_id_to_name');
+    const outputCtxEntityMapOfLcNameToId = getWikiContext('entity', 'entity_map_of_lc_name_to_id');
 
     const entities = inputCtxEntitiesJson.loadAndParseData();
 
