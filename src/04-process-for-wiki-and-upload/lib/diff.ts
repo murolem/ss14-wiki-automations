@@ -9,8 +9,11 @@ import { Logger } from '$logger';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 const logger = new Logger("wiki/diff");
 const { logInfo, logWarn, logFatal } = logger;
-import { projectDirpaths, wikiAutomationsRepo } from '$src/preset';
+import { projectDirpaths, syncBranchPathBlacklist, wikiAutomationsRepo } from '$src/preset';
 import chalk from 'chalk';
+import { getFilesInDirectoryRecursively } from '$src/utils';
+import fs from 'fs-extra';
+import path from 'path';
 
 /*
 * This step creates a diff between "current state of the wiki" and the desired state considering any changes.
@@ -37,12 +40,36 @@ export default async function (): Promise<Change[] | null> {
     ensureDirectoryExistsAndEmpty(projectDirpaths.diff);
 
     await branchClone(wikiAutomationsRepo.syncBranchName);
+
+    // remove every file and dir except .git
+    // so that we can lay a clean output on top.
+    for (const fileOrDir of fs.readdirSync(projectDirpaths.diff)) {
+        if (fileOrDir === ".git" || syncBranchPathBlacklist.includes(fileOrDir)) {
+            continue;
+        }
+
+        fs.rmSync(path.join(projectDirpaths.diff, fileOrDir), { recursive: true });
+    }
+
     await changesCopyIntoSync();
     const [haveChanges, changes] = await changesGet();
     if (haveChanges) {
         const changesStr = chalk.bold(changes.length
             + " " + (changes.length === 1 ? "change" : "changes"));
-        logInfo(`found ${changesStr} to upload`);
+        logInfo(`found ${changesStr} to upload:`);
+
+        const changesAsStrs = changes.map(c => {
+            switch (c.type) {
+                case 'added': return chalk.bold(chalk.bgGreen('+') + ' add ') + c.path;
+                case 'modified': return chalk.bold(chalk.bgBlue('±') + ' mod ') + c.path;
+                case 'removed': return chalk.bold(chalk.bgRed('-') + ' rem ') + c.path;
+                default:
+                    logFatal({ msg: `unknown change type '${c.type}'`, throw: true });
+                    throw ''//type guard
+            }
+        });
+
+        logInfo(changesAsStrs.join("\n"));
     } else {
         logInfo("no changes to upload!");
         return null;

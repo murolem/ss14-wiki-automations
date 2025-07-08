@@ -33,7 +33,7 @@ function processor({
 
     logInfo("searching for protos");
 
-    let entities = getPrototypes()
+    entities = getPrototypes()
         .filter(proto => proto.type === 'entity');
 
     writeJsonSync('temp', 'entities_raw.json', entities);
@@ -48,6 +48,8 @@ function processor({
         getProcessingOutput('entity', 'entities_json').relFilepath,
         entities
     );
+
+    loaded = true;
 };
 
 /**

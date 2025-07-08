@@ -20,7 +20,7 @@
         "./src/03-process-converted-data/*"
       ],
       "$wiki/*": [
-        "./src/04-process-results-for-wiki-and-upload/*"
+        "./src/04-process-for-wiki-and-upload/*"
       ],
       "$git": [
         "./src/lib/utils/git.ts"
@@ -66,5 +66,8 @@
   "include": [
     "src",
     "test",
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

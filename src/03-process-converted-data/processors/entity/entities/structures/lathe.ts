@@ -1,15 +1,9 @@
 import { getProcessingOutput } from '$src/preset';
-import { toOsPath } from '$utils/toOsPath';
-import fs from 'fs-extra';
-import { cargoProductRawProtoSchema, cargoProductProcessedProtoSchema, type CargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
-import { schemaParse } from '$schemas/utils/assertSchema';
-import { generateProcessorRunner, type Processor, type ProcessorArgs } from '$shared/projectProcessor';
-import { filterProtosByType, filterProtosByTypeWithParse, tryGetProtoByIdWithParse } from '$process/processors/prototype/getProto';
-import { locRecordProperty } from '$process/processors/locale';
-import { tryGetCompWithParse } from '$process/processors/prototype/getComp';
+import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
+import { getEntities } from '$process/processors/entity/entity';
 
 export default generateProcessorRunner(
-    'lathe',
+    'lathe_entity',
     'processed',
     'processed_temp',
     processor
@@ -26,18 +20,12 @@ function processor({
     logger,
     writeJsonSync,
 }: ProcessorArgs) {
-    const lathes = filterProtosByTypeWithParse('lathe');
-    const recipePacks = filterProtosByTypeWithParse('latheRecipePack');
+    const latheEnts = getEntities()
+        .filter(e => e.components?.find(comp => comp.type === 'Lathe'));
 
     writeJsonSync(
         'output',
-        getProcessingOutput('lathe_recipe', 'recipes_json').relFilepath,
-        recipes
-    );
-
-    writeJsonSync(
-        'output',
-        getProcessingOutput('lathe_recipe', 'recipe_packs_json').relFilepath,
-        recipePacks
+        getProcessingOutput('lathe_entity', 'lathe_entities_json').relFilepath,
+        latheEnts
     );
 };

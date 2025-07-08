@@ -25,7 +25,7 @@ const storageFillContentsEntrySchema = z.object({
     maxAmount: z.number().optional()
 })
 
-export const storageFillEntityComponentSchema = z.object({
+export const storageFillEntComponentSchema = z.object({
     type: z.literal("StorageFill"),
     contents: z.array(
         storageFillContentsEntrySchema

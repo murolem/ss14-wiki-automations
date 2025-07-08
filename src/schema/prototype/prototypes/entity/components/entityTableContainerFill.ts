@@ -138,7 +138,7 @@ const entityTableSelectorSchema = z.union([
 // =============
 
 /** `EntityTableContainerFill` entity component. */
-export const entityTableContainerFillEntityComponentSchema = z.object({
+export const entityTableContainerFillEntComponentSchema = z.object({
     type: z.literal("EntityTableContainerFill"),
     containers: z.record(z.string(), entityTableSelectorSchema)
 });

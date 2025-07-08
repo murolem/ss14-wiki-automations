@@ -1,5 +1,5 @@
 import { prototypeSchema, protoIdSchema } from '$schemas/prototype/base';
-import { storageFillEntityComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
+import { storageFillEntComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
 import { z } from 'zod';
 
 export type CargoProductRawProtoSchema = z.infer<typeof cargoProductRawProtoSchema>;
@@ -21,5 +21,5 @@ export const cargoProductRawProtoSchema = prototypeSchema.extend({
 export type CargoProductProcessedProtoSchema = z.infer<typeof cargoProductProcessedProtoSchema>;
 export const cargoProductProcessedProtoSchema = cargoProductRawProtoSchema.extend({
     description: z.string().optional(),
-    contents: storageFillEntityComponentSchema.shape.contents.optional()
+    contents: storageFillEntComponentSchema.shape.contents.optional()
 })

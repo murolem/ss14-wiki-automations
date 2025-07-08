@@ -81,6 +81,9 @@ function mapChangesToWikiUrls(changes: Change[]): Array<{
             if (path.relative(output.relFilepath, projectFilepath) === "") {
                 // match!
 
+                if (!output.wikipage)
+                    continue;
+
                 res.push({
                     type: change.type,
                     project: project as Project,

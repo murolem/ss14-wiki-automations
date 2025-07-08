@@ -109,6 +109,6 @@ function getWriteJsonSyncInstance(outputDirpath: string, tempDirpath: string, lo
         } else {
             logger.logInfo(chalk.gray(`writing temp JSON ${chalk.bold(relFilepath)}; \npath: ${chalk.gray(combinedPath)}`));
         }
-        ensuredWritePrettyJsonSync(combinedPath, data, replacer);
+        ensuredWritePrettyJsonSync(combinedPath, data, { replacer });
     }
 }

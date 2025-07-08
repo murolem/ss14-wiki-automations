@@ -5,5 +5,6 @@
 
 export default async function () {
     (await import("./bunnies/entity")).default();
-    // (await import("./bunnies/")).default();
+    (await import("./bunnies/latheRecipe")).default();
+    (await import("./bunnies/craftingStation")).default();
 }

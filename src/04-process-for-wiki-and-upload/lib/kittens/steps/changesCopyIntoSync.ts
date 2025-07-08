@@ -14,19 +14,22 @@ export async function changesCopyIntoSync() {
     logInfo("copying changes from processing step");
 
     const projects = [...new Set(wikiStepOutputs.map(e => e.project))];
-    for (const [projI, project] of projects.entries()) {
+    for (const project of projects) {
+        const projectOutputs = wikiStepOutputs
+            .filter(e => e.project === project && e.wikipage);
+        if (projectOutputs.length === 0)
+            continue;
+
         const projectDiffAbsDirpath = path.join(projectDirpaths.diff, project);
         ensureDirectoryExistsAndEmpty(projectDiffAbsDirpath);
 
-        logInfo(`[proj ${projI + 1} of ${projects.length}] project ${chalk.bold(project)}`);
-
-        const projectOutputs = wikiStepOutputs.filter(e => e.project === project);
-        for (const [outI, output] of projectOutputs.entries()) {
-            logInfo(`\t[out ${outI + 1} of ${projectOutputs.length}] output ${chalk.italic(output.name)}`);
+        for (const output of projectOutputs) {
+            logInfo(`locating project ${chalk.bold(project)} output ${chalk.bold(output.name)}`);
 
             const wikiAbsFilepath = path.join(projectStepDirpaths[project as Project].wiki_upload, output.relFilepath);
             if (!fs.existsSync(wikiAbsFilepath)) {
-                logInfo(chalk.gray("❌ not found, at: " + wikiAbsFilepath));
+                logInfo("❌ output not found");
+                logInfo(chalk.gray("expected at: " + wikiAbsFilepath));
                 continue;
             }
 
@@ -34,7 +37,7 @@ export async function changesCopyIntoSync() {
             fs.ensureDirSync(path.parse(diffDirAbsFilepath).dir);
             fs.copyFileSync(wikiAbsFilepath, diffDirAbsFilepath);
 
-            logInfo(`\t✅ copied! ${chalk.gray("to: " + diffDirAbsFilepath)}`);
+            logInfo(`✅ output copied into diff! ${chalk.gray("to: " + diffDirAbsFilepath)}`);
         }
     }
 }

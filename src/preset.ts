@@ -1,12 +1,14 @@
 import { prototypeSchema } from '$schemas/prototype/base';
 import { cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
-import { entityPrototypeSchema, entityWikiMapOfIdToName, entityWikiMapOfLcNameToId } from '$schemas/prototype/prototypes/entity';
+import { entityPrototypeSchema, wikiSchemaEntityMapOfIdToName, wikiSchemaEntityMapOfLcNameToId } from '$schemas/prototype/prototypes/entity';
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
 import { z, type ZodTypeAny } from 'zod';
 import dotenv from 'dotenv';
 import type { StringOr } from '$utils/stringOr';
-import { latheRecipeProtoRawSchema } from '$schemas/prototype/prototypes/latheRecipe';
+import { latheRecipeProtoSchema, wikiSchemaRecipeMapOfRecipeIdToRecipe, wikiSchemaRecipeMapOfRecipeMethodToAvailabilityToToRecipeIds, wikiSchemaRecipeMapOfRecipeProductToRecipeId as wikiSchemaRecipeMapOfProductIdToRecipeId } from '$schemas/prototype/prototypes/latheRecipe';
+import { latheRecipePackProtoSchema } from '$schemas/prototype/prototypes/latheRecipePack';
+import { wikiSchemaCraftingStationConfig, wikiSchemaLatheConfig } from '$schemas/crafting/craftingStation';
 dotenv.config();
 
 const envVarsSchema = z.object({
@@ -68,8 +70,10 @@ export const projectDirnames = {
     locale: 'locale',
     prototype: 'prototype',
     entity: 'entity',
-    lathe: 'lathe',
+    lathe_entity: 'lathe-entity',
     lathe_recipe: 'lathe-recipe',
+    crafting_station_lathes_configs: 'crafting_station_lathes_configs',
+    crafting_station: 'crafting-station',
     // item: 'item',
     // structure: 'structure',
     // item_recipe: 'item-recipe',
@@ -155,22 +159,22 @@ export const processingStepOutputs = [
         schema: cargoProductProcessedProtoSchema.array()
     },
     {
-        project: 'lathe',
-        name: 'lathes_json',
-        relFilepath: "lathes.json",
-        schema: latheRecipeProtoRawSchema.array()
+        project: 'lathe_entity',
+        name: 'lathe_entities_json',
+        relFilepath: "lathe_entities.json",
+        schema: entityPrototypeSchema.array()
     },
     {
         project: 'lathe_recipe',
         name: 'recipes_json',
         relFilepath: "recipes.json",
-        schema: latheRecipeProtoRawSchema.array()
+        schema: latheRecipeProtoSchema.array()
     },
     {
         project: 'lathe_recipe',
         name: 'recipe_packs_json',
         relFilepath: "recipe_packs.json",
-        schema: latheRecipeProtoRawSchema.array()
+        schema: latheRecipePackProtoSchema.array()
     },
 ] satisfies ProcessingStepOutput[];
 
@@ -188,7 +192,7 @@ export type WikiStepOutput = {
      * Url to upload the file to.
      * Relative to the wiki endpoint.
     */
-    wikipage: string,
+    wikipage?: string,
     schema: ZodTypeAny
 };
 
@@ -206,16 +210,43 @@ export const wikiStepOutputs = [
         project: 'entity',
         name: 'entity_map_of_id_to_name',
         relFilepath: 'entity_map_of_id_to_name.json',
-        schema: entityWikiMapOfIdToName,
+        schema: wikiSchemaEntityMapOfIdToName,
         wikipage: 'Module:Item/data/auto/entity_map_of_id_to_name.json',
     },
     {
         project: 'entity',
         name: 'entity_map_of_lc_name_to_id',
         relFilepath: 'entity_map_of_lc_name_to_id.json',
-        schema: entityWikiMapOfLcNameToId,
+        schema: wikiSchemaEntityMapOfLcNameToId,
         wikipage: 'Module:Item/data/auto/entity_map_of_lc_name_to_id.json',
-    }
+    },
+    {
+        project: 'lathe_recipe',
+        name: 'recipe_map_of_recipe_id_to_recipe',
+        relFilepath: 'recipe_map_of_recipe_id_to_recipe.json',
+        schema: wikiSchemaRecipeMapOfRecipeIdToRecipe,
+        wikipage: 'Module:Item_recipe/data/auto/recipe_map_of_recipe_id_to_recipe.json',
+    },
+    {
+        project: 'lathe_recipe',
+        name: 'recipe_map_of_product_id_to_recipe_id',
+        relFilepath: 'recipe_map_of_product_id_to_recipe_id.json',
+        schema: wikiSchemaRecipeMapOfProductIdToRecipeId,
+        wikipage: 'Module:Item_recipe/data/auto/recipe_map_of_product_id_to_recipe_id.json',
+    },
+    {
+        project: 'crafting_station_lathes_configs',
+        name: 'lathes_configs',
+        relFilepath: 'lathes_configs.json',
+        schema: wikiSchemaLatheConfig.array()
+    },
+    {
+        project: 'crafting_station',
+        name: 'crafting_stations_configs',
+        relFilepath: '_crafting_stations_configs.json',
+        schema: wikiSchemaCraftingStationConfig.array(),
+        wikipage: 'Module:Crafting/data/auto/crafting_stations_configs.json',
+    },
 ] satisfies WikiStepOutput[];
 
 export const getWikiOutput = <T extends WikiStepOutputProject>

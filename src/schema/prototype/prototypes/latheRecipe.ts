@@ -1,8 +1,8 @@
 import { prototypeSchema } from '$schemas/prototype/base';
 import { z } from 'zod';
 
-export type LatheRecipeProtoRawSchema = z.infer<typeof latheRecipeProtoRawSchema>;
-export const latheRecipeProtoRawSchema = prototypeSchema.extend({
+export type LatheRecipeProtoSchema = z.infer<typeof latheRecipeProtoSchema>;
+export const latheRecipeProtoSchema = prototypeSchema.extend({
     /** The unique type for lathe recipes. */
     type: z.literal("latheRecipe"),
 
@@ -64,3 +64,25 @@ export const latheRecipeProtoRawSchema = prototypeSchema.extend({
 //     description: z.string().optional(),
 //     contents: storageFillEntityComponentSchema.shape.contents.optional()
 // })
+
+export const wikiSchemaRecipeMapOfRecipeIdToRecipe = z.record(
+    z.string(),
+    latheRecipeProtoSchema
+);
+
+export const wikiSchemaRecipeMapOfRecipeProductToRecipeId = z.record(
+    z.string(),
+    z.union([
+        z.string(),
+        // if a product has multiple recipes
+        z.string().array()
+    ])
+);
+
+export const wikiSchemaRecipeMapOfRecipeMethodToAvailabilityToToRecipeIds = z.record(
+    z.string(),
+    z.record(
+        z.string(),
+        z.string().array()
+    )
+);

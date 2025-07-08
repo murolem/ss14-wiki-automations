@@ -4,7 +4,7 @@ const logger = new Logger("schemas/utils");
 const { logInfo, logFatal } = logger;
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
 import chalk from 'chalk';
-import type { EntityComponent } from '$schemas/prototype/prototypes/entity';
+import type { AnyEntityComponent } from '$schemas/prototype/prototypes/entity';
 import type { ProtoType, ProtoId, Prototype } from '$schemas/prototype/base';
 import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
 
@@ -178,10 +178,10 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
         }
 
         for (const topComp of topCompArray) {
-            const compType = (topComp as EntityComponent).type;
+            const compType = (topComp as AnyEntityComponent).type;
 
-            const resComp = (resCompArr as EntityComponent[])
-                .find(comp => (comp as EntityComponent).type === compType);
+            const resComp = (resCompArr as AnyEntityComponent[])
+                .find(comp => (comp as AnyEntityComponent).type === compType);
 
             // if not a duplicate, just add it
             if (!resComp) {
@@ -193,7 +193,7 @@ function getEntityMergeStrategyOnArrayResolver(depth: number): ArrayOnArrayStrat
             resCompArr[resCompArr.indexOf(resComp)] =
                 mergeJsonObjects(
                     resComp,
-                    topComp as EntityComponent,
+                    topComp as AnyEntityComponent,
                     // replace mode on surface proto, preserve mode on parent protos
                     depth === 0 ? mergeJsonConfigOriginalProto : mergeJsonConfigParentProtos
 
