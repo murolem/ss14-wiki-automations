@@ -89,6 +89,29 @@
             "WireBrush",
             "Wirecutter",
             "Wrench"
+        ],
+        "emagStaticRecipes": [
+            "BoxLethalshot",
+            "BoxShotgunSlug",
+            "MagazineBoxLightRifle",
+            "MagazineBoxMagnum",
+            "MagazineBoxPistol",
+            "MagazineBoxRifle",
+            "MagazineLightRifle",
+            "MagazineLightRifleEmpty",
+            "MagazinePistol",
+            "MagazinePistolEmpty",
+            "MagazinePistolSubMachineGun",
+            "MagazinePistolSubMachineGunEmpty",
+            "MagazinePistolSubMachineGunTopMounted",
+            "MagazinePistolSubMachineGunTopMountedEmpty",
+            "MagazineRifle",
+            "MagazineRifleEmpty",
+            "MagazineShotgun",
+            "MagazineShotgunEmpty",
+            "MagazineShotgunSlug",
+            "SpeedLoaderMagnum",
+            "SpeedLoaderMagnumEmpty"
         ]
     },
     {
@@ -183,6 +206,29 @@
             "WireBrush",
             "Wirecutter",
             "Wrench"
+        ],
+        "emagStaticRecipes": [
+            "BoxLethalshot",
+            "BoxShotgunSlug",
+            "MagazineBoxLightRifle",
+            "MagazineBoxMagnum",
+            "MagazineBoxPistol",
+            "MagazineBoxRifle",
+            "MagazineLightRifle",
+            "MagazineLightRifleEmpty",
+            "MagazinePistol",
+            "MagazinePistolEmpty",
+            "MagazinePistolSubMachineGun",
+            "MagazinePistolSubMachineGunEmpty",
+            "MagazinePistolSubMachineGunTopMounted",
+            "MagazinePistolSubMachineGunTopMountedEmpty",
+            "MagazineRifle",
+            "MagazineRifleEmpty",
+            "MagazineShotgun",
+            "MagazineShotgunEmpty",
+            "MagazineShotgunSlug",
+            "SpeedLoaderMagnum",
+            "SpeedLoaderMagnumEmpty"
         ]
     },
     {
@@ -266,6 +312,51 @@
             "WeaponSprayNozzle",
             "WeaponTetherGun",
             "WelderExperimental"
+        ],
+        "emagDynamicRecipes": [
+            "BoxBeanbag",
+            "BoxShellTranquilizer",
+            "BoxShotgunIncendiary",
+            "BoxShotgunUranium",
+            "ClothingBackpackElectropack",
+            "ClothingBackpackHarmpack",
+            "ExplosivePayload",
+            "GrenadeBlast",
+            "GrenadeEMP",
+            "GrenadeFlash",
+            "HoloprojectorSecurity",
+            "MagazineBoxLightRifleIncendiary",
+            "MagazineBoxLightRifleUranium",
+            "MagazineBoxMagnumIncendiary",
+            "MagazineBoxMagnumUranium",
+            "MagazineBoxPistolIncendiary",
+            "MagazineBoxPistolUranium",
+            "MagazineBoxRifleIncendiary",
+            "MagazineBoxRifleUranium",
+            "MagazineGrenadeEmpty",
+            "MagazineLightRifleIncendiary",
+            "MagazineLightRifleUranium",
+            "MagazinePistolIncendiary",
+            "MagazinePistolSubMachineGunIncendiary",
+            "MagazinePistolSubMachineGunUranium",
+            "MagazinePistolUranium",
+            "MagazineRifleIncendiary",
+            "MagazineRifleUranium",
+            "MagazineShotgunBeanbag",
+            "MagazineShotgunIncendiary",
+            "PortableRecharger",
+            "PowerCageHigh",
+            "PowerCageMedium",
+            "PowerCageSmall",
+            "SpeedLoaderMagnumIncendiary",
+            "SpeedLoaderMagnumUranium",
+            "TelescopicShield",
+            "Truncheon",
+            "WeaponAdvancedLaser",
+            "WeaponLaserCannon",
+            "WeaponLaserCarbine",
+            "WeaponTemperatureGun",
+            "WeaponXrayCannon"
         ]
     },
     {
@@ -351,6 +442,51 @@
             "WeaponSprayNozzle",
             "WeaponTetherGun",
             "WelderExperimental"
+        ],
+        "emagDynamicRecipes": [
+            "BoxBeanbag",
+            "BoxShellTranquilizer",
+            "BoxShotgunIncendiary",
+            "BoxShotgunUranium",
+            "ClothingBackpackElectropack",
+            "ClothingBackpackHarmpack",
+            "ExplosivePayload",
+            "GrenadeBlast",
+            "GrenadeEMP",
+            "GrenadeFlash",
+            "HoloprojectorSecurity",
+            "MagazineBoxLightRifleIncendiary",
+            "MagazineBoxLightRifleUranium",
+            "MagazineBoxMagnumIncendiary",
+            "MagazineBoxMagnumUranium",
+            "MagazineBoxPistolIncendiary",
+            "MagazineBoxPistolUranium",
+            "MagazineBoxRifleIncendiary",
+            "MagazineBoxRifleUranium",
+            "MagazineGrenadeEmpty",
+            "MagazineLightRifleIncendiary",
+            "MagazineLightRifleUranium",
+            "MagazinePistolIncendiary",
+            "MagazinePistolSubMachineGunIncendiary",
+            "MagazinePistolSubMachineGunUranium",
+            "MagazinePistolUranium",
+            "MagazineRifleIncendiary",
+            "MagazineRifleUranium",
+            "MagazineShotgunBeanbag",
+            "MagazineShotgunIncendiary",
+            "PortableRecharger",
+            "PowerCageHigh",
+            "PowerCageMedium",
+            "PowerCageSmall",
+            "SpeedLoaderMagnumIncendiary",
+            "SpeedLoaderMagnumUranium",
+            "TelescopicShield",
+            "Truncheon",
+            "WeaponAdvancedLaser",
+            "WeaponLaserCannon",
+            "WeaponLaserCarbine",
+            "WeaponTemperatureGun",
+            "WeaponXrayCannon"
         ]
     },
     {
@@ -445,6 +581,12 @@
             "ThermomachineFreezerMachineCircuitBoard",
             "ThrusterMachineCircuitboard",
             "TurboItemRechargerCircuitboard"
+        ],
+        "emagDynamicRecipes": [
+            "ShuttleGunDusterCircuitboard",
+            "ShuttleGunFriendshipCircuitboard",
+            "ShuttleGunPerforatorCircuitboard",
+            "ShuttleGunSvalinnMachineGunCircuitboard"
         ]
     },
     {
@@ -541,6 +683,12 @@
             "ThermomachineFreezerMachineCircuitBoard",
             "ThrusterMachineCircuitboard",
             "TurboItemRechargerCircuitboard"
+        ],
+        "emagDynamicRecipes": [
+            "ShuttleGunDusterCircuitboard",
+            "ShuttleGunFriendshipCircuitboard",
+            "ShuttleGunPerforatorCircuitboard",
+            "ShuttleGunSvalinnMachineGunCircuitboard"
         ]
     },
     {
@@ -599,6 +747,11 @@
             "MonkeyCube",
             "MothroachCube",
             "MouseCube"
+        ],
+        "emagStaticRecipes": [
+            "AbominationCube",
+            "SpaceCarpCube",
+            "SpaceTickCube"
         ]
     },
     {
@@ -954,6 +1107,31 @@
             "ClothingUniformJumpsuitSeniorPhysician",
             "ClothingUniformJumpsuitSeniorResearcher",
             "ClothingUniformJumpsuitWarden"
+        ],
+        "emagStaticRecipes": [
+            "BedsheetSyndie",
+            "ClothingHeadHatCentcom",
+            "ClothingHeadHatCentcomcap",
+            "ClothingHeadHatSyndie",
+            "ClothingHeadHatSyndieMAA",
+            "ClothingHeadPyjamaSyndicateBlack",
+            "ClothingHeadPyjamaSyndicatePink",
+            "ClothingHeadPyjamaSyndicateRed",
+            "ClothingOuterWinterCentcom",
+            "ClothingOuterWinterSyndie",
+            "ClothingOuterWinterSyndieCap",
+            "ClothingUniformJumpskirtCentcomFormalDress",
+            "ClothingUniformJumpskirtOperative",
+            "ClothingUniformJumpskirtSyndieFormalDress",
+            "ClothingUniformJumpsuitCentcomAgent",
+            "ClothingUniformJumpsuitCentcomFormal",
+            "ClothingUniformJumpsuitCentcomOfficer",
+            "ClothingUniformJumpsuitCentcomOfficial",
+            "ClothingUniformJumpsuitOperative",
+            "ClothingUniformJumpsuitPyjamaSyndicateBlack",
+            "ClothingUniformJumpsuitPyjamaSyndicatePink",
+            "ClothingUniformJumpsuitPyjamaSyndicateRed",
+            "ClothingUniformJumpsuitSyndieFormal"
         ]
     },
     {
