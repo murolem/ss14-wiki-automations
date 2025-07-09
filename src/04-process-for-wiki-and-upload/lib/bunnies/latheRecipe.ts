@@ -92,16 +92,19 @@ function processor({
         latheEnts
             .filter(ent => !ent.abstract)
             .map(ent => {
-                const comp = tryGetCompWithParse(ent, 'Lathe');
+                const latheComp = tryGetCompWithParse(ent, 'Lathe');
+                const emagRecipesComp = tryGetCompWithParse(ent, 'EmagLatheRecipes');
 
                 return {
                     stationType: 'Lathe',
                     id: ent.id,
-                    defaultProductionAmount: comp?.defaultProductionAmount,
-                    materialUseMultiplier: comp?.materialUseMultiplier,
-                    timeMultiplier: comp?.timeMultiplier,
-                    staticRecipes: comp?.staticPacks?.flatMap(findRecipePackRecipes),
-                    dynamicRecipes: comp?.dynamicPacks?.flatMap(findRecipePackRecipes),
+                    defaultProductionAmount: latheComp?.defaultProductionAmount,
+                    materialUseMultiplier: latheComp?.materialUseMultiplier,
+                    timeMultiplier: latheComp?.timeMultiplier,
+                    staticRecipes: latheComp?.staticPacks?.flatMap(findRecipePackRecipes),
+                    dynamicRecipes: latheComp?.dynamicPacks?.flatMap(findRecipePackRecipes),
+                    emagStaticRecipes: emagRecipesComp?.emagStaticPacks?.flatMap(findRecipePackRecipes),
+                    emagDynamicRecipes: emagRecipesComp?.emagDynamicPacks?.flatMap(findRecipePackRecipes)
                 };
             })
     )

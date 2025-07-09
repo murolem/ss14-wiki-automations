@@ -1,5 +1,6 @@
 import { Logger } from '$logger';
 import { prototypeSchema } from '$schemas/prototype/base';
+import { emagLatheRecipesComponentSchema } from '$schemas/prototype/prototypes/entity/components/emagLatheRecipesComponent';
 import { entityTableContainerFillEntComponentSchema } from '$schemas/prototype/prototypes/entity/components/entityTableContainerFill';
 import { latheEntComponentSchema } from '$schemas/prototype/prototypes/entity/components/latheComponent';
 import { storageFillEntComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
@@ -21,15 +22,17 @@ export type SpecificEntityComponentType = SpecificEntityComponent['type'];
 export const specificEntityComponentSchemaByType = {
     StorageFill: storageFillEntComponentSchema,
     EntityTableContainerFill: entityTableContainerFillEntComponentSchema,
-    Lathe: latheEntComponentSchema
+    Lathe: latheEntComponentSchema,
+    EmagLatheRecipes: emagLatheRecipesComponentSchema
 } satisfies Record<string, ZodType>;
 
 // !this is the second one and it should be equal to the first one
 /** Entity component schema for components for whom a schema is defined. */
 export const specificEntityComponentSchema = z.union([
-    specificEntityComponentSchemaByType.Lathe,
-    specificEntityComponentSchemaByType.EntityTableContainerFill,
     specificEntityComponentSchemaByType.StorageFill,
+    specificEntityComponentSchemaByType.EntityTableContainerFill,
+    specificEntityComponentSchemaByType.Lathe,
+    specificEntityComponentSchemaByType.EmagLatheRecipes
 ])
 
 /** Entity component schema matching any entity. */

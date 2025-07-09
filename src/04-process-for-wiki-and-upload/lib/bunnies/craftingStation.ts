@@ -44,6 +44,8 @@ function processor({
         materialUseMultiplier: 5,
         staticRecipes: 6,
         dynamicRecipes: 7,
+        emagStaticRecipes: 8,
+        emagDynamicRecipes: 9
     };
 
     const res: z.infer<typeof octxConfigs.schema> = [
@@ -53,6 +55,8 @@ function processor({
     res.forEach(cfg => {
         cfg.staticRecipes?.sort();
         cfg.dynamicRecipes?.sort();
+        cfg.emagStaticRecipes?.sort();
+        cfg.emagDynamicRecipes?.sort();
     })
 
     octxConfigs.writeData(

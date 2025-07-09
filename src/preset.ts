@@ -243,7 +243,7 @@ export const wikiStepOutputs = [
     {
         project: 'crafting_station',
         name: 'crafting_stations_configs',
-        relFilepath: '_crafting_stations_configs.json',
+        relFilepath: 'crafting_stations_configs.json',
         schema: wikiSchemaCraftingStationConfig.array(),
         wikipage: 'Module:Crafting/data/auto/crafting_stations_configs.json',
     },

@@ -11,17 +11,23 @@ export const wikiSchemaLatheConfig = wikiSchemaCraftingStationConfigBase.extend(
     id: protoIdSchema,
 
     /** Recipe IDs of items that are available to be printed by default. */
-    staticRecipes: z.array(z.string()).optional(),
+    staticRecipes: z.array(protoIdSchema).optional(),
 
     /** Recipe IDs of items that are available to be printed only after they have been researched. */
-    dynamicRecipes: z.array(z.string()).optional(),
+    dynamicRecipes: z.array(protoIdSchema).optional(),
+
+    /** Recipe IDs of items that are available to be printed by default when the lathe is EMAGged. */
+    emagStaticRecipes: z.array(protoIdSchema).optional(),
+
+    /** Recipe IDs of items that are available to be printed only after they have been researched and the lathe is EMAGged. */
+    emagDynamicRecipes: z.array(protoIdSchema).optional(),
 
     materialUseMultiplier: z.number().optional(),
 
     timeMultiplier: z.number().optional(),
 
     defaultProductionAmount: z.number().optional()
-});
+}).strict();
 
 // will be a union with 2 or more configs
 export const wikiSchemaCraftingStationConfig = wikiSchemaLatheConfig;
