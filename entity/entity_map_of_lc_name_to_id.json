@@ -4218,6 +4218,8 @@
     "poison auto-injector": "AntiPoisonMedipen",
     "poison cloak": "ClothingNeckCloakBi",
     "poison wine bottle": "DrinkBottlePoisonWine",
+    "polly the parrot": "MobPollyParrot",
+    "polly the parrot spawner": "SpawnMobPollyParrot",
     "poncho": "ClothingOuterPoncho",
     "pondering orb": "PonderingOrb",
     "popcorn": "FoodSnackPopcorn",
