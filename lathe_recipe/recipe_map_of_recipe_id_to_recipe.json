@@ -9088,7 +9088,20 @@
             "Plastic": 1,
             "Steel": 3
         },
-        "result": "SprayPainter",
+        "result": "SprayPainterEmpty",
+        "type": "latheRecipe"
+    },
+    "SprayPainterAmmo": {
+        "categories": [
+            "Tools"
+        ],
+        "completetime": 2,
+        "id": "SprayPainterAmmo",
+        "materials": {
+            "Plastic": 0.5,
+            "Steel": 1.5
+        },
+        "result": "SprayPainterAmmo",
         "type": "latheRecipe"
     },
     "StasisBedMachineCircuitboard": {
