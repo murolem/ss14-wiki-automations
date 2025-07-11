@@ -1442,6 +1442,7 @@
     "composition with red blue and yellow": "PaintingRedBlueYellow",
     "compressed matter": "RCDAmmo",
     "compressed matter crate": "CrateRCDAmmo",
+    "compressed paint": "SprayPainterAmmo",
     "computer": "BaseComputer",
     "computer board": "BaseComputerCircuitboard",
     "computer frame": "ComputerFrame",
