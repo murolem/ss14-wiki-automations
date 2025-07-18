@@ -686,6 +686,20 @@
         },
         "type": "latheRecipe"
     },
+    "BaseMarbleTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Marble"
+        ],
+        "completetime": 0.5,
+        "id": "BaseMarbleTileRecipe",
+        "materials": {
+            "Glass": 0.25,
+            "Steel": 0.25
+        },
+        "type": "latheRecipe"
+    },
     "BaseMechEquipmentRecipe": {
         "abstract": true,
         "categories": [
@@ -5297,6 +5311,20 @@
         "result": "FloorTileItemDarkHerringbone",
         "type": "latheRecipe"
     },
+    "FloorTileItemDarkMarble": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Marble"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemDarkMarble",
+        "materials": {
+            "Glass": 0.25,
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemDarkMarble",
+        "type": "latheRecipe"
+    },
     "FloorTileItemDarkMini": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5704,6 +5732,20 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemWhiteHerringbone",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemWhiteMarble": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Marble"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemWhiteMarble",
+        "materials": {
+            "Glass": 0.25,
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemWhiteMarble",
         "type": "latheRecipe"
     },
     "FloorTileItemWhiteMini": {
