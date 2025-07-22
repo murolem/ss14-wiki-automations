@@ -6751,6 +6751,7 @@
     "PathfindPoint": "pathfind point",
     "PeaSeeds": "packet of pea pods",
     "PelletClusterIncendiary": "pellet (ball, incendiary)",
+    "PelletClusterLessLethal": "pellet (ball, less lethal)",
     "PelletClusterLethal": "pellet (ball, lethal)",
     "PelletClusterRubber": "pellet (ball, rubber)",
     "PelletGlass": "glass shard",

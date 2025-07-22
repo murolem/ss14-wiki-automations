@@ -4066,6 +4066,7 @@
     "pellet (.50 uranium)": "PelletShotgunUranium",
     "pellet (.50)": "PelletShotgun",
     "pellet (ball, incendiary)": "PelletClusterIncendiary",
+    "pellet (ball, less lethal)": "PelletClusterLessLethal",
     "pellet (ball, lethal)": "PelletClusterLethal",
     "pellet (ball, rubber)": "PelletClusterRubber",
     "pen": "Pen",
