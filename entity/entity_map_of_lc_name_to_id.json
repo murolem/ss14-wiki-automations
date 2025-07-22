@@ -4034,7 +4034,7 @@
     "parcel wrap crate": "CrateCargoParcelWrap",
     "parchís": "ParchisBoardTabletop",
     "parchís board": "ParchisBoard",
-    "parrot": "MobParrot",
+    "parrot": "MobParrotBase",
     "parrot crate": "CrateNPCParrot",
     "parrot spawner": "SpawnMobParrot",
     "particle decelerators crate": "CrateParticleDecelerators",
