@@ -71,7 +71,7 @@
     "ai upload console": "StationAiUploadComputer",
     "ai upload console board": "StationAiUploadCircuitboard",
     "ai upload sign": "SignAiUpload",
-    "air alarm": "AirAlarm",
+    "air alarm": "AirAlarmFreezer",
     "air alarm assembly": "AirAlarmAssembly",
     "air alarm electronics": "AirAlarmElectronics",
     "air canister": "AirCanister",
