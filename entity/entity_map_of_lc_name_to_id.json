@@ -465,6 +465,8 @@
     "berries": "FoodBerries",
     "berry clafoutis": "FoodPieClafoutis",
     "berry creamsicle": "FoodFrozenPopsicleBerry",
+    "berry delight": "FoodCakeBerryDelight",
+    "berry delight slice": "FoodCakeBerryDelightSlice",
     "berry muffin": "FoodBakedMuffinBerry",
     "berry snowcone": "FoodFrozenSnowconeBerry",
     "berry-pocket": "FoodDonkpocketBerry",
