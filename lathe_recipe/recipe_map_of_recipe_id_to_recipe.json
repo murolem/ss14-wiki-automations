@@ -1775,6 +1775,21 @@
         "result": "BorgModuleAdvancedCleaning",
         "type": "latheRecipe"
     },
+    "BorgModuleAdvancedClowning": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 3,
+        "id": "BorgModuleAdvancedClowning",
+        "materials": {
+            "Bananium": 3.75,
+            "Glass": 5,
+            "Plastic": 2.5,
+            "Steel": 5
+        },
+        "result": "BorgModuleAdvancedClowning",
+        "type": "latheRecipe"
+    },
     "BorgModuleAdvancedMining": {
         "categories": [
             "Modules"
