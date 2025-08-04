@@ -1062,6 +1062,27 @@
         },
         "type": "latheRecipe"
     },
+    "BaseXenoborgModulesRecipe": {
+        "abstract": true,
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 2,
+        "id": "BaseXenoborgModulesRecipe",
+        "materials": {
+            "Glass": 30
+        },
+        "type": "latheRecipe"
+    },
+    "BaseXenoborgRecipe": {
+        "abstract": true,
+        "categories": [
+            "Robotics"
+        ],
+        "completetime": 10,
+        "id": "BaseXenoborgRecipe",
+        "type": "latheRecipe"
+    },
     "Beaker": {
         "completetime": 2,
         "id": "Beaker",
@@ -9980,6 +10001,93 @@
             "Steel": 2
         },
         "result": "Wrench",
+        "type": "latheRecipe"
+    },
+    "XenoborgEngiRecipe": {
+        "categories": [
+            "Robotics"
+        ],
+        "completetime": 10,
+        "id": "XenoborgEngiRecipe",
+        "materials": {
+            "Steel": 30
+        },
+        "result": "XenoborgEngiPrinted",
+        "type": "latheRecipe"
+    },
+    "XenoborgHeavyRecipe": {
+        "categories": [
+            "Robotics"
+        ],
+        "completetime": 10,
+        "id": "XenoborgHeavyRecipe",
+        "materials": {
+            "Plasteel": 10,
+            "Steel": 20
+        },
+        "result": "XenoborgHeavyPrinted",
+        "type": "latheRecipe"
+    },
+    "XenoborgModuleEnergySwordRecipe": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 2,
+        "id": "XenoborgModuleEnergySwordRecipe",
+        "materials": {
+            "Glass": 30
+        },
+        "result": "XenoborgModuleEnergySword",
+        "type": "latheRecipe"
+    },
+    "XenoborgModuleHeavyLaserRecipe": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 2,
+        "id": "XenoborgModuleHeavyLaserRecipe",
+        "materials": {
+            "Glass": 30
+        },
+        "result": "XenoborgModuleHeavyLaser",
+        "type": "latheRecipe"
+    },
+    "XenoborgModuleSuperCloakDeviceRecipe": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 2,
+        "id": "XenoborgModuleSuperCloakDeviceRecipe",
+        "materials": {
+            "Glass": 30
+        },
+        "result": "XenoborgModuleSuperCloakDevice",
+        "type": "latheRecipe"
+    },
+    "XenoborgScoutRecipe": {
+        "categories": [
+            "Robotics"
+        ],
+        "completetime": 10,
+        "id": "XenoborgScoutRecipe",
+        "materials": {
+            "Plastic": 10,
+            "Steel": 20
+        },
+        "result": "XenoborgScoutPrinted",
+        "type": "latheRecipe"
+    },
+    "XenoborgStealthRecipe": {
+        "categories": [
+            "Robotics"
+        ],
+        "completetime": 10,
+        "id": "XenoborgStealthRecipe",
+        "materials": {
+            "Glass": 10,
+            "Steel": 20
+        },
+        "result": "XenoborgStealthPrinted",
         "type": "latheRecipe"
     },
     "Zipties": {

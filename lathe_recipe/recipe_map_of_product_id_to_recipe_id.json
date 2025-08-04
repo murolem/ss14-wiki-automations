@@ -719,5 +719,12 @@
     "WireBrush": "WireBrush",
     "Wirecutter": "Wirecutter",
     "Wrench": "Wrench",
+    "XenoborgEngiPrinted": "XenoborgEngiRecipe",
+    "XenoborgHeavyPrinted": "XenoborgHeavyRecipe",
+    "XenoborgModuleEnergySword": "XenoborgModuleEnergySwordRecipe",
+    "XenoborgModuleHeavyLaser": "XenoborgModuleHeavyLaserRecipe",
+    "XenoborgModuleSuperCloakDevice": "XenoborgModuleSuperCloakDeviceRecipe",
+    "XenoborgScoutPrinted": "XenoborgScoutRecipe",
+    "XenoborgStealthPrinted": "XenoborgStealthRecipe",
     "Zipties": "Zipties"
 }
