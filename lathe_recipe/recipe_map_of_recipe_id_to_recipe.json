@@ -7836,6 +7836,26 @@
         "result": "NodeScanner",
         "type": "latheRecipe"
     },
+    "OffsetCane": {
+        "completetime": 2,
+        "id": "OffsetCane",
+        "materials": {
+            "Plastic": 1,
+            "Steel": 1
+        },
+        "result": "OffsetCane",
+        "type": "latheRecipe"
+    },
+    "OffsetCaneWood": {
+        "completetime": 2,
+        "id": "OffsetCaneWood",
+        "materials": {
+            "Steel": 1,
+            "Wood": 1
+        },
+        "result": "OffsetCaneWood",
+        "type": "latheRecipe"
+    },
     "Ointment": {
         "completetime": 1,
         "id": "Ointment",
