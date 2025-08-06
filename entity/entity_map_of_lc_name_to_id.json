@@ -6265,7 +6265,7 @@
     "wallmount generator": "BaseGeneratorWallmount",
     "wallmount generator electronics": "WallmountGeneratorElectronics",
     "wallmount generator frame": "BaseGeneratorWallmountFrame",
-    "wallmount substation": "BaseSubstationWall",
+    "wallmount substation": "DebugSubstationWall",
     "wallmount substation electronics": "WallmountSubstationElectronics",
     "wallmount substation frame": "BaseSubstationWallFrame",
     "walter": "MobWalter",
