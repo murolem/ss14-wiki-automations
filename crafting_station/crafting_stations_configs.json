@@ -712,6 +712,7 @@
         "staticRecipes": [
             "BorgModuleCable",
             "BorgModuleFireExtinguisher",
+            "BorgModuleInflatable",
             "BorgModuleTool",
             "CyborgEndoskeleton",
             "LeftArmBorg",
