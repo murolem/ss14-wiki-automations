@@ -1869,6 +1869,20 @@
         "result": "BorgModuleFireExtinguisher",
         "type": "latheRecipe"
     },
+    "BorgModuleInflatable": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 3,
+        "id": "BorgModuleInflatable",
+        "materials": {
+            "Glass": 2.5,
+            "Plastic": 2.5,
+            "Steel": 2.5
+        },
+        "result": "BorgModuleInflatable",
+        "type": "latheRecipe"
+    },
     "BorgModuleTool": {
         "categories": [
             "Modules"
