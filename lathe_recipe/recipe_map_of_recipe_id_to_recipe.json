@@ -1911,6 +1911,26 @@
         "result": "BoxBeanbag",
         "type": "latheRecipe"
     },
+    "BoxFolderClipboardEmpty": {
+        "completetime": 2,
+        "id": "BoxFolderClipboardEmpty",
+        "materials": {
+            "Steel": 0.25,
+            "Wood": 1
+        },
+        "result": "BoxFolderClipboardEmpty",
+        "type": "latheRecipe"
+    },
+    "BoxFolderPlasticClipboardEmpty": {
+        "completetime": 2,
+        "id": "BoxFolderPlasticClipboardEmpty",
+        "materials": {
+            "Plastic": 1,
+            "Steel": 0.25
+        },
+        "result": "BoxFolderPlasticClipboardEmpty",
+        "type": "latheRecipe"
+    },
     "BoxLethalshot": {
         "categories": [
             "Ammo",

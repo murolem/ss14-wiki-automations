@@ -58,6 +58,8 @@
     "BorgModuleInflatable": "BorgModuleInflatable",
     "BorgModuleTool": "BorgModuleTool",
     "BoxBeanbag": "BoxBeanbag",
+    "BoxFolderClipboardEmpty": "BoxFolderClipboardEmpty",
+    "BoxFolderPlasticClipboardEmpty": "BoxFolderPlasticClipboardEmpty",
     "BoxLethalshot": "BoxLethalshot",
     "BoxShellTranquilizer": "BoxShellTranquilizer",
     "BoxShotgunFlare": "BoxShotgunFlare",
