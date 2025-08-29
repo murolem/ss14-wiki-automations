@@ -5116,6 +5116,7 @@
     "sentry turret": "WeaponEnergyTurretStationBase",
     "sentry turret control panel": "WeaponEnergyTurretStationControlPanelBase",
     "sentry turret control panel assembly": "WeaponEnergyTurretControlPanelFrame",
+    "sentry turret control panel electronics": "WeaponEnergyTurretStationControlPanelElectronicsBase",
     "sentry turret machine board": "WeaponEnergyTurretStationMachineCircuitboardBase",
     "seraph toy": "ToySeraph",
     "server sign": "SignServer",
