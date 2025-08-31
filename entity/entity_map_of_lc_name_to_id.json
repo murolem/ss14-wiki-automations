@@ -196,6 +196,7 @@
     "antimatter control unit crate": "CrateEngineeringAMEControl",
     "antique laser pistol": "WeaponAntiqueLaser",
     "antique power cell prototype": "PowerCellAntiqueProto",
+    "any job spawn point": "SpawnPointAnyJob",
     "apc": "BaseAPC",
     "apc electronics": "APCElectronics",
     "apc frame": "APCFrame",
