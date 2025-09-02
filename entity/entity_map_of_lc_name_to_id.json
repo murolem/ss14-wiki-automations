@@ -3744,6 +3744,8 @@
     "n2o warning sign": "WarningN2O",
     "nachos": "FoodMealNachos",
     "nanomed": "VendingMachineWallMedical",
+    "nanomed band-aid": "VendingMachineWallMedicalCivilian",
+    "nanomed civilian": "VendingMachineMedicalBase",
     "nanomed plus": "VendingMachineMedical",
     "nanomed restock box": "VendingMachineRestockMedical",
     "nanomed restock crate": "CrateVendingMachineRestockMedicalFilled",
