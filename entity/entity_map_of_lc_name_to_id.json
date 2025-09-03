@@ -5090,6 +5090,7 @@
     "self destruct": "SelfDestructSeq",
     "self-recharging fire extinguisher": "SelfRechargingFireExtinguisher",
     "semki packet": "FoodPacketSemkiTrash",
+    "senior courier pda": "SeniorCourierPDA",
     "senior engineer id card": "SeniorEngineerIDCard",
     "senior engineer jumpskirt": "ClothingUniformJumpskirtSeniorEngineer",
     "senior engineer jumpsuit": "ClothingUniformJumpsuitSeniorEngineer",
