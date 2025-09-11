@@ -5328,6 +5328,7 @@
     "small-capacity power cell": "PowerCellSmall",
     "smart corgi": "MobCorgiSmart",
     "smartfridge": "SmartFridge",
+    "smartfridge machine board": "SmartFridgeCircuitboard",
     "smes": "DebugSMES",
     "smes machine board": "SMESMachineCircuitboard",
     "smg crate": "CrateArmorySMG",

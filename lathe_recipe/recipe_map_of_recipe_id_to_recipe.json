@@ -9021,6 +9021,16 @@
         "result": "SignalTrigger",
         "type": "latheRecipe"
     },
+    "SmartFridgeCircuitboard": {
+        "completetime": 4,
+        "id": "SmartFridgeCircuitboard",
+        "materials": {
+            "Glass": 5,
+            "Steel": 1
+        },
+        "result": "SmartFridgeCircuitboard",
+        "type": "latheRecipe"
+    },
     "SMESAdvancedMachineCircuitboard": {
         "categories": [
             "Machines",

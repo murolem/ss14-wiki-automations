@@ -534,6 +534,7 @@
             "ProtolatheMachineCircuitboard",
             "ReagentGrinderMachineCircuitboard",
             "SalvageMagnetMachineCircuitboard",
+            "SmartFridgeCircuitboard",
             "SodaDispenserMachineCircuitboard",
             "SpaceHeaterMachineCircuitBoard",
             "UniformPrinterMachineCircuitboard"
@@ -636,6 +637,7 @@
             "ProtolatheMachineCircuitboard",
             "ReagentGrinderMachineCircuitboard",
             "SalvageMagnetMachineCircuitboard",
+            "SmartFridgeCircuitboard",
             "SodaDispenserMachineCircuitboard",
             "SpaceHeaterMachineCircuitBoard",
             "UniformPrinterMachineCircuitboard"
