@@ -817,6 +817,7 @@
     "BaseKeyedInstrument": "item",
     "BaseKnife": "item",
     "BaseLamp": "lantern",
+    "BaseLaserRifle": "item",
     "BaseLathe": "lathe",
     "BaseLatheLube": "lathe",
     "BaseLeftArm": "left arm",
