@@ -5136,6 +5136,24 @@
         "result": "FloorTileItemAstroSnow",
         "type": "latheRecipe"
     },
+    "FauxTileDarkAstroGrass": {
+        "completetime": 1,
+        "id": "FauxTileDarkAstroGrass",
+        "materials": {
+            "Plastic": 1
+        },
+        "result": "FloorTileItemDarkAstroGrass",
+        "type": "latheRecipe"
+    },
+    "FauxTileDesertAstroSand": {
+        "completetime": 1,
+        "id": "FauxTileDesertAstroSand",
+        "materials": {
+            "Plastic": 1
+        },
+        "result": "FloorTileItemDesertAstroSand",
+        "type": "latheRecipe"
+    },
     "FauxTileJungleAstroGrass": {
         "completetime": 1,
         "id": "FauxTileJungleAstroGrass",
@@ -5143,6 +5161,15 @@
             "Plastic": 1
         },
         "result": "FloorTileItemJungleAstroGrass",
+        "type": "latheRecipe"
+    },
+    "FauxTileLightAstroGrass": {
+        "completetime": 1,
+        "id": "FauxTileLightAstroGrass",
+        "materials": {
+            "Plastic": 1
+        },
+        "result": "FloorTileItemLightAstroGrass",
         "type": "latheRecipe"
     },
     "FauxTileMowedAstroGrass": {
