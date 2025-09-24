@@ -398,6 +398,20 @@
         "id": "BaseCircuitryRecipeCategory",
         "type": "latheRecipe"
     },
+    "BaseCircuitTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Circuit"
+        ],
+        "completetime": 0.5,
+        "id": "BaseCircuitTileRecipe",
+        "materials": {
+            "Steel": 0.25
+        },
+        "type": "latheRecipe"
+    },
     "BaseCoatRecipe": {
         "abstract": true,
         "categories": [
@@ -457,6 +471,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -480,6 +495,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -528,7 +544,12 @@
     },
     "BaseFauxTileRecipe": {
         "abstract": true,
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "BaseFauxTileRecipe",
         "materials": {
             "Plastic": 1
@@ -677,6 +698,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Maints"
         ],
         "completetime": 0.5,
@@ -690,6 +712,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Marble"
         ],
         "completetime": 0.5,
@@ -904,6 +927,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -1040,6 +1064,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -1053,6 +1078,7 @@
         "abstract": true,
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Wood"
         ],
         "completetime": 0.5,
@@ -5092,7 +5118,12 @@
         "type": "latheRecipe"
     },
     "FauxTileAstroAsteroidSand": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileAstroAsteroidSand",
         "materials": {
             "Plastic": 1
@@ -5101,7 +5132,12 @@
         "type": "latheRecipe"
     },
     "FauxTileAstroAsteroidSandBorderless": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileAstroAsteroidSandBorderless",
         "materials": {
             "Plastic": 1
@@ -5110,7 +5146,12 @@
         "type": "latheRecipe"
     },
     "FauxTileAstroGrass": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileAstroGrass",
         "materials": {
             "Plastic": 1
@@ -5119,7 +5160,12 @@
         "type": "latheRecipe"
     },
     "FauxTileAstroIce": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileAstroIce",
         "materials": {
             "Plastic": 1
@@ -5128,7 +5174,12 @@
         "type": "latheRecipe"
     },
     "FauxTileAstroSnow": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileAstroSnow",
         "materials": {
             "Plastic": 1
@@ -5137,7 +5188,12 @@
         "type": "latheRecipe"
     },
     "FauxTileDarkAstroGrass": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileDarkAstroGrass",
         "materials": {
             "Plastic": 1
@@ -5146,7 +5202,12 @@
         "type": "latheRecipe"
     },
     "FauxTileDesertAstroSand": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileDesertAstroSand",
         "materials": {
             "Plastic": 1
@@ -5155,7 +5216,12 @@
         "type": "latheRecipe"
     },
     "FauxTileJungleAstroGrass": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileJungleAstroGrass",
         "materials": {
             "Plastic": 1
@@ -5164,7 +5230,12 @@
         "type": "latheRecipe"
     },
     "FauxTileLightAstroGrass": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileLightAstroGrass",
         "materials": {
             "Plastic": 1
@@ -5173,7 +5244,12 @@
         "type": "latheRecipe"
     },
     "FauxTileMowedAstroGrass": {
-        "completetime": 1,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
         "id": "FauxTileMowedAstroGrass",
         "materials": {
             "Plastic": 1
@@ -5288,35 +5364,51 @@
         "type": "latheRecipe"
     },
     "FloorBlueCircuit": {
-        "completetime": 2,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Circuit"
+        ],
+        "completetime": 0.5,
         "id": "FloorBlueCircuit",
         "materials": {
-            "Steel": 1
+            "Steel": 0.25
         },
-        "result": "FloorTileItemBCircuit4",
+        "result": "FloorTileItemBCircuit",
         "type": "latheRecipe"
     },
     "FloorGreenCircuit": {
-        "completetime": 2,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Circuit"
+        ],
+        "completetime": 0.5,
         "id": "FloorGreenCircuit",
         "materials": {
-            "Steel": 1
+            "Steel": 0.25
         },
-        "result": "FloorTileItemGCircuit4",
+        "result": "FloorTileItemGCircuit",
         "type": "latheRecipe"
     },
     "FloorRedCircuit": {
-        "completetime": 2,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Circuit"
+        ],
+        "completetime": 0.5,
         "id": "FloorRedCircuit",
         "materials": {
-            "Steel": 1
+            "Steel": 0.25
         },
-        "result": "FloorTileItemRCircuit4",
+        "result": "FloorTileItemRCircuit",
         "type": "latheRecipe"
     },
     "FloorTileItemConcrete": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5331,6 +5423,7 @@
     "FloorTileItemConcreteMono": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5345,6 +5438,7 @@
     "FloorTileItemConcreteSmooth": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5359,6 +5453,7 @@
     "FloorTileItemDark": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5372,6 +5467,7 @@
     "FloorTileItemDarkDiagonal": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5385,6 +5481,7 @@
     "FloorTileItemDarkDiagonalMini": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5398,6 +5495,7 @@
     "FloorTileItemDarkHerringbone": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5411,6 +5509,7 @@
     "FloorTileItemDarkMarble": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Marble"
         ],
         "completetime": 0.5,
@@ -5425,6 +5524,7 @@
     "FloorTileItemDarkMini": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5438,6 +5538,7 @@
     "FloorTileItemDarkMono": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5451,6 +5552,7 @@
     "FloorTileItemDarkOffset": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5464,6 +5566,7 @@
     "FloorTileItemDarkPavement": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5477,6 +5580,7 @@
     "FloorTileItemDarkPavementVertical": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5490,6 +5594,7 @@
     "FloorTileItemDarkSquiggly": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Dark"
         ],
         "completetime": 0.5,
@@ -5503,6 +5608,7 @@
     "FloorTileItemGratingMaint": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Maints"
         ],
         "completetime": 0.5,
@@ -5516,6 +5622,7 @@
     "FloorTileItemGrayConcrete": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5530,6 +5637,7 @@
     "FloorTileItemGrayConcreteMono": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5544,6 +5652,7 @@
     "FloorTileItemGrayConcreteSmooth": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5558,6 +5667,7 @@
     "FloorTileItemOldConcrete": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5572,6 +5682,7 @@
     "FloorTileItemOldConcreteMono": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5586,6 +5697,7 @@
     "FloorTileItemOldConcreteSmooth": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Concrete"
         ],
         "completetime": 0.5,
@@ -5600,6 +5712,7 @@
     "FloorTileItemSteel": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5613,6 +5726,7 @@
     "FloorTileItemSteelCheckerDark": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5626,6 +5740,7 @@
     "FloorTileItemSteelCheckerLight": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5639,6 +5754,7 @@
     "FloorTileItemSteelDiagonal": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5652,6 +5768,7 @@
     "FloorTileItemSteelDiagonalMini": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5665,6 +5782,7 @@
     "FloorTileItemSteelHerringbone": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5678,6 +5796,7 @@
     "FloorTileItemSteelMaint": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Maints"
         ],
         "completetime": 0.5,
@@ -5691,6 +5810,7 @@
     "FloorTileItemSteelMini": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5704,6 +5824,7 @@
     "FloorTileItemSteelMono": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5717,6 +5838,7 @@
     "FloorTileItemSteelOffset": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5730,6 +5852,7 @@
     "FloorTileItemSteelPavement": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5743,6 +5866,7 @@
     "FloorTileItemSteelPavementVertical": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Steel"
         ],
         "completetime": 0.5,
@@ -5756,6 +5880,7 @@
     "FloorTileItemTechmaint": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Maints"
         ],
         "completetime": 0.5,
@@ -5769,6 +5894,7 @@
     "FloorTileItemTechmaintDark": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Maints"
         ],
         "completetime": 0.5,
@@ -5782,6 +5908,7 @@
     "FloorTileItemWhite": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5795,6 +5922,7 @@
     "FloorTileItemWhiteDiagonal": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5808,6 +5936,7 @@
     "FloorTileItemWhiteDiagonalMini": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5821,6 +5950,7 @@
     "FloorTileItemWhiteHerringbone": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5834,6 +5964,7 @@
     "FloorTileItemWhiteMarble": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Marble"
         ],
         "completetime": 0.5,
@@ -5848,6 +5979,7 @@
     "FloorTileItemWhiteMini": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5861,6 +5993,7 @@
     "FloorTileItemWhiteMono": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5874,6 +6007,7 @@
     "FloorTileItemWhiteOffset": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5887,6 +6021,7 @@
     "FloorTileItemWhitePavement": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5900,6 +6035,7 @@
     "FloorTileItemWhitePavementVertical": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "White"
         ],
         "completetime": 0.5,
@@ -5913,6 +6049,7 @@
     "FloorTileItemWood": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Wood"
         ],
         "completetime": 0.5,
@@ -5926,6 +6063,7 @@
     "FloorTileItemWoodLarge": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Wood"
         ],
         "completetime": 0.5,
@@ -5939,6 +6077,7 @@
     "FloorTileItemWoodPattern": {
         "applyMaterialDiscount": false,
         "categories": [
+            "Tiles",
             "Wood"
         ],
         "completetime": 0.5,
