@@ -2088,6 +2088,20 @@
         "result": "ButchCleaver",
         "type": "latheRecipe"
     },
+    "CableDetStack1": {
+        "categories": [
+            "Weapons"
+        ],
+        "completetime": 2,
+        "id": "CableDetStack1",
+        "materials": {
+            "Gold": 0.2,
+            "Plasma": 0.25,
+            "Plastic": 0.5
+        },
+        "result": "CableDetStack1",
+        "type": "latheRecipe"
+    },
     "CableHVStack": {
         "categories": [
             "Parts"
@@ -5058,6 +5072,18 @@
             "Steel": 1
         },
         "result": "EmitterCircuitboard",
+        "type": "latheRecipe"
+    },
+    "EmptyDetonator": {
+        "categories": [
+            "Weapons"
+        ],
+        "completetime": 3,
+        "id": "EmptyDetonator",
+        "materials": {
+            "Steel": 1
+        },
+        "result": "EmptyDetonator",
         "type": "latheRecipe"
     },
     "ExosuitFabricatorMachineCircuitboard": {
@@ -9728,6 +9754,15 @@
             "Steel": 2.5
         },
         "result": "TorsoBorg",
+        "type": "latheRecipe"
+    },
+    "TowelColorWhite": {
+        "completetime": 2,
+        "id": "TowelColorWhite",
+        "materials": {
+            "Cloth": 3
+        },
+        "result": "TowelColorWhite",
         "type": "latheRecipe"
     },
     "TrashBag": {
