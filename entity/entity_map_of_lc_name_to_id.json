@@ -4482,6 +4482,7 @@
     "random food spawner": "RandomFoodBreakfast",
     "random grille spawner": "GrilleSpawner",
     "random ingredient spawner": "RandomIngredient",
+    "random instrument collection": "CrateFunInstrumentsRandom",
     "random instruments spawner": "RandomInstruments",
     "random legit poster spawner": "RandomPosterLegit",
     "random lockbox spawner": "LootSpawnerRandomLockbox",
