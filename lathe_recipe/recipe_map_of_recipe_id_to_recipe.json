@@ -9842,6 +9842,15 @@
         "result": "ClothingBeltUtility",
         "type": "latheRecipe"
     },
+    "UtilityKnife": {
+        "completetime": 2,
+        "id": "UtilityKnife",
+        "materials": {
+            "Steel": 1
+        },
+        "result": "UtilityKnife",
+        "type": "latheRecipe"
+    },
     "Vape": {
         "completetime": 2,
         "icon": {
