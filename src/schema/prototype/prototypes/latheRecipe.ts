@@ -36,7 +36,7 @@ export const latheRecipeProtoSchema = prototypeSchema.extend({
     completetime: z.number().optional(),
 
     // todo
-    applyMaterialDiscount: z.boolean({ coerce: true }).optional(),
+    applyMaterialDiscount: z.coerce.boolean().optional(),
 
     /** Recipe icon (?). */
     icon: z.object({

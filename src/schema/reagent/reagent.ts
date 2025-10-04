@@ -2,7 +2,7 @@ import { metabolismsValidator } from '$src/schema/reagent/metabolism';
 import { reactiveEffectsValidator } from '$src/schema/reagent/reactiveEffect';
 import { z } from 'zod';
 
-export const reagentValidator = z.object({
+export const reagentValidator = z.looseObject({
     type: z.literal('reagent'),
 
     /** Reagent ID. */
@@ -98,6 +98,6 @@ export const reagentValidator = z.object({
     // ___________: z.string(),
 
     // ___________: z.string(),
-}).passthrough();
+});
 
 export type Reagent = z.infer<typeof reagentValidator>;

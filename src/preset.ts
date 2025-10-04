@@ -3,7 +3,7 @@ import { cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/
 import { entityPrototypeSchema, wikiSchemaEntityMapOfIdToName, wikiSchemaEntityMapOfLcNameToId } from '$schemas/prototype/prototypes/entity';
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
-import { z, type ZodTypeAny } from 'zod';
+import { z, ZodType } from 'zod';
 import dotenv from 'dotenv';
 import type { StringOr } from '$utils/stringOr';
 import { latheRecipeProtoSchema, wikiSchemaRecipeMapOfRecipeIdToRecipe, wikiSchemaRecipeMapOfRecipeMethodToAvailabilityToToRecipeIds, wikiSchemaRecipeMapOfRecipeProductToRecipeId as wikiSchemaRecipeMapOfProductIdToRecipeId } from '$schemas/prototype/prototypes/latheRecipe';
@@ -128,7 +128,7 @@ export type ProcessingStepOutput = {
     name: StringOr<"">, // a nice trick to infer string literals
     /** A filepath relative to the project step directory.  */
     relFilepath: string,
-    schema: ZodTypeAny
+    schema: ZodType
 };
 
 export type ProcessingStepOutputs = typeof processingStepOutputs;
@@ -193,7 +193,7 @@ export type WikiStepOutput = {
      * Relative to the wiki endpoint.
     */
     wikipage?: string,
-    schema: ZodTypeAny
+    schema: ZodType
 };
 
 export type WikiStepOutputs = typeof wikiStepOutputs;

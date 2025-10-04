@@ -6,10 +6,10 @@ export const reactiveEffectsValidator = z.record(
     z.string(),
 
     /** Metabolisms - see `effects`. */
-    z.object({
+    z.looseObject({
         // todo convert to literal
         methods: z.string().array(),
 
         effects: effectValidator.array()
-    }).passthrough()
+    })
 );

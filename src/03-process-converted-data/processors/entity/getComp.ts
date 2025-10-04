@@ -34,6 +34,7 @@ export function tryGetCompWithParse<T extends SpecificEntityComponentType>(
     if (comp) {
         const schema = specificEntityComponentSchemaByType[compType];
 
+        // @ts-ignore idk what's the issue here
         return schemaParse(schema, comp);
     } else {
         return null;

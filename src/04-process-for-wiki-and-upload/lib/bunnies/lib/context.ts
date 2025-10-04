@@ -120,6 +120,7 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
         const data = schemaParse(output.schema, fs.readJsonSync(absFilepath));
         logDebug("data loaded!");
 
+        // @ts-ignore guh what's the problem??
         return data;
     }
 

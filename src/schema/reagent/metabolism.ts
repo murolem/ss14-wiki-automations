@@ -8,11 +8,11 @@ export const metabolismsValidator = z.union([
         z.string(),
 
         /** Metabolisms - see `effects`. */
-        z.object({
+        z.looseObject({
             // todo string float
-            metabolismRate: z.number({ coerce: true }).optional(),
+            metabolismRate: z.coerce.number().optional(),
             effects: effectValidator.array()
-        }).passthrough()
+        })
     ),
 
     /* for plants */

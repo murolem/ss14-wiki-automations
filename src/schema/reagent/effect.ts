@@ -1,22 +1,22 @@
 import { z } from 'zod';
 
-export const effectValidator = z.object({
+export const effectValidator = z.looseObject({
     id: z.string(),
 
-    conditions: z.object({
+    conditions: z.looseObject({
         id: z.string()
-    }).passthrough().array().optional(),
+    }).array().optional(),
 
     // ??????????
     prototype: z.string().optional(),
 
     reagent: z.string().optional(),
 
-    amount: z.number({ coerce: true }).optional(),
+    amount: z.coerce.number().optional(),
 
-    factor: z.number({ coerce: true }).optional(),
+    factor: z.coerce.number().optional(),
 
-    damage: z.object({
+    damage: z.looseObject({
         // todo keys are damage types, so a predefined set of values
         // todo values are floats, can be negative for healing I guess? 
         // todo what's the difference between this and "types"
@@ -31,16 +31,16 @@ export const effectValidator = z.object({
             z.string(),
             z.string()
         ).optional()
-    }).passthrough().optional(),
+    }).optional(),
 
     /** Probability of a effect. */
-    probability: z.number({ coerce: true }).optional(),
+    probability: z.coerce.number().optional(),
 
     /** Whether to ignore all resistances I guess? */
-    ignoreResistances: z.boolean({ coerce: true }).optional(),
+    ignoreResistances: z.coerce.boolean().optional(),
 
     /** ????? */
-    scaleByQuantity: z.boolean({ coerce: true }).optional(),
+    scaleByQuantity: z.coerce.boolean().optional(),
 
-    seconds: z.number({ coerce: true }).int().optional(),
-}).passthrough();
+    seconds: z.coerce.number().int().optional(),
+});

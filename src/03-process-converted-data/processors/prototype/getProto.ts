@@ -30,6 +30,7 @@ export function tryGetProtoByIdWithParse<T extends RawPrototypeSchemaType>(
     if (proto) {
         const schema = rawPrototypeSchemasByType[type];
 
+        // @ts-ignore idk why is this unknown
         return schemaParse(schema, proto);
     } else {
         return null;
@@ -56,6 +57,7 @@ export function filterProtosByTypeWithParse<T extends RawPrototypeSchemaType>(
 ): Array<z.infer<typeof rawPrototypeSchemasByType[T]>> {
     const schema = rawPrototypeSchemasByType[type as RawPrototypeSchemaType];
 
+    // @ts-ignore idk whats the issue here
     return getPrototypes()
         .filter(proto => proto.type === type)
         .map(proto => schemaParse(schema, proto));

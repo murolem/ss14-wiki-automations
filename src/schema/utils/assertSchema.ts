@@ -1,4 +1,4 @@
-import { ZodError, type z, type ZodType } from 'zod';
+import { z, ZodError, ZodType } from 'zod';
 import { fromError } from 'zod-validation-error';
 import { Logger } from '$logger';
 const logger = new Logger("schema/utils/assertSchema");
@@ -25,6 +25,7 @@ export function schemaParse<T extends ZodType>(schema: T, data: unknown): z.infe
                 stringifyData: true,
                 data
             });
+            throw ''//guard 
         } else {
             logFatal({
                 msg: "unknown error while parsing",
@@ -32,6 +33,7 @@ export function schemaParse<T extends ZodType>(schema: T, data: unknown): z.infe
                 stringifyData: true,
                 data
             });
+            throw ''//guard 
         }
     }
 }

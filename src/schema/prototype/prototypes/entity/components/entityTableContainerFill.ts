@@ -11,7 +11,7 @@ const binomialNumberSelectorSchema = z.object({
     [yamlTypeFieldName]: z.literal("BinomialNumberSelector"),
 
     /** How many times to try including an entry. i.e. the Max. */
-    trials: z.number().int().default(1),
+    trials: z.int().default(1),
 
     /** The odds a single trial succeeds. */
     chance: z.number().default(.5),
@@ -28,7 +28,7 @@ const constantNumberSelectorSchema = z.object({
 const rangeNumberSelectorSchema = z.object({
     [yamlTypeFieldName]: z.literal("RangeNumberSelector"),
 
-    range: vector2iSchema.default("1, 1")
+    range: vector2iSchema.prefault("1, 1")
 });
 
 /** A union of all number selectors. */
@@ -48,7 +48,7 @@ const entityTableConditionSchema = z.object({
 
 const entitySelectorSchema = z.object({
     /** The number of times this selector is run */
-    rolls: z.number().int().default(1),
+    rolls: z.int().default(1),
 
     /** A weight used to pick between selectors. */
     weight: z.number().default(1),

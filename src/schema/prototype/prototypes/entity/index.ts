@@ -9,9 +9,9 @@ const logger = new Logger("schemas/proto/entity");
 const { logInfo, logFatal } = logger;
 
 export type AnyEntityComponent = z.infer<typeof anyEntityComponentSchema>;
-const anyEntityComponentSchema = z.object(({
+const anyEntityComponentSchema = z.looseObject(({
     type: z.string()
-})).passthrough();
+}));
 
 
 export type SpecificEntityComponent = z.infer<typeof specificEntityComponentSchema>;
