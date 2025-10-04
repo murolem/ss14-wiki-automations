@@ -7762,7 +7762,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-Medkit-name",
+        "name": "first aid kit (empty)",
         "result": "Medkit",
         "type": "latheRecipe"
     },
@@ -7772,7 +7772,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitAdvanced-name",
+        "name": "advanced first aid kit (empty)",
         "result": "MedkitAdvanced",
         "type": "latheRecipe"
     },
@@ -7782,7 +7782,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitBrute-name",
+        "name": "brute trauma treatment kit (empty)",
         "result": "MedkitBrute",
         "type": "latheRecipe"
     },
@@ -7792,7 +7792,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitBurn-name",
+        "name": "burn treatment kit (empty)",
         "result": "MedkitBurn",
         "type": "latheRecipe"
     },
@@ -7802,7 +7802,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitCombat-name",
+        "name": "combat medical kit (empty)",
         "result": "MedkitCombat",
         "type": "latheRecipe"
     },
@@ -7812,7 +7812,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitO2-name",
+        "name": "oxygen deprivation treatment kit (empty)",
         "result": "MedkitO2",
         "type": "latheRecipe"
     },
@@ -7822,7 +7822,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitRadiation-name",
+        "name": "radiation treatment kit (empty)",
         "result": "MedkitRadiation",
         "type": "latheRecipe"
     },
@@ -7832,7 +7832,7 @@
         "materials": {
             "Plastic": 3
         },
-        "name": "lathe-recipe-MedkitToxin-name",
+        "name": "toxin treatment kit (empty)",
         "result": "MedkitToxin",
         "type": "latheRecipe"
     },
