@@ -130,7 +130,11 @@ export function locRecordProperty<
     }
 
     if (property !== undefined) {
-        const key = assertLocalizationKeyIsString(doc[property]);
+        const key = doc[property];
+        if (key === undefined)
+            return;
+
+        assertLocalizationKeyIsString(key);
 
         // @ts-ignore the prop is already validated to be a string
         doc[property] = loc(key);

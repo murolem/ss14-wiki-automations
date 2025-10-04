@@ -1,6 +1,7 @@
 import { getProcessingOutput } from '$src/preset';
 import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
 import { filterProtosByTypeWithParse } from '$process/processors/prototype/getProto';
+import { locRecordProperty } from '$process/processors/locale';
 
 export default generateProcessorRunner(
     'lathe_recipe',
@@ -22,6 +23,8 @@ function processor({
 }: ProcessorArgs) {
     const recipes = filterProtosByTypeWithParse('latheRecipe');
     const recipePacks = filterProtosByTypeWithParse('latheRecipePack');
+
+    recipes.forEach(recipe => locRecordProperty(recipe, { property: 'name' }));
 
     writeJsonSync(
         'output',
