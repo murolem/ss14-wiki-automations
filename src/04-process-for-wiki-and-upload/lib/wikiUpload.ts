@@ -7,7 +7,7 @@ import { projectDirnames, projectDirpaths, wikiStepOutputs, type Project } from 
 import chalk from 'chalk';
 import path from 'path';
 const logger = new Logger("wiki/wikiUpload")
-const { logInfo, logWarn, logFatal } = logger;
+const { logInfo, logWarn, logFatalAndThrow } = logger;
 import fs from 'fs';
 import { mwClientLogin } from '$wiki/lib/ferrets/base';
 
@@ -48,7 +48,7 @@ export default async function (changes: Change[], pr: Pr) {
                 logWarn("page removal not implemented, skipping...");
                 continue;
             default:
-                logFatal({ throw: true, msg: "unknown change type: " + change.type });
+                logFatalAndThrow({ msg: "unknown change type: " + change.type });
                 throw ''//guard
         }
     }

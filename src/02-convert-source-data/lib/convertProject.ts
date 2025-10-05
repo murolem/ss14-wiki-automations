@@ -12,7 +12,7 @@ import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEm
 import { yamlSchema } from '$schemas/core/yamlSchema';
 
 const logger = new Logger("convert/convertProject");
-const { logDebug, logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 
 /**
  * Given a project, converts all found YML files in its input step directory to JSON files, 
@@ -28,9 +28,8 @@ export function convertProject(project: Project): void {
     logInfo(`convert project ${chalk.bold(project)} to JSON`);
 
     if (!fs.existsSync(sourcePath)) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to convert project: source path doesn't exist",
-            throw: true,
             data: {
                 sourcePath
             }
@@ -53,9 +52,8 @@ export function convertProject(project: Project): void {
 /** Internal convert function used specifically for directory paths. */
 function convertDirectoryPath(absSourcePath: string, absTargetPath: string, skipExistsCheck = false): void {
     if (!skipExistsCheck && !fs.existsSync(absSourcePath)) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to convert directory path: source path doesn't exist",
-            throw: true,
             data: {
                 sourcePath: absSourcePath
             }
@@ -85,9 +83,8 @@ function convertDirectoryPath(absSourcePath: string, absTargetPath: string, skip
 /** Internal convert function used specifically for file paths. */
 function convertFilePath(absSourcePath: string, absTargetPath: string, skipExistsCheck = false): void {
     if (!skipExistsCheck && !fs.existsSync(absSourcePath)) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to convert filepath: source path doesn't exist",
-            throw: true,
             data: {
                 sourcePath: absSourcePath
             }
@@ -110,18 +107,16 @@ function convertFilePath(absSourcePath: string, absTargetPath: string, skipExist
         if (err instanceof YAMLException
             && err.message.startsWith('unknown tag')
         ) {
-            logFatal({
+            logFatalAndThrow({
                 msg: `YAML to JSON conversion failed: unknown YML tag. Make sure the schema you are using can handle this custom type.`,
-                throw: true,
                 data: {
                     sourcePath: absSourcePath,
                     originalErrorMessage: err.message
                 }
             });
         } else {
-            logFatal({
+            logFatalAndThrow({
                 msg: "YAML to JSON conversion failed: unknown error",
-                throw: true,
                 data: {
                     originalError: err
                 }

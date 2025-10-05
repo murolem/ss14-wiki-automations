@@ -1,7 +1,7 @@
 import { deepCloneObjectUsingJson } from '$src/utils';
 import { Logger } from '$logger';
 const logger = new Logger("schemas/utils");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 import { mergeJsonObjects, type ArrayOnArrayStrategyResolver, type Config as MergeJsonConfig } from '$utils/mergeJsonObjects';
 import chalk from 'chalk';
 import type { AnyEntityComponent } from '$schemas/prototype/prototypes/entity';
@@ -149,9 +149,8 @@ function getParentPrototypesRecursive(
         const parentProto = protoPool[proto.type]?.[parentProtoId];
 
         if (!parentProto) {
-            logFatal({
+            logFatalAndThrow({
                 msg: `failed to get parent prototypes recursively: encountered a non-existent parent proto ID: ${chalk.bold(parentProtoId)}`,
-                throw: true,
             });
             throw ''//guard
         }

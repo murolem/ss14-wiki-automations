@@ -6,7 +6,7 @@ import { Logger } from '$logger';
 import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
 import { getPrototypes } from '$process/processors/prototype';
 const logger = new Logger("process/processors/entities");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 let loaded = false;
 let entities: EntityPrototype[] = [];
@@ -29,7 +29,7 @@ function processor({
     logger,
     writeJsonSync,
 }: ProcessorArgs) {
-    const { logInfo, logFatal } = logger;
+    const { logInfo, logFatalAndThrow } = logger;
 
     logInfo("searching for protos");
 
@@ -59,9 +59,8 @@ function processor({
  */
 export function assertEntitiesLoaded() {
     if (!loaded) {
-        logFatal({
+        logFatalAndThrow({
             msg: `entities loaded assertion failed: entities not loaded`,
-            throw: true
         });
     }
 }

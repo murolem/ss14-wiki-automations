@@ -8,7 +8,7 @@ import path from 'path';
 import { ensuredWritePrettyJsonSync, type JsonReplacer } from '$utils/writeJson';
 import { assertPathExists } from '$assert/pathExists';
 const logger = new Logger("processor");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /**
  * Contains a definition for a project processor and a processor runner generator function.

@@ -1,7 +1,7 @@
 import { Logger } from '$logger';
 import { deepCloneObjectUsingJson } from '$src/utils';
 const logger = new Logger("utils/mergeJsonObjects");
-const { logFatal } = logger;
+const { logFatalAndThrow } = logger;
 
 export type StrategyResolver<ResValue, TopValue> =
     (
@@ -73,9 +73,8 @@ export function mergeJsonObjects(
     c.strategyPrimitiveOnPrimitive ??= 'replace';
 
     if (baseObj === null || topObj === null) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to merge objects: one on the objects is null",
-            throw: true,
             data: {
                 baseObj,
                 topObj
@@ -85,9 +84,8 @@ export function mergeJsonObjects(
     }
 
     if (c.strategyArrayOnArray === 'function_resolver' && !c.strategyArrayOnArrayResolver) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to merge objects: strategy array on array set to function resolver, but no actual resolver is proved",
-            throw: true,
             data: {
                 baseObj,
                 topObj
@@ -95,9 +93,8 @@ export function mergeJsonObjects(
         });
         throw ''//type guard
     } else if (c.strategyMapOnMap === 'function_resolver' && !c.strategyMapOnMapResolver) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to merge objects: strategy map on map set to function resolver, but no actual resolver is proved",
-            throw: true,
             data: {
                 baseObj,
                 topObj
@@ -141,9 +138,8 @@ export function mergeJsonObjects(
                 } else if (resValueTypeNarrow === 'map' && valueTypeNarrow === 'map') {
                     strategy = c.strategyMapOnMap;
                 } else {
-                    logFatal({
+                    logFatalAndThrow({
                         msg: "failed to merge objects: merge strategy 'merge' chosen, but base and top types are unsupported for this strategy",
-                        throw: true,
                         data: {
                             baseValueType: resValueType,
                             valueType,

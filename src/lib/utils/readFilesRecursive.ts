@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import { Logger } from '$logger';
 import { toOsPath } from '$utils/toOsPath';
 const logger = new Logger("readFilesRecursive");
-const { logFatal } = logger;
+const { logFatalAndThrow } = logger;
 
 /** 
  * Reads all files in a given directory.
@@ -11,16 +11,14 @@ const { logFatal } = logger;
  */
 export function readFilesRecursive(dirPath: string): string[] {
     if (!fs.existsSync(dirPath)) {
-        logFatal({
+        logFatalAndThrow({
             msg: `failed to read files recursively: directory path doesn't exist: ${dirPath}`,
-            throw: true
         });
     }
 
     if (!fs.statSync(dirPath).isDirectory) {
-        logFatal({
+        logFatalAndThrow({
             msg: `failed to read files recursively: given path is a file path, not a directory path: ${dirPath}`,
-            throw: true
         });
     }
 

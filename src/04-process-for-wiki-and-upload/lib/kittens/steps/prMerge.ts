@@ -4,7 +4,7 @@ import { githubConfig } from '$wiki/lib/kittens/config';
 import { assertOkStatusCode } from '$wiki/lib/kittens/utils/assert';
 import chalk from 'chalk';
 const logger = new Logger("wiki/kittens/prMerge");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Merges a PR.
@@ -20,9 +20,8 @@ export async function prMerge(prNumber: number) {
     spinner.done();
     assertOkStatusCode(prMergeRes.status, prMergeRes);
     if (!prMergeRes.data.merged) {
-        logFatal({
+        logFatalAndThrow({
             msg: "PR wasn't merged: " + prMergeRes.data.message,
-            throw: true,
             data: prMergeRes,
             stringifyData: true
         });

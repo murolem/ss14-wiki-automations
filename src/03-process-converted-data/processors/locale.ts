@@ -7,7 +7,7 @@ import { Logger } from '$logger';
 import { z } from 'zod';
 import { generateProcessorRunner } from '$src/lib/shared/projectProcessor';
 const logger = new Logger("process/processors/locale");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 let loaded = false;
 
@@ -28,7 +28,7 @@ export default generateProcessorRunner(
         logger,
         writeJsonSync,
     }) => {
-        const { logDebug, logInfo, logFatal } = logger;
+        const { logDebug, logInfo, logFatalAndThrow } = logger;
 
         const localeDirPath = projectStepDirpaths.locale.input;
         logInfo(`loading locale for the first time; from: ${chalk.bold(localeDirPath)}`);
@@ -58,9 +58,8 @@ export function loc(key: string): string {
     assertLoaded();
 
     if (!localization.hasMessage(key)) {
-        logFatal({
+        logFatalAndThrow({
             msg: `failed to lookup a locale string: unknown key ${chalk.bold(key)}`,
-            throw: true
         });
         throw ''//type guard
     }
@@ -69,9 +68,8 @@ export function loc(key: string): string {
 
     const valuePattern = messageObj.value;
     if (!valuePattern) {
-        logFatal({
+        logFatalAndThrow({
             msg: `failed to lookup a locale string: null value for key ${chalk.bold(key)}`,
-            throw: true,
             data: {
                 messageObj
             }
@@ -116,15 +114,13 @@ export function locRecordProperty<
     assertLoaded();
 
     if (property === undefined && getterSetter === undefined) {
-        logFatal({
+        logFatalAndThrow({
             msg: `record property localizer failed: both 'property' and 'getterSetter' args are undefined`,
-            throw: true
         });
         throw '' // type guard
     } else if (property !== undefined && getterSetter !== undefined) {
-        logFatal({
+        logFatalAndThrow({
             msg: `record property localizer failed: 'property' and 'getterSetter' args are both defined`,
-            throw: true
         });
         throw '' // type guard
     }
@@ -150,9 +146,8 @@ export function locRecordProperty<
  */
 function assertLoaded() {
     if (!loaded) {
-        logFatal({
+        logFatalAndThrow({
             msg: `locale loaded assertion failed: locale not loaded`,
-            throw: true
         });
     }
 }

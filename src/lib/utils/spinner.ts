@@ -1,7 +1,7 @@
 import { Logger } from '$logger';
 import ora, { type Ora } from 'ora';
 const logger = new Logger("spinner");
-const { logFatal } = logger;
+const { logFatalAndThrow } = logger;
 
 export class Spinner {
     public initialText?: string;
@@ -39,9 +39,8 @@ export class Spinner {
 
     private assertInit = () => {
         if (!this.initialized) {
-            logFatal({
+            logFatalAndThrow({
                 msg: "spinner not initialized",
-                throw: true
             })
             throw ''//guard
         }

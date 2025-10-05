@@ -1,7 +1,7 @@
 import { Logger } from '$logger';
 import fs from 'fs-extra';
 const logger = new Logger("utils/assert/pathExists");
-const { logFatal } = logger;
+const { logFatalAndThrow } = logger;
 
 /** 
  * Checks whether given path exists.
@@ -13,9 +13,8 @@ const { logFatal } = logger;
   */
 export function assertPathExists(pathStr: string, errorMsg?: string): void {
     if (!fs.existsSync(pathStr)) {
-        logFatal({
+        logFatalAndThrow({
             msg: errorMsg ?? `path exist assertion failed: path doesn't exist: ${pathStr}`,
-            throw: true,
             data: {
                 path: pathStr
             }

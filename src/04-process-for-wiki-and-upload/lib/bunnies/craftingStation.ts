@@ -8,7 +8,7 @@ import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
 import { tryGetComp, tryGetCompWithParse } from '$process/processors/entity/getComp';
 import { createArrayOrderFromOrderRecord } from '$utils/createArrayOrderFromRecordOrder';
 const logger = new Logger("wiki/preprocess/entities");
-const { logDebug, logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 
 export default generateProcessorRunner(
     'crafting_station',

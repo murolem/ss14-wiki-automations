@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 
 const logger = new Logger("import/importToProject");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /**
  * Copies given path (file or dir, relative to the SS14 repo directory) to the input step dir inside the given project dirname.
@@ -26,9 +26,8 @@ export function importToProject(ss14Path: string, project: Project): void {
     logInfo(`copy ${chalk.bold(ss14Path)} to project ${chalk.bold(project)}`);
 
     if (!fs.existsSync(sourcePath)) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to import to project: source path doesn't exist",
-            throw: true,
             data: {
                 sourcePath
             }

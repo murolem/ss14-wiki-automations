@@ -7,7 +7,7 @@ import { jsonComparatorAsc } from '$utils/writeJson';
 import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
 import { tryGetComp, tryGetCompWithParse } from '$process/processors/entity/getComp';
 const logger = new Logger("wiki/preprocess/entities");
-const { logDebug, logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 
 export default generateProcessorRunner(
     'lathe_recipe',
@@ -81,7 +81,7 @@ function processor({
     const findRecipePackRecipes = (packId: string): string[] => {
         const res = latheRecipePacks.find(pack => pack.id === packId);
         if (!res) {
-            logFatal({ msg: `recipe pack '${packId}' not found`, throw: true });
+            logFatalAndThrow({ msg: `recipe pack '${packId}' not found` });
             throw ''//type guard
         }
 

@@ -3,7 +3,7 @@ import { Logger } from '$logger';
 import { githubConfig } from '$wiki/lib/kittens/config';
 import { assertOkStatusCode } from '$wiki/lib/kittens/utils/assert';
 const logger = new Logger("wiki/kittens/prCreate");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Creates a new PR into the syncing branch.

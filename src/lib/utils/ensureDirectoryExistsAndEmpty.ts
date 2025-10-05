@@ -4,7 +4,7 @@ import path from 'path';
 import { Logger } from '$logger';
 
 const logger = new Logger("utils/ensureDirectoryExistsEmpty");
-const { logDebug, logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 
 const cwd = process.cwd();
 
@@ -18,9 +18,8 @@ const cwd = process.cwd();
  */
 export function ensureDirectoryExistsAndEmpty(dirpath: string): void {
     if (!isPathWithinDirectoryOrNested(dirpath, cwd)) {
-        logFatal({
+        logFatalAndThrow({
             msg: "failed to ensure an empty directory exists: directory path is outside of the process bounds",
-            throw: true,
             data: {
                 dirpath
             }
@@ -29,9 +28,8 @@ export function ensureDirectoryExistsAndEmpty(dirpath: string): void {
 
     if (fs.existsSync(dirpath)) {
         if (!fs.statSync(dirpath).isDirectory()) {
-            logFatal({
+            logFatalAndThrow({
                 msg: "failed to ensure an empty directory exists: directory path is a file path",
-                throw: true,
                 data: {
                     dirpath
                 }

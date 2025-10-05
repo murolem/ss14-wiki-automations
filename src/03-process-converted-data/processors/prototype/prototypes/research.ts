@@ -6,7 +6,7 @@
 // import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
 // import { getPrototypes } from '$process/processors/prototypes';
 // const logger = new Logger("process/processors/entities");
-// const { logInfo, logFatal } = logger;
+// const { logInfo, logFatalAndThrow } = logger;
 
 // export default generateProcessorRunner(
 //     'item_recipes',
@@ -26,7 +26,7 @@
 //     logger,
 //     writeJsonSync,
 // }: ProcessorArgs) {
-//     const { logInfo, logFatal } = logger;
+//     const { logInfo, logFatalAndThrow } = logger;
 
 //     let researchProtos = getPrototypes()
 //         .filter(proto => proto.type === )
@@ -54,9 +54,8 @@
 //  */
 // export function assertEntitiesLoaded() {
 //     if (!loaded) {
-//         logFatal({
+//         logFatalAndThrow({
 //             msg: `entities loaded assertion failed: entities not loaded`,
-//             throw: true
 //         });
 //     }
 // }

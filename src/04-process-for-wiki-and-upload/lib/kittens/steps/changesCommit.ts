@@ -3,7 +3,7 @@ import { gitConfig } from '../config';
 import { spinner } from '../base';
 import { Logger } from '$logger';
 const logger = new Logger("wiki/kittens/changesCommit");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Commits stages changes in the sync dir.

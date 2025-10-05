@@ -2,7 +2,7 @@ import { z, ZodError, ZodType } from 'zod';
 import { fromError } from 'zod-validation-error';
 import { Logger } from '$logger';
 const logger = new Logger("schema/utils/assertSchema");
-const { logFatal } = logger;
+const { logFatalAndThrow } = logger;
 
 /** 
  * Attempts to parse `data` using `schema`.
@@ -19,17 +19,15 @@ export function schemaParse<T extends ZodType>(schema: T, data: unknown): z.infe
         return schema.parse(data);
     } catch (err) {
         if (err instanceof ZodError) {
-            logFatal({
+            logFatalAndThrow({
                 msg: fromError(err).toString(),
-                throw: true,
                 stringifyData: true,
                 data
             });
             throw ''//guard 
         } else {
-            logFatal({
+            logFatalAndThrow({
                 msg: "unknown error while parsing",
-                throw: true,
                 stringifyData: true,
                 data
             });

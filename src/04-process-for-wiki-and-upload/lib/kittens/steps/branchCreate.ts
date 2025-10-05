@@ -4,7 +4,7 @@ import { spinner } from '../base';
 import { Logger } from '$logger';
 import chalk from 'chalk';
 const logger = new Logger("wiki/kittens/branchCreate");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Creates a new local branch.

@@ -6,7 +6,7 @@ import { latheEntComponentSchema } from '$schemas/prototype/prototypes/entity/co
 import { storageFillEntComponentSchema } from '$schemas/prototype/prototypes/entity/components/storageFill';
 import { z, ZodType } from 'zod';
 const logger = new Logger("schemas/proto/entity");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 export type AnyEntityComponent = z.infer<typeof anyEntityComponentSchema>;
 const anyEntityComponentSchema = z.looseObject(({

@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs-extra';
 const logger = new Logger("wiki/kittens/changesCopyIntoSync");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Copies changes over from the processing step (if any).

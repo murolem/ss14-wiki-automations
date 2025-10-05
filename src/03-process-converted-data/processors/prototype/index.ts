@@ -8,7 +8,7 @@ import { prototypeArraySchema, type ProtoId, type Prototype } from '$schemas/pro
 import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProcessor';
 import { createProtoPool, resolveInheritance } from '$process/processors/prototype/resolveInheritance';
 const logger = new Logger("process/processors/prototype");
-const { logFatal } = logger;
+const { logFatalAndThrow } = logger;
 
 let loaded = false;
 let prototypes: Prototype[] = [];
@@ -32,16 +32,15 @@ function processor({
     logger,
     writeJsonSync,
 }: ProcessorArgs) {
-    const { logDebug, logInfo, logFatal } = logger;
+    const { logDebug, logInfo, logFatalAndThrow } = logger;
 
     const prototypesDirPath = projectStepDirpaths.prototype.converted;
 
     logInfo(`loading prototypes for the first time; from: ${chalk.bold(prototypesDirPath)}`);
 
     if (!fs.existsSync(prototypesDirPath)) {
-        logFatal({
+        logFatalAndThrow({
             msg: `failed to load prototypes: path doesn't exist: ${prototypesDirPath}`,
-            throw: true
         });
     }
 
@@ -65,9 +64,8 @@ function processor({
             //     continue;
             // }
 
-            logFatal({
+            logFatalAndThrow({
                 msg: `failed to load prototypes: failed to parse prototype at: ${absPath}`,
-                throw: true,
                 data: {
                     parseError: parsedResult.error
                 }
@@ -79,9 +77,8 @@ function processor({
 
         for (const proto of parsedResult.data) {
             if (prototypeIds.includes(proto.id)) {
-                logFatal({
+                logFatalAndThrow({
                     msg: `failed to load prototypes: encountered a prototype '${proto.id}' with a duplicate ID. Found at: ${absPath}`,
-                    throw: true
                 });
             }
 
@@ -120,9 +117,8 @@ function processor({
  */
 export function assertPrototypesLoaded() {
     if (!loaded) {
-        logFatal({
+        logFatalAndThrow({
             msg: `prototypes loaded assertion failed: prototypes not loaded`,
-            throw: true
         });
     }
 }

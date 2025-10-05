@@ -3,7 +3,7 @@ import { gitConfig } from '../config';
 import { spinner } from '../base';
 import { Logger } from '$logger';
 const logger = new Logger("wiki/kittens/changesPush");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Pushes changes to remote.

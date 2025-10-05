@@ -8,7 +8,7 @@ import { date } from '$wiki/lib/kittens/base';
 import { Logger } from '$logger';
 import { ensureDirectoryExistsAndEmpty } from '$utils/ensureDirectoryExistsAndEmpty';
 const logger = new Logger("wiki/diff");
-const { logInfo, logWarn, logFatal } = logger;
+const { logInfo, logWarn, logFatalAndThrow } = logger;
 import { projectDirpaths, syncBranchPathBlacklist, wikiAutomationsRepo } from '$src/preset';
 import chalk from 'chalk';
 import { getFilesInDirectoryRecursively } from '$src/utils';
@@ -64,7 +64,7 @@ export default async function (): Promise<Change[] | null> {
                 case 'modified': return chalk.bold(chalk.bgBlue('±') + ' mod ') + c.path;
                 case 'removed': return chalk.bold(chalk.bgRed('-') + ' rem ') + c.path;
                 default:
-                    logFatal({ msg: `unknown change type '${c.type}'`, throw: true });
+                    logFatalAndThrow({ msg: `unknown change type '${c.type}'` });
                     throw ''//type guard
             }
         });

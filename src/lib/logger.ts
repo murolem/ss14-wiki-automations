@@ -5,7 +5,17 @@ export const logLevels = {
     "INFO": 1,
     "WARN": 2,
     "ERROR": 3,
-    "FATAL": 4
+    "FATAL": 4,
+    "SIGINT": 5
+}
+
+const logLevelToDisplay: Record<LogLevel, string> = {
+    DEBUG: "debug",
+    INFO: " info",
+    WARN: " warn",
+    ERROR: "error",
+    FATAL: "fatal",
+    SIGINT: "sigint",
 }
 
 const logLevelToColorFn: Record<LogLevel, (msg: Message) => Message> = {
@@ -13,7 +23,8 @@ const logLevelToColorFn: Record<LogLevel, (msg: Message) => Message> = {
     INFO: msg => msg,
     WARN: msg => chalk.yellow(msg),
     ERROR: msg => chalk.red(msg),
-    FATAL: msg => chalk.bgRed(msg),
+    FATAL: msg => chalk.white.bgRed(msg),
+    SIGINT: msg => chalk.bgMagenta(msg),
 }
 
 export type LogLevel = keyof typeof logLevels;
@@ -48,10 +59,16 @@ const defaultMsgParams: MessageParams = {
 export type MessageOrParams = Message | MessageParams;
 
 export class Logger {
-    private logPrefix = '';
+    private get logPrefixes() { return this._logPrefixes; };
+    private set logPrefixes(value) { this._logPrefixes = value; }
+    private _logPrefixes: string[] = [];
 
-    constructor(logPrefix: string) {
-        this.logPrefix = logPrefix;
+    get logPrefix() { return this._logPrefix; }
+    private set logPrefix(value) { this._logPrefix = value; }
+    private _logPrefix: string | null = null;
+
+    constructor(...logPrefixes: string[]) {
+        this.setLogPrefixes(...logPrefixes);
     }
 
     /** Set global log level. */
@@ -60,9 +77,35 @@ export class Logger {
         logLevelNum = logLevels[logLevel];
     }
 
-    /** Set instance log prefix. */
-    setLogPrefix = (prefix: string): void => {
-        this.logPrefix = prefix;
+    /** Get current log level. */
+    static getLogLevel(): LogLevel {
+        return logLevel;
+    }
+
+    /** Sets instance log prefixes. */
+    setLogPrefixes = (...prefixes: string[]): this => {
+        this.logPrefixes = [...prefixes];
+        this.logPrefix = prefixes
+            .map(v => "[" + v + "]")
+            .join(" ");
+
+        return this;
+    }
+
+    /** Appends a log prefix to the instance. */
+    appendLogPrefix = (prefix: string): this => {
+        this.logPrefixes.push(prefix);
+
+        if (this.logPrefix === null)
+            this.logPrefix = "[" + prefix + "]";
+        else
+            this.logPrefix += " [" + prefix + "]";
+
+        return this;
+    }
+
+    clone(): Logger {
+        return new Logger(...this.logPrefixes);
     }
 
     log = (level: LogLevel, messageOrParams: MessageOrParams, ...extraMessages: unknown[]): void => {
@@ -95,7 +138,7 @@ export class Logger {
 
         const mainMessageRows = mainMessage.split("\n");
         for (let i = 0; i < mainMessageRows.length; i++) {
-            logMethod(colorFn(`${chalk.bold(level.toLowerCase())}: [${this.logPrefix}] ${mainMessageRows[i]}`));
+            logMethod(colorFn(`${chalk.bold(logLevelToDisplay[level])}: ${this._logPrefix === null ? '' : this._logPrefix + ' '}${mainMessageRows[i]}`));
         }
 
         if (extraMessages.length > 0) {
@@ -133,5 +176,22 @@ export class Logger {
 
     logFatal = (messageOrParams: MessageOrParams, ...extraMessages: unknown[]): void => {
         this.log('FATAL', messageOrParams, ...extraMessages);
+    }
+
+    logFatalAndThrow = (messageOrParams: Message | Omit<MessageParams, 'throw'>, ...extraMessages: unknown[]): never => {
+        if (typeof messageOrParams === 'string') {
+            this.log('FATAL', {
+                msg: messageOrParams,
+                throw: true
+            }, ...extraMessages);
+        } else {
+            this.log('FATAL', {
+                ...messageOrParams,
+                throw: true
+            }, ...extraMessages);
+        }
+
+        // should not happen unless logger logic gets fucked up
+        throw new Error("failed to log fatal and throw: should have thrown, not expected to reach this point");
     }
 }

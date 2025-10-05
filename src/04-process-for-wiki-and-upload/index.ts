@@ -5,7 +5,7 @@ import prMergeWithBranchDelete from './lib/prMergeWithBranchDelete';
 import wikiUpload from './lib/wikiUpload';
 import { Logger } from '$logger';
 const logger = new Logger("wiki");
-const { logInfo, logWarn, logFatal } = logger;
+const { logInfo, logWarn, logFatalAndThrow } = logger;
 // @ts-ignore it has the import
 import minimist from 'minimist';
 import chalk from 'chalk';

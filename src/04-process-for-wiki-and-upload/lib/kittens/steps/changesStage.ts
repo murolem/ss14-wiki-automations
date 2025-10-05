@@ -4,7 +4,7 @@ import { spinner } from '../base';
 import { Logger } from '$logger';
 import type { Change } from '$wiki/lib/kittens/steps/changesGet';
 const logger = new Logger("wiki/kittens/changesStage");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Stages given changes.
@@ -29,7 +29,7 @@ export async function changesStage(changes: Change[]) {
                 });
                 break;
             default: {
-                logFatal({ msg: `change type ${change.type} is unsupported`, throw: true });
+                logFatalAndThrow({ msg: `change type ${change.type} is unsupported` });
                 throw ''// type guard
             }
         }

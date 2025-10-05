@@ -6,7 +6,7 @@ import { toOsPath } from '$utils/toOsPath';
 import chalk from 'chalk';
 import type { StatusRow } from 'isomorphic-git';
 const logger = new Logger("wiki/kittens/changesGet");
-const { logInfo, logFatal } = logger;
+const { logInfo, logFatalAndThrow } = logger;
 
 /** Simplified change type. */
 export type SimpleChangeType =
@@ -41,7 +41,7 @@ export async function changesGet(): Promise<[false] | [true, Array<Change>]> {
         .filter(e => e.type);
 
     if (validChangedPaths.some(e => !e.type)) {
-        logFatal({ msg: "encountered a falsy value for a change", throw: true, data: { culpritChanges: validChangedPaths.filter(e => !e.type) } });
+        logFatalAndThrow({ msg: "encountered a falsy value for a change", data: { culpritChanges: validChangedPaths.filter(e => !e.type) } });
         throw ''//type guard
     }
 
@@ -74,9 +74,8 @@ function statusToSimpleChangeType(status: StatusRow): SimpleChangeType | null {
     } else if (head === 1 && workdir === 1 && stage === 1) { /* unmodified - why is this even a thing? */
         return null;
     } else {
-        logFatal({
+        logFatalAndThrow({
             msg: `failed to get a simple change type: unknown status combo: ${chalk.bold(`${head}/${workdir}/${stage}`)}`,
-            throw: true
         });
         throw ''//guard
     }

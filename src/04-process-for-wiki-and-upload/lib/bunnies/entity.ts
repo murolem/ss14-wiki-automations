@@ -5,7 +5,7 @@ import { generateProcessorRunner, type ProcessorArgs } from '$shared/projectProc
 import { getProcessingContext, getWikiContext } from '$wiki/lib/bunnies/lib/context';
 import { jsonComparatorAsc } from '$utils/writeJson';
 const logger = new Logger("wiki/preprocess/entities");
-const { logDebug, logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 
 export default generateProcessorRunner(
     'entity',

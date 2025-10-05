@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import path from 'path';
 import type z from 'zod';
 const logger = new Logger("wiki/preprocess/context");
-const { logDebug, logInfo, logWarn, logFatal } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 import fs from 'fs-extra';
 
 /** Contains info about a project output from a specific step, along with some functions. */
@@ -70,7 +70,7 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
             case 'processed': return processingStepOutputs;
             case 'wiki_upload': return wikiStepOutputs;
             default: {
-                logFatal({ msg: `unsupported step '${step}'`, throw: true });
+                logFatalAndThrow({ msg: `unsupported step '${step}'` });
                 throw ''//type guard
             }
         }
@@ -78,9 +78,8 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
 
     const projectOutputs = outputs.filter(e => e.project === project);
     if (projectOutputs.length === 0) {
-        logFatal({
+        logFatalAndThrow({
             msg: `no outputs for project ${chalk.bold(project)} found`,
-            throw: true,
             data: { project, step, outputName }
         });
         throw ''//type guard
@@ -88,9 +87,8 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
 
     const output = projectOutputs.find(e => e.name === outputName);
     if (!output) {
-        logFatal({
+        logFatalAndThrow({
             msg: `no output with name ${chalk.bold(outputName)} is defined for project ${chalk.bold(project)}`,
-            throw: true,
             data: { project, step, outputName }
         });
         throw ''//type guard
@@ -103,9 +101,8 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
     // @ts-ignore idk how to fix this shit
     const loadAndParseData: Context<T>['loadAndParseData'] = (): z.infer<T['schema']> => {
         if (!fs.existsSync(absFilepath)) {
-            logFatal({
+            logFatalAndThrow({
                 msg: `project step filepath does not exist`,
-                throw: true,
                 data: {
                     project,
                     step,

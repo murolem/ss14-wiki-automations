@@ -6,6 +6,8 @@ Contains various data export scripts for the [Space Station 14 Wiki](https://wik
 
 Every hour an action runs that pulls data from the [upstream SS14 repository](https://github.com/space-wizards/space-station-14), process it and uploads any changes to the wiki.
 
+The master branch is used for the data pulling (i.e. the latest changes that are on Vulture).
+
 ## Developing
 
 The program uses the SS14 upstream repository for all its data gather needs, without building it, straight from the source.
