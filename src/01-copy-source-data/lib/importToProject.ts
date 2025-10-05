@@ -23,7 +23,7 @@ export function importToProject(ss14Path: string, project: Project): void {
     const sourcePath = toOsPath(`${projectDirpaths.ss14_repo}/${ss14Path}`);
     const targetPath = projectStepDirpaths[project].input;
 
-    logInfo(`copy ${chalk.bold(ss14Path)} to project ${chalk.bold(project)}`);
+    logInfo(`copying path ${chalk.bold(ss14Path)} into project ${chalk.bold(project)}`);
 
     if (!fs.existsSync(sourcePath)) {
         logFatalAndThrow({

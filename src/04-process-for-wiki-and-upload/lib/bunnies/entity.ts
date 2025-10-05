@@ -59,7 +59,7 @@ function processor({
             if (ent.name === undefined || ent.name === "") {
                 // many abstract entities don't have a name, which is expected, so do not log about those.
                 if (!ent.abstract) {
-                    logInfo(chalk.gray(`mapping entity IDs to names, skipping a non-abstract entity without a name: ID ${chalk.bold(ent.id)}`));
+                    logDebug(`mapping entity IDs to names, skipping a non-abstract entity without a name: ID ${chalk.bold(ent.id)}`);
                 }
 
                 return accum;
@@ -88,7 +88,7 @@ function processor({
             const nameLc = name.toLocaleLowerCase();
 
             if (nameLc in accum) {
-                logInfo(chalk.gray(`skipping entity ${chalk.bold(id)} while mapping name → ID: name ${chalk.italic(name)} already mapped to ID ${chalk.bold(accum[nameLc])}`));
+                logDebug(`skipping entity ${chalk.bold(id)} while mapping name → ID: name ${chalk.italic(name)} already mapped to ID ${chalk.bold(accum[nameLc])}`);
 
                 return accum;
             }

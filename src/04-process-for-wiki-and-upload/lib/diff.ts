@@ -60,9 +60,9 @@ export default async function (): Promise<Change[] | null> {
 
         const changesAsStrs = changes.map(c => {
             switch (c.type) {
-                case 'added': return chalk.bold(chalk.bgGreen('+') + ' add ') + c.path;
-                case 'modified': return chalk.bold(chalk.bgBlue('±') + ' mod ') + c.path;
-                case 'removed': return chalk.bold(chalk.bgRed('-') + ' rem ') + c.path;
+                case 'added': return chalk.bold(chalk.bgGreen('+') + '    added ') + c.path;
+                case 'modified': return chalk.bold(chalk.bgBlue('±') + ' modified ') + c.path;
+                case 'removed': return chalk.bold(chalk.bgRed('-') + '  removed ') + c.path;
                 default:
                     logFatalAndThrow({ msg: `unknown change type '${c.type}'` });
                     throw ''//type guard

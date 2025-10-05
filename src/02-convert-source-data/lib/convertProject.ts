@@ -25,7 +25,7 @@ export function convertProject(project: Project): void {
     const sourcePath = projectStepDirpaths[project].input;
     let targetPath = projectStepDirpaths[project].converted;
 
-    logInfo(`convert project ${chalk.bold(project)} to JSON`);
+    logInfo(`converting project ${chalk.bold(project)} to JSON`);
 
     if (!fs.existsSync(sourcePath)) {
         logFatalAndThrow({
@@ -100,7 +100,7 @@ function convertFilePath(absSourcePath: string, absTargetPath: string, skipExist
         );
 
         if (result === undefined || result === null) {
-            logWarn(`^ empty YML document ${absSourcePath}`);
+            logDebug(`^ encountered an empty YML document at: ${absSourcePath}`);
             result = []
         }
     } catch (err) {

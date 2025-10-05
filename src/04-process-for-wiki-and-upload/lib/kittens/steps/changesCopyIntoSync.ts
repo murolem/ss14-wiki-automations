@@ -5,13 +5,13 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs-extra';
 const logger = new Logger("wiki/kittens/changesCopyIntoSync");
-const { logInfo, logFatalAndThrow } = logger;
+const { logDebug, logInfo, logFatalAndThrow } = logger;
 
 /** 
  * Copies changes over from the processing step (if any).
  */
 export async function changesCopyIntoSync() {
-    logInfo("copying changes from processing step");
+    logInfo("copying changes from processing step into diff");
 
     const projects = [...new Set(wikiStepOutputs.map(e => e.project))];
     for (const project of projects) {
@@ -24,20 +24,21 @@ export async function changesCopyIntoSync() {
         ensureDirectoryExistsAndEmpty(projectDiffAbsDirpath);
 
         for (const output of projectOutputs) {
-            logInfo(`locating project ${chalk.bold(project)} output ${chalk.bold(output.name)}`);
+            logInfo(`searching for project ${chalk.bold(project)} output ${chalk.bold(output.name)}`);
 
             const wikiAbsFilepath = path.join(projectStepDirpaths[project as Project].wiki_upload, output.relFilepath);
             if (!fs.existsSync(wikiAbsFilepath)) {
                 logInfo("❌ output not found");
-                logInfo(chalk.gray("expected at: " + wikiAbsFilepath));
+                logDebug("expected at: " + wikiAbsFilepath);
                 continue;
             }
 
-            const diffDirAbsFilepath = path.join(projectDiffAbsDirpath, output.relFilepath);
-            fs.ensureDirSync(path.parse(diffDirAbsFilepath).dir);
-            fs.copyFileSync(wikiAbsFilepath, diffDirAbsFilepath);
+            const outputFilepathInDiffDir = path.join(projectDiffAbsDirpath, output.relFilepath);
+            fs.ensureDirSync(path.parse(outputFilepathInDiffDir).dir);
+            fs.copyFileSync(wikiAbsFilepath, outputFilepathInDiffDir);
 
-            logInfo(`✅ output copied into diff! ${chalk.gray("to: " + diffDirAbsFilepath)}`);
+            logInfo(`✅ output copied!`);
+            logDebug("to: " + outputFilepathInDiffDir);
         }
     }
 }

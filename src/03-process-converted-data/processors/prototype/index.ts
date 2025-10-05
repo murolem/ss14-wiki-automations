@@ -36,7 +36,8 @@ function processor({
 
     const prototypesDirPath = projectStepDirpaths.prototype.converted;
 
-    logInfo(`loading prototypes for the first time; from: ${chalk.bold(prototypesDirPath)}`);
+    logInfo("loading prototypes");
+    logDebug("from: " + prototypesDirPath);
 
     if (!fs.existsSync(prototypesDirPath)) {
         logFatalAndThrow({
@@ -94,7 +95,7 @@ function processor({
         prototypes
     );
 
-    logInfo(chalk.gray(`resolving inheritance`));
+    logDebug(`resolving inheritance`);
 
     const protoPool = createProtoPool(prototypes);
     const prototypesResolved = prototypes

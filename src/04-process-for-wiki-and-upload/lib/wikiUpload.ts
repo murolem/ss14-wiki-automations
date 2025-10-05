@@ -7,7 +7,7 @@ import { projectDirnames, projectDirpaths, wikiStepOutputs, type Project } from 
 import chalk from 'chalk';
 import path from 'path';
 const logger = new Logger("wiki/wikiUpload")
-const { logInfo, logWarn, logFatalAndThrow } = logger;
+const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 import fs from 'fs';
 import { mwClientLogin } from '$wiki/lib/ferrets/base';
 
@@ -37,7 +37,8 @@ export default async function (changes: Change[], pr: Pr) {
         switch (change.type) {
             case 'added':
             case 'modified':
-                logInfo(`${logCounterPrefix} ${changeTypeLog} wikipage ${chalk.bold(change.wikiTitle)}, ${chalk.gray("file: " + change.diffAbsFilepath)}`);
+                logInfo(`${logCounterPrefix} ${changeTypeLog} wikipage ${chalk.bold(change.wikiTitle)}`);
+                logDebug("file: " + change.diffAbsFilepath);
 
                 const contents = fs.readFileSync(change.diffAbsFilepath, 'utf-8');
 

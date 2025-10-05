@@ -126,7 +126,8 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
         data: z.infer<T['schema']>,
         compFn?: JsonComparator
     ): z.infer<T['schema']> => {
-        logInfo(`writing data for project ${chalk.bold(project)} step ${chalk.bold(step)} output ${chalk.bold(outputName)} \nto: ${absFilepath}`);
+        logInfo(`writing data for project ${chalk.bold(project)} step ${chalk.bold(step)} output ${chalk.bold(outputName)}`);
+        logDebug("to: " + absFilepath);
         ensuredWritePrettyJsonSync(
             absFilepath,
             schemaParse(output.schema, data),
@@ -134,7 +135,7 @@ export function getContext<T extends ProcessingStepOutput | WikiStepOutput>(
                 comparator: compFn
             }
         );
-        logInfo(chalk.gray("data written!"));
+        logDebug("data written!");
 
         return data;
     }

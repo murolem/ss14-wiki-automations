@@ -31,7 +31,8 @@ export default generateProcessorRunner(
         const { logDebug, logInfo, logFatalAndThrow } = logger;
 
         const localeDirPath = projectStepDirpaths.locale.input;
-        logInfo(`loading locale for the first time; from: ${chalk.bold(localeDirPath)}`);
+        logInfo("loading locale")
+        logDebug("from: " + localeDirPath);
         assertPathExists(localeDirPath);
 
         const localeFiles = getFilesInDirectoryRecursively(localeDirPath);
@@ -43,7 +44,7 @@ export default generateProcessorRunner(
             totalStrings += resource.body.length;
         }
 
-        logInfo(`locale loaded; preferred locale ${chalk.bold(preferredLocale)}; total strings: ${chalk.bold(totalStrings)}`);
+        logInfo(`locale loaded: preferred locale = ${chalk.bold(preferredLocale)}, total strings = ${chalk.bold(totalStrings)}`);
 
         loaded = true;
     });

@@ -31,14 +31,14 @@ function processor({
 }: ProcessorArgs) {
     const { logInfo, logFatalAndThrow } = logger;
 
-    logInfo("searching for protos");
+    logInfo("filtering entities from protos");
 
     entities = getPrototypes()
         .filter(proto => proto.type === 'entity');
 
     writeJsonSync('temp', 'entities_raw.json', entities);
 
-    logInfo("parsing protos");
+    logInfo("parsing entity protos");
 
     entities = entityPrototypeSchema.array()
         .parse(entities);

@@ -2,7 +2,6 @@ import fs from 'fs-extra';
 import path from 'path';
 import { Logger } from '$logger';
 import { execSync } from 'child_process';
-import chalk from 'chalk';
 import jsonDiff from 'json-diff';
 const logger = new Logger("src/utils");
 const { logInfo, logError } = logger;
@@ -14,7 +13,7 @@ export type LastElementOf<T extends unknown[]> = T extends [...unknown[], infer 
 
 export function assertPathExists(pathStr: string, message?: string): void {
     if (!fs.existsSync(pathStr)) {
-        throw new Error(message ? message + `\n${chalk.gray(pathStr)}` : ("path doesn't exist: " + pathStr))
+        throw new Error(message ? message + pathStr : ("path exist assert failed: path doesn't exist; path: " + pathStr))
     }
 }
 

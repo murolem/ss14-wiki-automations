@@ -65,7 +65,7 @@ export function generateProcessorRunner(
     const writeJsonSync = getWriteJsonSyncInstance(outputDirpath, tempDirpath, processorLogger);
 
     return () => {
-        logger.logInfo(chalk.underline(`running processor for project ${chalk.bold(project)} step ${chalk.bold(step)}`));
+        logger.logInfo(chalk.underline(`running processor for project ${chalk.bold(project)}, step ${chalk.bold(step)}`));
 
         processor({
             project: project,
@@ -105,9 +105,11 @@ function getWriteJsonSyncInstance(outputDirpath: string, tempDirpath: string, lo
         const combinedPath = path.join(baseDir, relFilepath);
 
         if (target === 'output') {
-            logger.logInfo(`writing output JSON ${chalk.bold(relFilepath)}; \npath: ${chalk.gray(combinedPath)}`);
+            logger.logInfo("writing output JSON: " + chalk.bold(relFilepath));
+            logger.logDebug("path: " + combinedPath);
         } else {
-            logger.logInfo(chalk.gray(`writing temp JSON ${chalk.bold(relFilepath)}; \npath: ${chalk.gray(combinedPath)}`));
+            logger.logDebug("writing temp JSON: " + chalk.bold(relFilepath));
+            logger.logDebug("path: " + combinedPath);
         }
         ensuredWritePrettyJsonSync(combinedPath, data, { replacer });
     }
