@@ -11,7 +11,7 @@
     "clone-upstream:stable": "bun run clone-upstream:no-fetch && cd temp && cd _ss14-repo && git fetch --depth=1 origin stable && git checkout stable",
     "clone-upstream:master": "bun run clone-upstream:no-fetch && cd temp && cd _ss14-repo && git fetch --depth=1 origin master && git checkout master",
     "clone-sync": "mkdir temp && cd temp && rimraf temp _sync && mkdir _sync && cd _sync && git init && git remote add origin https://github.com/murolem/ss14-wiki-automations.git && git fetch --depth=1 origin sync && git checkout sync",
-    "start": "bun run type-check && bun run test && bun run clone-upstream:master && bun run start:cli",
+    "start": "bun run type-check && bun run test && bun run clone-upstream:master && bun run start:cli -- all",
     "start:cli": "bun --env-file=.env src/cli/index.ts"
   },
   "devDependencies": {

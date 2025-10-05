@@ -44,4 +44,4 @@ Some less obvious command
 -   `clone-upstream:master` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `master` branch with the depth of 1.
 -   `clone-sync` - Clones the `sync` branch off of this repo with the depth of 1. The sync branch is used for syncing changes with the wiki.
 -   `start` - Runs everything.
--   `start:cli` - CLI entrypoint that runs the four steps. Type --help to see available commands.
+-   `start:cli` - CLI entrypoint that can run any/all of the four steps. Type --help to see available commands.
