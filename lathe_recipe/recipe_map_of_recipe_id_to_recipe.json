@@ -1384,7 +1384,7 @@
             "Biomass": 0.18
         },
         "resultReagents": {
-            "Blackpepper": 10
+            "ReagentBlackpepper": 10
         },
         "type": "latheRecipe"
     },
@@ -1414,7 +1414,7 @@
             "Biomass": 0.18
         },
         "resultReagents": {
-            "Cream": 10
+            "ReagentCream": 10
         },
         "type": "latheRecipe"
     },
@@ -1432,7 +1432,7 @@
             "Biomass": 0.18
         },
         "resultReagents": {
-            "Enzyme": 10
+            "ReagentEnzyme": 10
         },
         "type": "latheRecipe"
     },
@@ -1464,7 +1464,7 @@
             "Biomass": 0.18
         },
         "resultReagents": {
-            "Ethanol": 10
+            "ReagentEthanol": 10
         },
         "type": "latheRecipe"
     },
@@ -1482,7 +1482,7 @@
             "Biomass": 0.15
         },
         "resultReagents": {
-            "EZNutrient": 10
+            "ReagentEZNutrient": 10
         },
         "type": "latheRecipe"
     },
@@ -1500,7 +1500,7 @@
             "Biomass": 0.18
         },
         "resultReagents": {
-            "Flour": 10
+            "ReagentFlour": 10
         },
         "type": "latheRecipe"
     },
@@ -1530,7 +1530,7 @@
             "Biomass": 0.12
         },
         "resultReagents": {
-            "Left4Zed": 10
+            "ReagentLeft4Zed": 10
         },
         "type": "latheRecipe"
     },
@@ -1580,7 +1580,7 @@
             "Biomass": 0.12
         },
         "resultReagents": {
-            "Milk": 10
+            "ReagentMilk": 10
         },
         "type": "latheRecipe"
     },
@@ -1598,7 +1598,7 @@
             "Biomass": 0.12
         },
         "resultReagents": {
-            "MilkSoy": 10
+            "ReagentMilkSoy": 10
         },
         "type": "latheRecipe"
     },
@@ -1652,7 +1652,7 @@
             "Biomass": 0.12
         },
         "resultReagents": {
-            "PestKiller": 10
+            "ReagentPestKiller": 10
         },
         "type": "latheRecipe"
     },
@@ -1670,7 +1670,7 @@
             "Biomass": 0.12
         },
         "resultReagents": {
-            "PlantBGone": 10
+            "ReagentPlantBGone": 10
         },
         "type": "latheRecipe"
     },
@@ -1688,7 +1688,7 @@
             "Biomass": 0.15
         },
         "resultReagents": {
-            "RobustHarvest": 10
+            "ReagentRobustHarvest": 10
         },
         "type": "latheRecipe"
     },
@@ -1706,7 +1706,7 @@
             "Biomass": 0.18
         },
         "resultReagents": {
-            "Sugar": 10
+            "ReagentSugar": 10
         },
         "type": "latheRecipe"
     },
@@ -1724,7 +1724,7 @@
             "Biomass": 0.08
         },
         "resultReagents": {
-            "WeedKiller": 10
+            "ReagentWeedKiller": 10
         },
         "type": "latheRecipe"
     },
