@@ -10,6 +10,8 @@ The master branch is used for the data pulling (i.e. the latest changes that are
 
 ## Developing
 
+Requires Bun.
+
 The program uses the SS14 upstream repository for all its data gather needs, without building it, straight from the source.
 
 The repository is cloned locally with no history. This might take some time locally, but happens very fast when using actions on github.
@@ -27,7 +29,25 @@ The code is divided into steps, with each steps results saved under different lo
 
 ### Commands
 
-Some less obvious command:
+To run the entire thing, run:
+
+```bash
+bun run start
+```
+
+To "dry-run" (without making changes to anything), run:
+
+```bash
+bun run start -- all --dry
+```
+
+To "dry-run" without type-checking, tests and cloning of the upstream repo, run:
+
+```bash
+bun run start:cli all --dry
+```
+
+About some of the commands:
 
 -   `clone-upstream:no-fetch` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under no specific branch.
 -   `clone-upstream:stable` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `stable` branch with the depth of 1.
