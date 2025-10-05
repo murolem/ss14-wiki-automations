@@ -27,17 +27,7 @@ The code is divided into steps, with each steps results saved under different lo
 
 ### Commands
 
-Some less obvious command
-
-    "type-check": "tsc",
-    "test": "vitest --run",
-    "test:watch": "vitest",
-    "clone-upstream:no-fetch": "rimraf temp && mkdir temp && cd temp && mkdir _ss14-repo && cd _ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/",
-    "clone-upstream:stable": "bun run clone-upstream:no-fetch && cd temp && cd _ss14-repo && git fetch --depth=1 origin stable && git checkout stable",
-    "clone-upstream:master": "bun run clone-upstream:no-fetch && cd temp && cd _ss14-repo && git fetch --depth=1 origin master && git checkout master",
-    "clone-sync": "mkdir temp && cd temp && rimraf temp _sync && mkdir _sync && cd _sync && git init && git remote add origin https://github.com/murolem/ss14-wiki-automations.git && git fetch --depth=1 origin sync && git checkout sync",
-    "start": "bun run type-check && bun run test && bun run clone-upstream:master && bun run start:cli",
-    "start:cli": "bun --env-file=.env src/cli/index.ts"
+Some less obvious command:
 
 -   `clone-upstream:no-fetch` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under no specific branch.
 -   `clone-upstream:stable` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `stable` branch with the depth of 1.
