@@ -4,12 +4,10 @@ import { entityPrototypeSchema, wikiSchemaEntityMapOfIdToName, wikiSchemaEntityM
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
 import { z, ZodType } from 'zod';
-import dotenv from 'dotenv';
 import type { StringOr } from '$utils/stringOr';
 import { latheRecipeProtoSchema, wikiSchemaRecipeMapOfRecipeIdToRecipe, wikiSchemaRecipeMapOfRecipeMethodToAvailabilityToToRecipeIds, wikiSchemaRecipeMapOfRecipeProductToRecipeId as wikiSchemaRecipeMapOfProductIdToRecipeId } from '$schemas/prototype/prototypes/latheRecipe';
 import { latheRecipePackProtoSchema } from '$schemas/prototype/prototypes/latheRecipePack';
 import { wikiSchemaCraftingStationConfig, wikiSchemaLatheConfig } from '$schemas/crafting/craftingStation';
-dotenv.config();
 
 const envVarsSchema = z.object({
     PR_MANAGE_GH_TOKEN: z.string(),
@@ -178,6 +176,12 @@ export const processingStepOutputs = [
     },
 ] satisfies ProcessingStepOutput[];
 
+/**
+ * Find a processing output matching project and name.
+ * @param project 
+ * @param name 
+ * @returns 
+ */
 export const getProcessingOutput = <T extends ProcessingStepOutputProject>
     (project: T, name: ProcessingStepOutputsByProject<T>['name']) =>
     processingStepOutputs.find(e => e.project === project && e.name === name)!;

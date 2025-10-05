@@ -1,4 +1,5 @@
 import { convertProject } from './lib/convertProject';
-import fs from 'fs-extra';
 
-convertProject('prototype');
+export default async function () {
+    convertProject('prototype');
+}

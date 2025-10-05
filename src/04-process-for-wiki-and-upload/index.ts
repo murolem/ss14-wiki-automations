@@ -7,17 +7,27 @@ import { Logger } from '$logger';
 const logger = new Logger("wiki");
 const { logInfo, logWarn, logFatalAndThrow } = logger;
 // @ts-ignore it has the import
-import minimist from 'minimist';
 import chalk from 'chalk';
 
-const args = minimist(process.argv.slice(2));
-const noPrMode = !!args.nopr;
-const noUploadMode = !!args.noupload;
+export default async function (opts: Partial<{
+    /**
+     * Whether to create and push PR in the sync branch.
+     * @default true
+     */
+    createPr: boolean,
 
-async function main() {
-    if (noPrMode)
+    /**
+     * Whether to upload changes to the wiki.
+     * @default true
+     */
+    uploadToWiki: boolean
+}> = {}) {
+    opts.createPr ??= true;
+    opts.uploadToWiki ??= true;
+
+    if (!opts.createPr)
         logInfo(chalk.green("[NO PR MODE]"));
-    if (noUploadMode)
+    if (!opts.uploadToWiki)
         logInfo(chalk.green("[NO UPLOAD MODE]"));
 
     await preprocess();
@@ -28,13 +38,13 @@ async function main() {
         return;
     }
 
-    if (noPrMode) {
+    if (!opts.createPr) {
         logInfo("✅ no PR mode enabled, exiting");
         return;
     }
     const pr = await prMake();
 
-    if (noUploadMode) {
+    if (!opts.uploadToWiki) {
         logInfo("✅ no upload mode enabled, exiting");
         return;
     }
@@ -43,5 +53,3 @@ async function main() {
 
     logInfo("✅ all done");
 }
-
-await main();

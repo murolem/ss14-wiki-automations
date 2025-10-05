@@ -24,6 +24,12 @@ function processor({
     const recipes = filterProtosByTypeWithParse('latheRecipe');
     const recipePacks = filterProtosByTypeWithParse('latheRecipePack');
 
+    writeJsonSync(
+        'temp',
+        "recipes_raw_json",
+        recipes
+    );
+
     recipes.forEach(recipe => locRecordProperty(recipe, { property: 'name' }));
 
     writeJsonSync(

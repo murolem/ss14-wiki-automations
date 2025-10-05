@@ -29,16 +29,19 @@ The code is divided into steps, with each steps results saved under different lo
 
 Some less obvious command
 
--   `ss14-repo:clone-no-checkout` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under no specific branch.
--   `ss14-repo:clone-checkout:stable` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `stable` branch with the depth of 1.
--   `ss14-repo:clone-checkout:master` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `master` branch with the depth of 1.
--   `sync:clone` - Clones the `sync` branch off of this repo with the depth of 1. The sync branch is used for syncing changes with the wiki.
--   `copy-source-data` - Runs the copy source data step.
--   `convert-source-data` - Runs the convert source data step.
--   `process-converted-data` - Runs the process converted data step.
--   `process-for-wiki-and-upload` - Runs the wiki upload step of the processed data.
--   `process-for-wiki-and-upload:nopr:noupload` - Runs the wiki upload step of the processed data but without making changes the the sync branch and wiki uploads.
--   `start` - Runs type check, tests and all the steps in normal mode. This step is run by the action runner.
--   `start:noclone:nowiki` - Runs all the steps except wiki upload in normal mode without cloing SS14 Upstream repo. The repo is expected to be already cloned locally.
--   `start:noclone` - Runs all the steps except in normal mode without cloing SS14 Upstream repo. The repo is expected to be already cloned locally.
--   `start:nowiki` - Runs all the steps except except wiki upload in normal mode.
+    "type-check": "tsc",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "clone-upstream:no-fetch": "rimraf temp && mkdir temp && cd temp && mkdir _ss14-repo && cd _ss14-repo && git init && git remote add origin https://github.com/space-wizards/space-station-14.git && git sparse-checkout init && git sparse-checkout set Resources/",
+    "clone-upstream:stable": "bun run clone-upstream:no-fetch && cd temp && cd _ss14-repo && git fetch --depth=1 origin stable && git checkout stable",
+    "clone-upstream:master": "bun run clone-upstream:no-fetch && cd temp && cd _ss14-repo && git fetch --depth=1 origin master && git checkout master",
+    "clone-sync": "mkdir temp && cd temp && rimraf temp _sync && mkdir _sync && cd _sync && git init && git remote add origin https://github.com/murolem/ss14-wiki-automations.git && git fetch --depth=1 origin sync && git checkout sync",
+    "start": "bun run type-check && bun run test && bun run clone-upstream:master && bun run start:cli",
+    "start:cli": "bun --env-file=.env src/cli/index.ts"
+
+-   `clone-upstream:no-fetch` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under no specific branch.
+-   `clone-upstream:stable` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `stable` branch with the depth of 1.
+-   `clone-upstream:master` - Clones the SS14 Upstream repo with sparse-checkout Resources dir under `master` branch with the depth of 1.
+-   `clone-sync` - Clones the `sync` branch off of this repo with the depth of 1. The sync branch is used for syncing changes with the wiki.
+-   `start` - Runs everything.
+-   `start:cli` - CLI entrypoint that runs the four steps. Type --help to see available commands.
