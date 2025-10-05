@@ -6,6 +6,7 @@ import { getProcessingContext, getWikiContext } from '$wiki/lib/bunnies/lib/cont
 import { jsonComparatorAsc } from '$utils/writeJson';
 import { getObjPropOrCreate } from '$utils/getObjPropOrCreate';
 import { tryGetComp, tryGetCompWithParse } from '$process/processors/entity/getComp';
+import { locRecordProperty } from '$process/processors/locale';
 const logger = new Logger("wiki/preprocess/entities");
 const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 
@@ -37,6 +38,14 @@ function processor({
     const latheEnts = ictxLatheEnts.loadAndParseData();
     const latheRecipes = ictxLatheRecipes.loadAndParseData();
     const latheRecipePacks = ictxLatheRecipePacks.loadAndParseData();
+
+    // localize names for recipes
+    latheRecipes.forEach(recipe => locRecordProperty(recipe, { property: 'name' }));
+    writeJsonSync(
+        'temp',
+        "recipes_localized_json",
+        latheRecipes
+    );
 
     octxLatheRecipeMapOfRecipeIdToRecipe.writeData(
         latheRecipes.reduce<
@@ -108,15 +117,4 @@ function processor({
                 };
             })
     )
-
-    // octxLatheRecipeMapOfRecipeMethodToAvailabilityToRecipeIds.writeData(
-    //     latheEnts.reduce<
-    //         z.infer<typeof octxLatheRecipeMapOfRecipeMethodToAvailabilityToRecipeIds.schema>
-    //     >((accum, e) => {
-    //         const comp = tryGetCompWithParse(e, 'Lathe');
-
-    //         return accum;
-    //     }, {}),
-    //     jsonComparatorAsc
-    // );
 }
