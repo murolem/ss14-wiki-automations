@@ -9,13 +9,27 @@ const logger = new Logger("wiki/preprocess/context");
 const { logDebug, logInfo, logWarn, logFatalAndThrow } = logger;
 import fs from 'fs-extra';
 
-/** Contains info about a project output from a specific step, along with some functions. */
+/** Holds project output data and controls for a specific step output. */
 export type Context<T extends ProcessingStepOutput | WikiStepOutput> = T & {
+    /** Absolute filepath to the output file for this step. */
     absFilepath: string,
+
+    /** Data schema. */
     schema: T['schema'],
-    /** Loads data from the filepath, parsing it with schema provided to this context. */
+
+    /**
+     * Loads data from the filepath specified in this context, parsing it using the schema specified here as well.
+     * @returns Parsed loaded data.
+     * @throws {Error} If filepath does not exists (e.g. the data has not been written yet.)
+     */
     loadAndParseData: () => z.infer<T['schema']>,
-    /** Writes data to th filepath. Returns the same data. */
+
+    /**
+     * Writes data to the filepath. Returns the same data.
+     * @param data Data to write.
+     * @param compFn Comparator to use to determine the order in which to write the items.
+     * @returns Input data (for convenience).
+     */
     writeData: (
         data: z.infer<T['schema']>,
         compFn?: JsonComparator

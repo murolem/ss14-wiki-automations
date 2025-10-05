@@ -39,13 +39,19 @@ function processor({
     const latheRecipes = ictxLatheRecipes.loadAndParseData();
     const latheRecipePacks = ictxLatheRecipePacks.loadAndParseData();
 
-    // localize names for recipes
-    latheRecipes.forEach(recipe => locRecordProperty(recipe, { property: 'name' }));
-    writeJsonSync(
-        'temp',
-        "recipes_localized_json",
-        latheRecipes
-    );
+    latheRecipes.forEach(recipe => {
+        // localize names for recipes
+        locRecordProperty(recipe, { property: 'name' });
+
+        // prefix all reagents with "Reagent" prefix
+        if (recipe.resultReagents) {
+            for (const reagent in recipe.resultReagents) {
+                recipe.resultReagents["Reagent" + reagent] = recipe.resultReagents[reagent];
+                delete recipe.resultReagents[reagent];
+            }
+        }
+    });
+
 
     octxLatheRecipeMapOfRecipeIdToRecipe.writeData(
         latheRecipes.reduce<
