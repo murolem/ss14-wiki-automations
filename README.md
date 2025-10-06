@@ -38,7 +38,7 @@ bun run start
 To "dry-run" (without making changes to anything), run:
 
 ```bash
-bun run start -- all --dry
+bun run start -- --dry
 ```
 
 To "dry-run" without type-checking, tests and cloning of the upstream repo, run:

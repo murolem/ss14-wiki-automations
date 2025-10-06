@@ -25,11 +25,12 @@ function processor({
     logger,
     writeJsonSync,
 }: ProcessorArgs) {
-    const inputCtxEntitiesJson = getProcessingContext('entity', 'entities_json');
-    const outputCtxEntityMapOfIdToName = getWikiContext('entity', 'entity_map_of_id_to_name');
-    const outputCtxEntityMapOfLcNameToId = getWikiContext('entity', 'entity_map_of_lc_name_to_id');
+    const ictxEntitiesJson = getProcessingContext('entity', 'entities_json');
+    const octxEntityMapOfIdToName = getWikiContext('entity', 'entity_map_of_id_to_name');
+    const octxEntityMapOfLcNameToId = getWikiContext('entity', 'entity_map_of_lc_name_to_id');
+    const octxEntityMapOfIdToDescription = getWikiContext('entity', 'entity_map_of_id_to_description');
 
-    const entities = inputCtxEntitiesJson.loadAndParseData();
+    const entities = ictxEntitiesJson.loadAndParseData();
 
     const entitiesSortedBy = {
         id: entities.toSorted((a, b) => a.id.localeCompare(b.id)),
@@ -52,9 +53,9 @@ function processor({
      * 
      * Writes data with the ID ordering defined in {@link entitiesSortedBy}.
      */
-    const entityMapOfIdToName = outputCtxEntityMapOfIdToName.writeData(
+    const entityMapOfIdToName = octxEntityMapOfIdToName.writeData(
         entities.reduce<
-            z.infer<typeof outputCtxEntityMapOfIdToName['schema']>
+            z.infer<typeof octxEntityMapOfIdToName['schema']>
         >((accum, ent) => {
             if (ent.name === undefined || ent.name === "") {
                 // many abstract entities don't have a name, which is expected, so do not log about those.
@@ -81,9 +82,9 @@ function processor({
      * 
      * Writes data with the name ordering defined in {@link entitiesSortedBy}.
      */
-    const entityMapOfLcNameToId = outputCtxEntityMapOfLcNameToId.writeData(
+    octxEntityMapOfLcNameToId.writeData(
         Object.entries(entityMapOfIdToName).reduce<
-            z.infer<typeof outputCtxEntityMapOfLcNameToId.schema>
+            z.infer<typeof octxEntityMapOfLcNameToId.schema>
         >((accum, [id, name]) => {
             const nameLc = name.toLocaleLowerCase();
 
@@ -95,6 +96,24 @@ function processor({
 
             accum[nameLc] = id;
 
+            return accum;
+        }, {}),
+        jsonComparatorAsc
+    )
+
+    octxEntityMapOfIdToDescription.writeData(
+        entities.reduce<
+            z.infer<typeof octxEntityMapOfIdToName['schema']>
+        >((accum, ent) => {
+            // skips entities that were skipped by earlier process
+            if (!(ent.id in entityMapOfIdToName))
+                return accum;
+
+            // skips empty description
+            if (ent.description === undefined || ent.description === null)
+                return accum;
+
+            accum[ent.id] = ent.description;
             return accum;
         }, {}),
         jsonComparatorAsc

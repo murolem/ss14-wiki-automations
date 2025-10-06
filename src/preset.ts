@@ -1,6 +1,6 @@
 import { prototypeSchema } from '$schemas/prototype/base';
 import { cargoProductProcessedProtoSchema } from '$schemas/prototype/prototypes/cargoProduct';
-import { entityPrototypeSchema, wikiSchemaEntityMapOfIdToName, wikiSchemaEntityMapOfLcNameToId } from '$schemas/prototype/prototypes/entity';
+import { entityPrototypeSchema, wikiSchemaEntityMapOfIdToDescription, wikiSchemaEntityMapOfIdToName, wikiSchemaEntityMapOfLcNameToId } from '$schemas/prototype/prototypes/entity';
 import { toOsPath } from '$utils/toOsPath';
 import path from 'path';
 import { z, ZodType } from 'zod';
@@ -223,6 +223,13 @@ export const wikiStepOutputs = [
         relFilepath: 'entity_map_of_lc_name_to_id.json',
         schema: wikiSchemaEntityMapOfLcNameToId,
         wikipage: 'Module:Item/data/auto/entity_map_of_lc_name_to_id.json',
+    },
+    {
+        project: 'entity',
+        name: 'entity_map_of_id_to_description',
+        relFilepath: 'entity_map_of_id_to_description.json',
+        schema: wikiSchemaEntityMapOfIdToDescription,
+        wikipage: 'Module:Item/data/auto/entity_map_of_id_to_description.json',
     },
     {
         project: 'lathe_recipe',
