@@ -1415,7 +1415,7 @@
     "BulletLaser": "laser bolt",
     "BulletLaserMagnum": "magnum laser bolt",
     "BulletLaserSpread": "wide laser barrage",
-    "BulletLaserSpreadNarrow": "narrow laser barrage",
+    "BulletLaserSpreadNarrow": "lethal laser barrage",
     "BulletLaserWindowPiercingMagnum": "magnum window-piercing bolt",
     "BulletLightRifle": "bullet (.30 rifle)",
     "BulletLightRifleIncendiary": "bullet (.30 rifle incendiary)",
