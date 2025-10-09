@@ -788,9 +788,6 @@
             "MagazineRifle",
             "MagazineRifleEmpty",
             "MagazineRiflePractice",
-            "MagazineShotgun",
-            "MagazineShotgunEmpty",
-            "MagazineShotgunSlug",
             "RiotShield",
             "SpeedLoaderMagnum",
             "SpeedLoaderMagnumEmpty",
@@ -861,6 +858,11 @@
             "WeaponProtoKineticAccelerator",
             "WeaponTemperatureGun",
             "WeaponXrayCannon"
+        ],
+        "emagStaticRecipes": [
+            "MagazineShotgun",
+            "MagazineShotgunEmpty",
+            "MagazineShotgunSlug"
         ]
     },
     {
@@ -883,11 +885,13 @@
             "MagazinePistolSubMachineGunTopMountedEmpty",
             "MagazineRifle",
             "MagazineRifleEmpty",
-            "MagazineShotgun",
-            "MagazineShotgunEmpty",
-            "MagazineShotgunSlug",
             "SpeedLoaderMagnum",
             "SpeedLoaderMagnumEmpty"
+        ],
+        "emagStaticRecipes": [
+            "MagazineShotgun",
+            "MagazineShotgunEmpty",
+            "MagazineShotgunSlug"
         ]
     },
     {
