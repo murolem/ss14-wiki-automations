@@ -5635,6 +5635,7 @@
     "storage implanter": "StorageImplanter",
     "storage item": "BaseStorageItem",
     "storage tank": "GenericTank",
+    "store": "ActionIntrinsicStore",
     "straight ally pin": "ClothingNeckAllyPin",
     "straitjacket": "ClothingOuterStraightjacket",
     "strange glowing berry": "AnomalyFloraBulb",
