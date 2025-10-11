@@ -7069,6 +7069,19 @@
         "result": "LightTube",
         "type": "latheRecipe"
     },
+    "MagazineBoxAntiMateriel": {
+        "categories": [
+            "Ammo",
+            "Boxes"
+        ],
+        "completetime": 5,
+        "id": "MagazineBoxAntiMateriel",
+        "materials": {
+            "Steel": 2
+        },
+        "result": "MagazineBoxAntiMateriel",
+        "type": "latheRecipe"
+    },
     "MagazineBoxLightRifle": {
         "categories": [
             "Ammo",
@@ -7367,6 +7380,18 @@
             "Steel": 1.45
         },
         "result": "MagazinePistol",
+        "type": "latheRecipe"
+    },
+    "MagazinePistolCaselessRifle": {
+        "categories": [
+            "Ammo"
+        ],
+        "completetime": 5,
+        "id": "MagazinePistolCaselessRifle",
+        "materials": {
+            "Steel": 1.45
+        },
+        "result": "MagazinePistolCaselessRifle",
         "type": "latheRecipe"
     },
     "MagazinePistolEmpty": {
