@@ -5016,8 +5016,8 @@
         "completetime": 2,
         "id": "Dropper",
         "materials": {
-            "Glass": 2,
-            "Plastic": 1
+            "Glass": 0.5,
+            "Plastic": 0.5
         },
         "result": "Dropper",
         "type": "latheRecipe"
