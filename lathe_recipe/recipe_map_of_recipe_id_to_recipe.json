@@ -7730,6 +7730,17 @@
         "result": "MaterialDiamond1",
         "type": "latheRecipe"
     },
+    "MaterialDurathread": {
+        "applyMaterialDiscount": false,
+        "completetime": 0,
+        "id": "MaterialDurathread",
+        "materials": {
+            "Cloth": 1,
+            "Plastic": 1
+        },
+        "result": "MaterialDurathread1",
+        "type": "latheRecipe"
+    },
     "MaterialSheetMeat": {
         "completetime": 6.4,
         "id": "MaterialSheetMeat",
@@ -8950,6 +8961,7 @@
         "type": "latheRecipe"
     },
     "SheetRGlass": {
+        "applyMaterialDiscount": false,
         "completetime": 0,
         "id": "SheetRGlass",
         "materials": {
