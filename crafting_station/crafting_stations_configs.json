@@ -98,6 +98,7 @@
         "emagStaticRecipes": [
             "BoxLethalshot",
             "BoxShotgunSlug",
+            "MagazineBoxAntiMateriel",
             "MagazineBoxLightRifle",
             "MagazineBoxMagnum",
             "MagazineBoxPistol",
@@ -105,6 +106,7 @@
             "MagazineLightRifle",
             "MagazineLightRifleEmpty",
             "MagazinePistol",
+            "MagazinePistolCaselessRifle",
             "MagazinePistolEmpty",
             "MagazinePistolSubMachineGun",
             "MagazinePistolSubMachineGunEmpty",
@@ -220,6 +222,7 @@
         "emagStaticRecipes": [
             "BoxLethalshot",
             "BoxShotgunSlug",
+            "MagazineBoxAntiMateriel",
             "MagazineBoxLightRifle",
             "MagazineBoxMagnum",
             "MagazineBoxPistol",
@@ -227,6 +230,7 @@
             "MagazineLightRifle",
             "MagazineLightRifleEmpty",
             "MagazinePistol",
+            "MagazinePistolCaselessRifle",
             "MagazinePistolEmpty",
             "MagazinePistolSubMachineGun",
             "MagazinePistolSubMachineGunEmpty",
@@ -860,6 +864,8 @@
             "WeaponXrayCannon"
         ],
         "emagStaticRecipes": [
+            "MagazineBoxAntiMateriel",
+            "MagazinePistolCaselessRifle",
             "MagazineShotgun",
             "MagazineShotgunEmpty",
             "MagazineShotgunSlug"
@@ -889,6 +895,8 @@
             "SpeedLoaderMagnumEmpty"
         ],
         "emagStaticRecipes": [
+            "MagazineBoxAntiMateriel",
+            "MagazinePistolCaselessRifle",
             "MagazineShotgun",
             "MagazineShotgunEmpty",
             "MagazineShotgunSlug"
