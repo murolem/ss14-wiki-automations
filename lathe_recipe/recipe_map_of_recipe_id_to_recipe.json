@@ -1418,6 +1418,18 @@
         },
         "type": "latheRecipe"
     },
+    "BioGenDiseaseSwab": {
+        "categories": [
+            "Materials"
+        ],
+        "completetime": 3,
+        "id": "BioGenDiseaseSwab",
+        "materials": {
+            "Biomass": 0.02
+        },
+        "result": "DiseaseSwab",
+        "type": "latheRecipe"
+    },
     "BioGenEnzyme": {
         "categories": [
             "Food"
@@ -1707,6 +1719,24 @@
         },
         "resultReagents": {
             "ReagentSugar": 10
+        },
+        "type": "latheRecipe"
+    },
+    "BioGenUnstableMutagen": {
+        "categories": [
+            "Chemicals"
+        ],
+        "completetime": 5,
+        "icon": {
+            "sprite": "Objects/Specific/Chemistry/bottle.rsi",
+            "state": "bottle-1"
+        },
+        "id": "BioGenUnstableMutagen",
+        "materials": {
+            "Biomass": 0.2
+        },
+        "resultReagents": {
+            "ReagentUnstableMutagen": 10
         },
         "type": "latheRecipe"
     },
