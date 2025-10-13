@@ -640,7 +640,6 @@
     "board": "BaseBoardEntity",
     "board game crate": "CrateFunBoardGames",
     "bob's semki sunflower seeds": "FoodSnackSemki",
-    "boda": "VendingMachineSovietSoda",
     "body bag": "BodyBag",
     "body bag box": "BoxBodyBag",
     "body bags crate": "CrateBodyBags",
@@ -6669,5 +6668,6 @@
     "zookeeper": "SpawnPointZookeeper",
     "zookeeper id card": "ZookeeperIDCard",
     "zookeeper pda": "ZookeeperPDA",
-    "zum atmospherics division plaque": "PlaqueAtmosZUM"
+    "zum atmospherics division plaque": "PlaqueAtmosZUM",
+    "вода": "VendingMachineSovietSoda"
 }
