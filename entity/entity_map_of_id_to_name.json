@@ -8477,6 +8477,7 @@
     "StatusEffectDrunk": "drunk",
     "StatusEffectForcedSleeping": "forced sleep",
     "StatusEffectFriction": "friction",
+    "StatusEffectScrambled": "scrambled",
     "StatusEffectSeeingRainbow": "hallucinations",
     "StatusEffectSlowdown": "slowdown",
     "StatusEffectSlurred": "slurred",
