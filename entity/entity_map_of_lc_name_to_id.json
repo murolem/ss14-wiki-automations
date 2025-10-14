@@ -5004,6 +5004,7 @@
     "scram implanter": "ScramImplanter",
     "scram!": "ActionActivateScramImplant",
     "scramble dna": "ActionActivateDnaScramblerImplant",
+    "scrambled": "StatusEffectScrambled",
     "scrap": "BaseScrap",
     "scrap armor": "ClothingOuterArmorScrap",
     "scrap circuitry": "ScrapGlass",
