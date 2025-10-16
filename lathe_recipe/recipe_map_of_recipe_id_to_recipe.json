@@ -2279,6 +2279,18 @@
         "result": "FloorCarpetItemPurple",
         "type": "latheRecipe"
     },
+    "CarpetSkyBlue": {
+        "categories": [
+            "Carpets"
+        ],
+        "completetime": 1,
+        "id": "CarpetSkyBlue",
+        "materials": {
+            "Cloth": 1
+        },
+        "result": "FloorCarpetItemSkyBlue",
+        "type": "latheRecipe"
+    },
     "CarpetWhite": {
         "categories": [
             "Carpets"
