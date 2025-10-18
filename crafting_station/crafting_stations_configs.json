@@ -701,6 +701,7 @@
         "stationType": "Lathe",
         "id": "ExosuitFabricator",
         "staticRecipes": [
+            "BorgModuleArtistry",
             "BorgModuleCable",
             "BorgModuleFireExtinguisher",
             "BorgModuleInflatable",

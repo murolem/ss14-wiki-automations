@@ -1897,6 +1897,20 @@
         "result": "BorgModuleAdvancedTool",
         "type": "latheRecipe"
     },
+    "BorgModuleArtistry": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 3,
+        "id": "BorgModuleArtistry",
+        "materials": {
+            "Glass": 2.5,
+            "Plastic": 2.5,
+            "Steel": 2.5
+        },
+        "result": "BorgModuleArtistry",
+        "type": "latheRecipe"
+    },
     "BorgModuleCable": {
         "categories": [
             "Modules"
