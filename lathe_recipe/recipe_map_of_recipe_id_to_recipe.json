@@ -1985,7 +1985,7 @@
         "completetime": 2,
         "id": "BoxFolderClipboardEmpty",
         "materials": {
-            "Steel": 0.25,
+            "Steel": 0.5,
             "Wood": 1
         },
         "result": "BoxFolderClipboardEmpty",
@@ -1996,7 +1996,7 @@
         "id": "BoxFolderPlasticClipboardEmpty",
         "materials": {
             "Plastic": 1,
-            "Steel": 0.25
+            "Steel": 0.5
         },
         "result": "BoxFolderPlasticClipboardEmpty",
         "type": "latheRecipe"
