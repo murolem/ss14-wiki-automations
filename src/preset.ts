@@ -50,7 +50,7 @@ export const wikiAutomationsRepo = {
 }
 
 /** Name to use for git author. */
-export const automationsGitAuthor = "Meowbot";
+export const automationsGitAuthor = "Nyanbot";
 
 export const wikiServer = "wiki.spacestation14.com";
 export const wikiApiPath = "/w";
