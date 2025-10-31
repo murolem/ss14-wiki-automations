@@ -49,7 +49,7 @@
         "completetime": 4,
         "id": "AirTank",
         "materials": {
-            "Steel": 3
+            "Steel": 4
         },
         "result": "AirTank",
         "type": "latheRecipe"
@@ -374,7 +374,7 @@
         "completetime": 2,
         "id": "BaseChemistryEmptyVial",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 1,
             "Wood": 0.2
         },
         "result": "BaseChemistryEmptyVial",
@@ -579,7 +579,7 @@
         "completetime": 0.8,
         "id": "BaseGlasswareRecipe",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "type": "latheRecipe"
     },
@@ -681,7 +681,7 @@
         "completetime": 2,
         "id": "BaseLightRecipe",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "type": "latheRecipe"
@@ -2397,7 +2397,7 @@
         "completetime": 2,
         "id": "ChemistryEmptyBottle01",
         "materials": {
-            "Glass": 0.5
+            "Glass": 1
         },
         "result": "ChemistryEmptyBottle01",
         "type": "latheRecipe"
@@ -4963,7 +4963,7 @@
         "completetime": 2,
         "id": "DimLightBulb",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "DimLightBulb",
@@ -5027,7 +5027,7 @@
         "completetime": 0.8,
         "id": "DrinkGlass",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "result": "DrinkGlass",
         "type": "latheRecipe"
@@ -5036,7 +5036,7 @@
         "completetime": 0.8,
         "id": "DrinkGlassCoupeShaped",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "result": "DrinkGlassCoupeShaped",
         "type": "latheRecipe"
@@ -5045,7 +5045,7 @@
         "completetime": 0.8,
         "id": "DrinkMug",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "result": "DrinkMug",
         "type": "latheRecipe"
@@ -5063,7 +5063,7 @@
         "completetime": 0.4,
         "id": "DrinkShotGlass",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "result": "DrinkShotGlass",
         "type": "latheRecipe"
@@ -5179,7 +5179,7 @@
         "completetime": 2,
         "id": "ExteriorLightTube",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "ExteriorLightTube",
@@ -6174,7 +6174,7 @@
         "completetime": 0.8,
         "id": "FoodBowlBig",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "result": "FoodBowlBig",
         "type": "latheRecipe"
@@ -6192,7 +6192,7 @@
         "completetime": 0.8,
         "id": "FoodPlate",
         "materials": {
-            "Glass": 1
+            "Glass": 2
         },
         "result": "FoodPlate",
         "type": "latheRecipe"
@@ -7031,7 +7031,7 @@
         "completetime": 2,
         "id": "LedLightBulb",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "LedLightBulb",
@@ -7044,7 +7044,7 @@
         "completetime": 2,
         "id": "LedLightTube",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "LedLightTube",
@@ -7083,7 +7083,7 @@
         "completetime": 2,
         "id": "LightBulb",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "LightBulb",
@@ -7119,7 +7119,7 @@
         "completetime": 2,
         "id": "LightTube",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "LightTube",
@@ -9365,7 +9365,7 @@
         "completetime": 2,
         "id": "SodiumLightTube",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "SodiumLightTube",
@@ -10004,7 +10004,7 @@
         "completetime": 2,
         "id": "WarmLightBulb",
         "materials": {
-            "Glass": 0.5,
+            "Glass": 2,
             "Steel": 0.5
         },
         "result": "WarmLightBulb",
