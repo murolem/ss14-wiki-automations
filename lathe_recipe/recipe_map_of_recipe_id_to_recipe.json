@@ -9971,6 +9971,20 @@
         "result": "VimHarness",
         "type": "latheRecipe"
     },
+    "VoiceSensor": {
+        "categories": [
+            "Parts"
+        ],
+        "completetime": 2,
+        "id": "VoiceSensor",
+        "materials": {
+            "Glass": 1,
+            "Plastic": 2,
+            "Steel": 1
+        },
+        "result": "voicesensor",
+        "type": "latheRecipe"
+    },
     "VoiceTrigger": {
         "categories": [
             "Parts"
