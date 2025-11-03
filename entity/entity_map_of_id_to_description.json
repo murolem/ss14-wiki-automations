@@ -3517,6 +3517,8 @@
     "DisposalUnit": "A pneumatic waste disposal unit.",
     "DisposalXJunction": "A four-way junction. The arrow indicates where items exit.",
     "DisposalYJunction": "A three-way junction with another exit point.",
+    "DnaInjector": "Can be used to take a DNA sample from someone and inject it into another person, turning them into a clone of the original.",
+    "DnaInjectorUnlimited": "Can be used to take a DNA sample from someone and inject it into another person, turning them into a clone of the original.",
     "DnaScramblerImplant": "This implant lets the user randomly change their appearance and name once.",
     "DnaScramblerImplanter": "A compact disposable syringe exclusively designed for the injection of subdermal implants. Make sure to scrub it with soap to remove residual DNA after use!",
     "DogBed": "A comfy-looking dog bed. You can even strap your pet in, in case the gravity turns off.",
