@@ -3684,6 +3684,18 @@
         "result": "ClothingUniformJumpskirtChiefEngineerTurtle",
         "type": "latheRecipe"
     },
+    "ClothingUniformJumpskirtClown": {
+        "categories": [
+            "Jumpsuits"
+        ],
+        "completetime": 4,
+        "id": "ClothingUniformJumpskirtClown",
+        "materials": {
+            "Cloth": 3
+        },
+        "result": "ClothingUniformJumpskirtClown",
+        "type": "latheRecipe"
+    },
     "ClothingUniformJumpskirtCMO": {
         "categories": [
             "Jumpsuits",
@@ -3866,6 +3878,18 @@
             "Cloth": 3
         },
         "result": "ClothingUniformJumpskirtJanitor",
+        "type": "latheRecipe"
+    },
+    "ClothingUniformJumpskirtLawyerBlack": {
+        "categories": [
+            "Jumpsuits"
+        ],
+        "completetime": 4,
+        "id": "ClothingUniformJumpskirtLawyerBlack",
+        "materials": {
+            "Cloth": 3
+        },
+        "result": "ClothingUniformJumpskirtLawyerBlack",
         "type": "latheRecipe"
     },
     "ClothingUniformJumpskirtMedicalDoctor": {
