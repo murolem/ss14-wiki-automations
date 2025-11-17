@@ -646,6 +646,7 @@
     "body bag": "BodyBag",
     "body bag box": "BoxBodyBag",
     "body bags crate": "CrateBodyBags",
+    "body crusher": "MachineArtifactCrusherXenoborg",
     "body part": "BasePart",
     "body scanner computer": "computerBodyScanner",
     "body scanner computer board": "BodyScannerComputerCircuitboard",
