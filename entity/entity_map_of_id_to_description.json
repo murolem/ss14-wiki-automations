@@ -8216,6 +8216,8 @@
     "WeaponForceGun": "Manipulates gravity around objects to fling them at high velocities.",
     "WeaponForceGunAdmin": "Manipulates gravity around objects to fling them at high velocities.",
     "WeaponGauntletGorilla": "A robust piece of research equipment. When powered with an anomaly core, a single blow can launch anomalous objects through the air.",
+    "WeaponHitscanDebug": "pew pew!",
+    "WeaponHitscanDebugGib": "pew pew!",
     "WeaponImprovisedPneumaticCannon": "Improvised using nothing but a pipe, some zipties, and a pneumatic cannon. Doesn't accept tanks without enough gas.",
     "WeaponImprovisedPneumaticCannonAdmeme": "Improvised using nothing but a pipe, some zipties, and a pneumatic cannon. Doesn't accept tanks without enough gas.",
     "WeaponImprovisedPneumaticCannonGun": "Improvised using nothing but a pipe, some zipties, and a pneumatic cannon. Doesn't accept tanks without enough gas.",
