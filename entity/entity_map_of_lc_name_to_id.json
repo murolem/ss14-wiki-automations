@@ -349,6 +349,8 @@
     "bandito": "MobBandito",
     "bandito spawner": "SpawnMobBandito",
     "bandolier": "ClothingBeltBandolier",
+    "bang hitscan 1dmg": "WeaponHitscanDebug",
+    "bang hitscan gibber": "WeaponHitscanDebugGib",
     "bang stick 100dmg": "MeleeDebug100",
     "bang stick 200dmg": "MeleeDebug200",
     "bang stick gibber": "MeleeDebugGib",
