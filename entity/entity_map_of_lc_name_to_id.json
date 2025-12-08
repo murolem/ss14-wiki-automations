@@ -2903,6 +2903,8 @@
     "human plushie": "PlushieHuman",
     "human target": "TargetHuman",
     "human torso": "TorsoHuman",
+    "hushpup": "WeaponShotgunHushpup",
+    "hushpup bundle": "ClothingBackpackDuffelSyndicateFilledHushpup",
     "hv cable coil": "CableHVStack",
     "hv cable crate": "CrateEngineeringCableHV",
     "hv power cable": "CableHV",
