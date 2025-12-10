@@ -2158,7 +2158,7 @@
     "ertmedical": "SpawnPointERTMedical",
     "ertsecurity": "SpawnPointERTSecurity",
     "escape pods sign": "SignDirectionalEscapePod",
-    "escape to centcomm alive and unrestrained.": "ParadoxCloneLivingObjective",
+    "escape to centcomm alive and unrestrained via the escape shuttle.": "ParadoxCloneLivingObjective",
     "escargot": "FoodSoupEscargot",
     "estoc dmr": "WeaponRifleEstoc",
     "estoc dmr bundle": "ClothingBackpackDuffelSyndicateFilledRifle",
