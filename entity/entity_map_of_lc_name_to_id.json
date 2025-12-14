@@ -4566,6 +4566,7 @@
     "random fancy table spawner": "FancyTableSpawner",
     "random folder spawner": "FolderSpawner",
     "random food spawner": "RandomFoodMeal",
+    "random gate": "RandomGate",
     "random grille spawner": "GrilleSpawner",
     "random ingredient spawner": "RandomIngredient",
     "random instrument collection": "CrateFunInstrumentsRandom",
