@@ -1318,6 +1318,7 @@
         "staticRecipes": [
             "XenoborgEngiRecipe",
             "XenoborgHeavyRecipe",
+            "XenoborgModuleDoorControlRecipe",
             "XenoborgModuleEnergySwordRecipe",
             "XenoborgModuleHeavyLaserRecipe",
             "XenoborgModuleSuperCloakDeviceRecipe",

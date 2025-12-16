@@ -10433,6 +10433,19 @@
         "result": "XenoborgHeavyPrinted",
         "type": "latheRecipe"
     },
+    "XenoborgModuleDoorControlRecipe": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 2,
+        "id": "XenoborgModuleDoorControlRecipe",
+        "materials": {
+            "Glass": 15,
+            "Steel": 15
+        },
+        "result": "XenoborgModuleDoorControl",
+        "type": "latheRecipe"
+    },
     "XenoborgModuleEnergySwordRecipe": {
         "categories": [
             "Modules"
