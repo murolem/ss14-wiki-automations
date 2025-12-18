@@ -1095,9 +1095,6 @@
         ],
         "completetime": 2,
         "id": "BaseXenoborgModulesRecipe",
-        "materials": {
-            "Glass": 30
-        },
         "type": "latheRecipe"
     },
     "BaseXenoborgRecipe": {
@@ -10453,7 +10450,8 @@
         "completetime": 2,
         "id": "XenoborgModuleEnergySwordRecipe",
         "materials": {
-            "Glass": 30
+            "Glass": 15,
+            "Steel": 15
         },
         "result": "XenoborgModuleEnergySword",
         "type": "latheRecipe"
@@ -10465,7 +10463,8 @@
         "completetime": 2,
         "id": "XenoborgModuleHeavyLaserRecipe",
         "materials": {
-            "Glass": 30
+            "Glass": 15,
+            "Steel": 15
         },
         "result": "XenoborgModuleHeavyLaser",
         "type": "latheRecipe"
