@@ -898,6 +898,7 @@
     "BasePowerCage": "item",
     "BasePowerCell": "item",
     "BaseRailing": "railing",
+    "BaseRepairableShield": "base repairable shield",
     "BaseResearchAndDevelopmentPointSource": "base R&D point source",
     "BaseRightArm": "right arm",
     "BaseRightFoot": "right foot",

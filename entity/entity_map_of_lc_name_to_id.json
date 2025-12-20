@@ -399,6 +399,7 @@
     "base hardsuit helmet with light": "ClothingHeadSuitWithLightBase",
     "base helmet with light": "ClothingHeadLightBase",
     "base r&d point source": "BaseResearchAndDevelopmentPointSource",
+    "base repairable shield": "BaseRepairableShield",
     "base shield": "BaseShield",
     "base sign": "BaseSign",
     "base space helmet": "ClothingHeadEVAHelmetBase",
