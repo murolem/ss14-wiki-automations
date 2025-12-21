@@ -817,6 +817,7 @@
     "BaseHealingItem": "item",
     "BaseHumanOrgan": "item",
     "BaseHumanOrganUnGibbable": "item",
+    "BaseHypospray": "item",
     "BaseImplanter": "implanter",
     "BaseImplantOnlyImplanter": "implant extractor",
     "BaseImplantOnlyImplanterSyndi": "syndicate implanter",
