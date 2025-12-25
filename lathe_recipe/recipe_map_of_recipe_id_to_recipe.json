@@ -9,6 +9,22 @@
         "result": "AbominationCube",
         "type": "latheRecipe"
     },
+    "AdvancedJetInjector": {
+        "categories": [
+            "Tools"
+        ],
+        "completetime": 5,
+        "id": "AdvancedJetInjector",
+        "materials": {
+            "Glass": 5,
+            "Gold": 0.5,
+            "Plastic": 2.5,
+            "Silver": 4,
+            "Steel": 5
+        },
+        "result": "AdvancedJetInjector",
+        "type": "latheRecipe"
+    },
     "AdvancedMineralScannerEmpty": {
         "completetime": 1,
         "id": "AdvancedMineralScannerEmpty",
@@ -6977,6 +6993,21 @@
             "Steel": 10
         },
         "result": "JawsOfLife",
+        "type": "latheRecipe"
+    },
+    "JetInjector": {
+        "categories": [
+            "Tools"
+        ],
+        "completetime": 5,
+        "id": "JetInjector",
+        "materials": {
+            "Glass": 5,
+            "Plastic": 2.5,
+            "Silver": 2.5,
+            "Steel": 5
+        },
+        "result": "JetInjector",
         "type": "latheRecipe"
     },
     "Jug": {
