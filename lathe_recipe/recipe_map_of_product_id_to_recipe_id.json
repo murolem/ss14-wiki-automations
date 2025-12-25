@@ -1,5 +1,6 @@
 {
     "AbominationCube": "AbominationCube",
+    "AdvancedJetInjector": "AdvancedJetInjector",
     "AdvancedMineralScannerEmpty": "AdvancedMineralScannerEmpty",
     "AdvMopItem": "AdvMopItem",
     "AirAlarmElectronics": "AirAlarmElectronics",
@@ -453,6 +454,7 @@
     "IngotSilver1": "IngotSilver1",
     "IntercomElectronics": "IntercomElectronics",
     "JawsOfLife": "JawsOfLife",
+    "JetInjector": "JetInjector",
     "Jug": "Jug",
     "JukeboxCircuitBoard": "JukeboxCircuitBoard",
     "KitchenKnife": "KitchenKnife",

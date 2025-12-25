@@ -267,6 +267,7 @@
         ],
         "dynamicRecipes": [
             "AdvMopItem",
+            "AdvancedJetInjector",
             "AdvancedMineralScannerEmpty",
             "AnomalyLocator",
             "AnomalyLocatorWide",
@@ -393,6 +394,7 @@
         ],
         "dynamicRecipes": [
             "AdvMopItem",
+            "AdvancedJetInjector",
             "AdvancedMineralScannerEmpty",
             "AnomalyLocator",
             "AnomalyLocatorWide",
@@ -930,6 +932,7 @@
             "HandheldHealthAnalyzer",
             "Hemostat",
             "Implanter",
+            "JetInjector",
             "Jug",
             "Medkit",
             "MedkitAdvanced",
@@ -949,6 +952,7 @@
             "WhiteCane"
         ],
         "dynamicRecipes": [
+            "AdvancedJetInjector",
             "BluespaceBeaker",
             "ChemicalPayload",
             "CryostasisBeaker",
