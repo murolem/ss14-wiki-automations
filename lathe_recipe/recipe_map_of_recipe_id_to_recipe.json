@@ -5292,6 +5292,34 @@
         "result": "FloorTileItemAstroIce",
         "type": "latheRecipe"
     },
+    "FauxTileAstroIronsand": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
+        "id": "FauxTileAstroIronsand",
+        "materials": {
+            "Plastic": 1
+        },
+        "result": "FloorTileItemAstroIronsand",
+        "type": "latheRecipe"
+    },
+    "FauxTileAstroIronsandBorderless": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Faux"
+        ],
+        "completetime": 0.5,
+        "id": "FauxTileAstroIronsandBorderless",
+        "materials": {
+            "Plastic": 1
+        },
+        "result": "FloorTileItemAstroIronsandBorderless",
+        "type": "latheRecipe"
+    },
     "FauxTileAstroSnow": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5781,6 +5809,51 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemGrayConcreteSmooth",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemIronsandConcrete": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Concrete"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemIronsandConcrete",
+        "materials": {
+            "Plastic": 0.25,
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemIronsandConcrete",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemIronsandConcreteMono": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Concrete"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemIronsandConcreteMono",
+        "materials": {
+            "Plastic": 0.25,
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemIronsandConcreteMono",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemIronsandConcreteSmooth": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Concrete"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemIronsandConcreteSmooth",
+        "materials": {
+            "Plastic": 0.25,
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemIronsandConcreteSmooth",
         "type": "latheRecipe"
     },
     "FloorTileItemOldConcrete": {
