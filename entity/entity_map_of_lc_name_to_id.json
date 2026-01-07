@@ -1153,7 +1153,7 @@
     "challenge cargo technician spawner": "ChallengeCargoTechnicianSpawner",
     "chameleon controller implant": "ChameleonControllerImplant",
     "chameleon controller implanter": "ChameleonControllerImplanter",
-    "chameleon projector": "ChameleonProjector",
+    "chameleon projector": "ChameleonProjectorNoBattery",
     "chameleon projector xenoborg module": "XenoborgModuleChameleonProjector",
     "champagne bottle": "DrinkChampagneBottleFull",
     "championship belt": "ClothingBeltChampion",
