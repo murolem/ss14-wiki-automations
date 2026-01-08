@@ -2805,7 +2805,7 @@
     "healing bolt": "ProjectileHealingBolt",
     "healing supplies spawner": "LootSpawnerMedicalMinor",
     "healing toolbox": "HealingToolbox",
-    "health analyzer": "HandheldHealthAnalyzerUnpowered",
+    "health analyzer": "HandheldHealthAnalyzer",
     "heart": "OrganVoxHeart",
     "heart mug": "DrinkMugHeart",
     "heater": "GasThermoMachineHeater",
