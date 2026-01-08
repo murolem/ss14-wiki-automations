@@ -6644,7 +6644,7 @@
             "Glass": 5,
             "Steel": 5
         },
-        "result": "HandheldHealthAnalyzerEmpty",
+        "result": "HandheldHealthAnalyzer",
         "type": "latheRecipe"
     },
     "HandHeldMassScanner": {
