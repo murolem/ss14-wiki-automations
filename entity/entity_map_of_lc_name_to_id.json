@@ -1987,6 +1987,7 @@
     "electrical supplies crate": "CrateEngineeringElectricalSupplies",
     "electrical supplies locker": "LockerElectricalSuppliesFilled",
     "electrical toolbox": "ToolboxElectricalFilled",
+    "electrical wire brush": "WireBrushElectrical",
     "electrolysis unit": "MachineElectrolysisUnit",
     "electrolysis unit machine board": "ElectrolysisUnitMachineCircuitboard",
     "electron soup": "FoodSoupElectron",
