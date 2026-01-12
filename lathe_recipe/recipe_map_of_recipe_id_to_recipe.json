@@ -1835,21 +1835,6 @@
         "result": "BorgChargerCircuitboard",
         "type": "latheRecipe"
     },
-    "BorgModuleAdvancedChemical": {
-        "categories": [
-            "Modules"
-        ],
-        "completetime": 3,
-        "id": "BorgModuleAdvancedChemical",
-        "materials": {
-            "Glass": 5,
-            "Gold": 0.5,
-            "Plastic": 2.5,
-            "Steel": 5
-        },
-        "result": "BorgModuleAdvancedChemical",
-        "type": "latheRecipe"
-    },
     "BorgModuleAdvancedCleaning": {
         "categories": [
             "Modules"
@@ -1908,6 +1893,21 @@
             "Steel": 5
         },
         "result": "BorgModuleAdvancedTool",
+        "type": "latheRecipe"
+    },
+    "BorgModuleAdvancedTopical": {
+        "categories": [
+            "Modules"
+        ],
+        "completetime": 3,
+        "id": "BorgModuleAdvancedTopical",
+        "materials": {
+            "Glass": 5,
+            "Gold": 0.5,
+            "Plastic": 2.5,
+            "Steel": 5
+        },
+        "result": "BorgModuleAdvancedTopical",
         "type": "latheRecipe"
     },
     "BorgModuleArtistry": {
