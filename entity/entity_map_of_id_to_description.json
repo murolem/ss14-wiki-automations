@@ -5104,6 +5104,8 @@
     "HandHeldMassScannerEmpty": "A hand-held mass scanner.",
     "HandheldStationMap": "Displays a readout of the current station.",
     "HandheldStationMapEmpty": "Displays a readout of the current station.",
+    "HandheldStationMapNukeops": "Displays a readout of the target station.",
+    "HandheldStationMapStatic": "Displays a readout of the current station.",
     "HandheldStationMapUnpowered": "Displays a readout of the current station.",
     "HandLabeler": "A hand labeler, used to label items and objects.",
     "HandTeleporter": "A Nanotrasen signature item--only the finest bluespace tech. Instructions: Use once to create a portal which teleports at random. Use again to link it to a portal at your current location. Use again to clear all portals.",
