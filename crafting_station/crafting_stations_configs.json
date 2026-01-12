@@ -722,11 +722,11 @@
             "TorsoBorg"
         ],
         "dynamicRecipes": [
-            "BorgModuleAdvancedChemical",
             "BorgModuleAdvancedCleaning",
             "BorgModuleAdvancedClowning",
             "BorgModuleAdvancedMining",
             "BorgModuleAdvancedTool",
+            "BorgModuleAdvancedTopical",
             "HamtrHarness",
             "HamtrLArm",
             "HamtrLLeg",
