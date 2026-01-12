@@ -5518,6 +5518,8 @@
     "HandHeldMassScannerEmpty": "handheld mass scanner",
     "HandheldStationMap": "station map",
     "HandheldStationMapEmpty": "station map",
+    "HandheldStationMapNukeops": "target station map",
+    "HandheldStationMapStatic": "station map",
     "HandheldStationMapUnpowered": "station map",
     "HandLabeler": "hand labeler",
     "HandsAnimal": "animal hands",
