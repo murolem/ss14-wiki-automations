@@ -6442,6 +6442,8 @@
     "PinionAirlockGlass": "It opens, it closes, and maybe crushes you.",
     "PinpointerBase": "A handheld tracking device. While typically far more capable, this one has been configured to lock onto certain signals. Keep upright to retain accuracy.",
     "PinpointerMothership": "A handheld tracking device that leads to the direction of the Mothership core.",
+    "PinpointerMothershipPiece": "A piece of a core pinpointer. You need four pieces to repair it.",
+    "PinpointerMothershipRepaired": "A handheld tracking device that leads to the direction of the Mothership core. This one has seen better days.",
     "PinpointerNuclear": "A handheld tracking device. While typically far more capable, this one has been configured to lock onto certain signals. Keep upright to retain accuracy.",
     "PinpointerStation": "A handheld tracking device that leads to the direction of any nearby station.",
     "PinpointerSyndicateNuclear": "Produced specifically for nuclear operative missions, get that disk!",
