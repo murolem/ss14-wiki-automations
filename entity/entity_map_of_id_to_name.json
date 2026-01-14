@@ -7079,6 +7079,8 @@
     "PinionAirlockGlass": "glass airlock",
     "PinpointerBase": "pinpointer",
     "PinpointerMothership": "core pinpointer",
+    "PinpointerMothershipPiece": "piece of core pinpointer",
+    "PinpointerMothershipRepaired": "repaired core pinpointer",
     "PinpointerNuclear": "pinpointer",
     "PinpointerStation": "station pinpointer",
     "PinpointerSyndicateNuclear": "syndicate pinpointer",
