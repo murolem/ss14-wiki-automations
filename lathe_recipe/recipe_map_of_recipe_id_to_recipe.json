@@ -386,16 +386,6 @@
         },
         "type": "latheRecipe"
     },
-    "BaseChemistryEmptyVial": {
-        "completetime": 2,
-        "id": "BaseChemistryEmptyVial",
-        "materials": {
-            "Glass": 1,
-            "Wood": 0.2
-        },
-        "result": "BaseChemistryEmptyVial",
-        "type": "latheRecipe"
-    },
     "BaseCircuitboardRecipe": {
         "abstract": true,
         "completetime": 4,
@@ -2413,6 +2403,26 @@
             "Glass": 1
         },
         "result": "ChemistryEmptyBottle01",
+        "type": "latheRecipe"
+    },
+    "ChemistryEmptyVial": {
+        "completetime": 2,
+        "id": "ChemistryEmptyVial",
+        "materials": {
+            "Glass": 1,
+            "Wood": 0.2
+        },
+        "result": "ChemistryEmptyVial",
+        "type": "latheRecipe"
+    },
+    "ChemistryEmptyVialSmall": {
+        "completetime": 2,
+        "id": "ChemistryEmptyVialSmall",
+        "materials": {
+            "Glass": 0.5,
+            "Wood": 0.2
+        },
+        "result": "ChemistryEmptyVialSmall",
         "type": "latheRecipe"
     },
     "ChemMasterMachineCircuitboard": {
