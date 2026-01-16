@@ -40,6 +40,7 @@
     "activate emp": "ActionActivateEmpImplant",
     "activate microbomb": "ActionActivateMicroBomb",
     "activation rune": "ActivateRune",
+    "admin anomaly scanner": "AnomalyScannerAdmin",
     "admin camera": "AdminCamera",
     "admin observer": "AdminObserver",
     "admin pda": "AdminPDA",

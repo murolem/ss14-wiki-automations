@@ -524,6 +524,7 @@
     "AnomalyRockUranium": "anomaly",
     "AnomalySanta": "anomaly",
     "AnomalyScanner": "anomaly scanner",
+    "AnomalyScannerAdmin": "admin anomaly scanner",
     "AnomalyShadow": "anomaly",
     "AnomalySynchronizerCircuitboard": "anomaly synchronizer machine board",
     "AnomalyTech": "anomaly",
