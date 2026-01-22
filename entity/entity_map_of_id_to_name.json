@@ -2121,6 +2121,7 @@
     "ClothingEyesGlassesSecurity": "security glasses",
     "ClothingEyesGlassesSunglasses": "sun glasses",
     "ClothingEyesGlassesThermal": "optical thermal scanner",
+    "ClothingEyesHudBase": "item",
     "ClothingEyesHudBeer": "beer goggles",
     "ClothingEyesHudCommand": "administration hud",
     "ClothingEyesHudDiagnostic": "diagnostic hud",
