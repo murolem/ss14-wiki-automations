@@ -1594,7 +1594,7 @@
     "crate of mothroaches": "CrateNPCMothroach",
     "crawler": "MobArgocyteCrawler",
     "crayon": "CrayonInedible",
-    "crayon box": "CrayonBox",
+    "crayon box": "CrayonBoxEmpty",
     "crayon spawner": "CrayonSpawner90",
     "crazy glue": "CrazyGlue",
     "crazy hamburger": "FoodBurgerCrazy",
