@@ -5663,6 +5663,20 @@
         "result": "FloorTileItemDarkHerringbone",
         "type": "latheRecipe"
     },
+    "FloorTileItemDarkHorizontalSlatsBordered": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Dark"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemDarkHorizontalSlatsBordered",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemDarkHorizontalSlatsBordered",
+        "type": "latheRecipe"
+    },
     "FloorTileItemDarkMarble": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5748,6 +5762,20 @@
         "result": "FloorTileItemDarkPavementVertical",
         "type": "latheRecipe"
     },
+    "FloorTileItemDarkSlatsContinuous": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Dark"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemDarkSlatsContinuous",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemDarkSlatsContinuous",
+        "type": "latheRecipe"
+    },
     "FloorTileItemDarkSquiggly": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5760,6 +5788,20 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemDarkSquiggly",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemDarkVerticalSlatsBordered": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Dark"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemDarkVerticalSlatsBordered",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemDarkVerticalSlatsBordered",
         "type": "latheRecipe"
     },
     "FloorTileItemGratingMaint": {
@@ -5995,6 +6037,20 @@
         "result": "FloorTileItemSteelHerringbone",
         "type": "latheRecipe"
     },
+    "FloorTileItemSteelHorizontalSlatsBordered": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Steel"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemSteelHorizontalSlatsBordered",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemSteelHorizontalSlatsBordered",
+        "type": "latheRecipe"
+    },
     "FloorTileItemSteelMaint": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -6077,6 +6133,34 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemSteelPavementVertical",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemSteelSlatsContinuous": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Steel"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemSteelSlatsContinuous",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemSteelSlatsContinuous",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemSteelVerticalSlatsBordered": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Steel"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemSteelVerticalSlatsBordered",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemSteelVerticalSlatsBordered",
         "type": "latheRecipe"
     },
     "FloorTileItemTechmaint": {
@@ -6163,6 +6247,20 @@
         "result": "FloorTileItemWhiteHerringbone",
         "type": "latheRecipe"
     },
+    "FloorTileItemWhiteHorizontalSlatsBordered": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "White"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemWhiteHorizontalSlatsBordered",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemWhiteHorizontalSlatsBordered",
+        "type": "latheRecipe"
+    },
     "FloorTileItemWhiteMarble": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -6246,6 +6344,34 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemWhitePavementVertical",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemWhiteSlatsContinuous": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "White"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemWhiteSlatsContinuous",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemWhiteSlatsContinuous",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemWhiteVerticalSlatsBordered": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "White"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemWhiteVerticalSlatsBordered",
+        "materials": {
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemWhiteVerticalSlatsBordered",
         "type": "latheRecipe"
     },
     "FloorTileItemWood": {
