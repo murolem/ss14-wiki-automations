@@ -1,20 +1,6 @@
 [
     {
         "stationType": "Lathe",
-        "id": "MothershipCore",
-        "staticRecipes": [
-            "XenoborgEngiRecipe",
-            "XenoborgHeavyRecipe",
-            "XenoborgModuleDoorControlRecipe",
-            "XenoborgModuleEnergySwordRecipe",
-            "XenoborgModuleHeavyLaserRecipe",
-            "XenoborgModuleSuperCloakDeviceRecipe",
-            "XenoborgScoutRecipe",
-            "XenoborgStealthRecipe"
-        ]
-    },
-    {
-        "stationType": "Lathe",
         "id": "Autolathe",
         "staticRecipes": [
             "APCElectronics",
@@ -1344,6 +1330,20 @@
             "FauxTileJungleAstroGrass",
             "FauxTileLightAstroGrass",
             "FauxTileMowedAstroGrass"
+        ]
+    },
+    {
+        "stationType": "Lathe",
+        "id": "MothershipCore",
+        "staticRecipes": [
+            "XenoborgEngiRecipe",
+            "XenoborgHeavyRecipe",
+            "XenoborgModuleDoorControlRecipe",
+            "XenoborgModuleEnergySwordRecipe",
+            "XenoborgModuleHeavyLaserRecipe",
+            "XenoborgModuleSuperCloakDeviceRecipe",
+            "XenoborgScoutRecipe",
+            "XenoborgStealthRecipe"
         ]
     }
 ]
