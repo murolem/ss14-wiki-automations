@@ -4,6 +4,7 @@
         "id": "MothershipCore",
         "staticRecipes": [
             "XenoborgEngiRecipe",
+            "XenoborgExtractorRecipe",
             "XenoborgHeavyRecipe",
             "XenoborgModuleDoorControlRecipe",
             "XenoborgModuleEnergySwordRecipe",
