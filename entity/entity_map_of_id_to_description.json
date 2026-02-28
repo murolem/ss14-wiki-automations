@@ -3625,7 +3625,7 @@
     "DoorElectronicsTheatre": "An electronics board used in doors and airlocks.",
     "DoorElectronicsVault": "An electronics board used in doors and airlocks.",
     "DoorElectronicsXenoborg": "An electronics board used in doors and airlocks.",
-    "DoorRemoteAll": "A gadget which can open and bolt doors remotely.",
+    "DoorRemoteAll": "A gadget which can open and bolt doors remotely. This one works even on wooden doors!",
     "DoorRemoteArmory": "A gadget which can open and bolt doors remotely.",
     "DoorRemoteCanEletrifyDoors": "A gadget which can open and bolt doors remotely.",
     "DoorRemoteCargo": "A gadget which can open and bolt doors remotely.",
