@@ -6656,6 +6656,7 @@
     "xenoborg radio jammer": "XenoborgRadioJammer",
     "xenoborg recharging station": "BorgChargerXenoborg",
     "xenoborg role": "MindRoleXenoborg",
+    "xenoborg supplies crate": "CrateXenoborgStartingSupplies",
     "xenoborg wall": "WallXenoborg",
     "xenoborg window": "XenoborgWindow",
     "xenoborgs": "SpawnPointXenoborg",
