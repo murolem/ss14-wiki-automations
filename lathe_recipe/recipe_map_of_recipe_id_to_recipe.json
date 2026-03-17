@@ -1094,15 +1094,6 @@
         },
         "type": "latheRecipe"
     },
-    "BaseXenoborgMachineRecipe": {
-        "abstract": true,
-        "categories": [
-            "Machines"
-        ],
-        "completetime": 2,
-        "id": "BaseXenoborgMachineRecipe",
-        "type": "latheRecipe"
-    },
     "BaseXenoborgModulesRecipe": {
         "abstract": true,
         "categories": [
@@ -10661,21 +10652,9 @@
         "completetime": 10,
         "id": "XenoborgEngiRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Steel": 30
         },
         "result": "XenoborgEngiPrinted",
-        "type": "latheRecipe"
-    },
-    "XenoborgExtractorRecipe": {
-        "categories": [
-            "Machines"
-        ],
-        "completetime": 2,
-        "id": "XenoborgExtractorRecipe",
-        "materials": {
-            "Steel": 10
-        },
-        "result": "XenoborgExtractorFlatpack",
         "type": "latheRecipe"
     },
     "XenoborgHeavyRecipe": {
@@ -10685,7 +10664,8 @@
         "completetime": 10,
         "id": "XenoborgHeavyRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Plasteel": 10,
+            "Steel": 20
         },
         "result": "XenoborgHeavyPrinted",
         "type": "latheRecipe"
@@ -10697,7 +10677,8 @@
         "completetime": 2,
         "id": "XenoborgModuleDoorControlRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Glass": 15,
+            "Steel": 15
         },
         "result": "XenoborgModuleDoorControl",
         "type": "latheRecipe"
@@ -10709,7 +10690,8 @@
         "completetime": 2,
         "id": "XenoborgModuleEnergySwordRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Glass": 15,
+            "Steel": 15
         },
         "result": "XenoborgModuleEnergySword",
         "type": "latheRecipe"
@@ -10721,7 +10703,8 @@
         "completetime": 2,
         "id": "XenoborgModuleHeavyLaserRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Glass": 15,
+            "Steel": 15
         },
         "result": "XenoborgModuleHeavyLaser",
         "type": "latheRecipe"
@@ -10733,7 +10716,7 @@
         "completetime": 2,
         "id": "XenoborgModuleSuperCloakDeviceRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Glass": 30
         },
         "result": "XenoborgModuleSuperCloakDevice",
         "type": "latheRecipe"
@@ -10745,7 +10728,8 @@
         "completetime": 10,
         "id": "XenoborgScoutRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Plastic": 10,
+            "Steel": 20
         },
         "result": "XenoborgScoutPrinted",
         "type": "latheRecipe"
@@ -10757,7 +10741,8 @@
         "completetime": 10,
         "id": "XenoborgStealthRecipe",
         "materials": {
-            "XenoborgCrystal": 1
+            "Glass": 10,
+            "Steel": 20
         },
         "result": "XenoborgStealthPrinted",
         "type": "latheRecipe"
