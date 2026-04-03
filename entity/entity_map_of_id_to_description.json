@@ -5146,6 +5146,8 @@
     "HighSecCentralCommandLocked": "Keeps the bad out and keeps the good in.",
     "HighSecCommandLocked": "Keeps the bad out and keeps the good in.",
     "HighSecDoor": "Keeps the bad out and keeps the good in.",
+    "HijackBeacon": "A device that bypasses the firewall on Nanotrasen-brand Automated Trade Stations.",
+    "HijackTradeStationObjective": "Your uplink has been authorized one hijack beacon. Deploy it on the Automated Trade Station and defend it whilst it hijacks the trade station.",
     "HoloClownInjector": "A complex artwork of handheld machinery allowing the user to host a holoclown guardian.",
     "HoloFan": "A barrier of hard light that blocks air, but nothing else.",
     "HolofanProjector": "Stop suicidal passengers from killing everyone during atmos emergencies.",
