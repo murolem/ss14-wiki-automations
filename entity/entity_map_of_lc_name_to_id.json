@@ -6008,6 +6008,8 @@
     "tier 3 parts crate": "CratePartsT3",
     "tier 3/4 parts crate": "CratePartsT3T4",
     "tier 4 parts crate": "CratePartsT4",
+    "tile gun": "WeaponTileGun",
+    "tile gun xenoborg module": "XenoborgModuleTileGun",
     "timer frame": "TimerFrame",
     "timer trigger": "TimerTrigger",
     "timpani": "TimpaniInstrument",
