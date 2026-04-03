@@ -5550,6 +5550,8 @@
     "HighSecCentralCommandLocked": "high security door",
     "HighSecCommandLocked": "high security door",
     "HighSecDoor": "high security door",
+    "HijackBeacon": "hijack beacon",
+    "HijackTradeStationObjective": "Hijack the Automated Trade Station.",
     "HoloClownInjector": "holoclown injector",
     "HoloFan": "holofan",
     "HolofanProjector": "holofan projector",
