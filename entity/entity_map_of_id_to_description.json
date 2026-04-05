@@ -113,7 +113,6 @@
     "ActionSummonGhosts": "Makes all current ghosts permanently visible",
     "ActionSummonGuns": "AK47s for everyone! Places a random gun in front of everybody.",
     "ActionSummonMagic": "Places a random magical item in front of everybody. Nothing could go wrong!",
-    "ActionSurvCameraLights": "Enable surveillance camera lights near wherever you're viewing.",
     "ActionToggleBlock": "Raise or lower your shield.",
     "ActionToggleEyes": "Close your eyes to protect your peepers, or open your eyes to enjoy the pretty lights.",
     "ActionToggleFov": "Toggles field-of-view in order to see what players see.",
