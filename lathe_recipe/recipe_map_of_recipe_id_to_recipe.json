@@ -366,6 +366,20 @@
         },
         "type": "latheRecipe"
     },
+    "BaseCarpetTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "BaseCarpetTileRecipe",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "type": "latheRecipe"
+    },
     "BaseCheapCircuitboardRecipe": {
         "abstract": true,
         "completetime": 2,
@@ -667,6 +681,20 @@
         },
         "type": "latheRecipe"
     },
+    "BaseIndustrialTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "BaseIndustrialTileRecipe",
+        "materials": {
+            "Steel": 0.5
+        },
+        "type": "latheRecipe"
+    },
     "BaseJumpsuitRecipe": {
         "abstract": true,
         "categories": [
@@ -803,12 +831,37 @@
         },
         "type": "latheRecipe"
     },
+    "BasePlasticTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Plastic"
+        ],
+        "completetime": 0.5,
+        "id": "BasePlasticTileRecipe",
+        "materials": {
+            "Plastic": 0.25
+        },
+        "type": "latheRecipe"
+    },
     "BasePowerCellRecipe": {
         "abstract": true,
         "categories": [
             "Parts"
         ],
         "id": "BasePowerCellRecipe",
+        "type": "latheRecipe"
+    },
+    "BasePreciousTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Precious"
+        ],
+        "completetime": 0.5,
+        "id": "BasePreciousTileRecipe",
         "type": "latheRecipe"
     },
     "BaseResearchComputerRecipeCategory": {
@@ -903,6 +956,20 @@
         ],
         "completetime": 4,
         "id": "BaseShieldRecipe",
+        "type": "latheRecipe"
+    },
+    "BaseShuttleTileRecipe": {
+        "abstract": true,
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "BaseShuttleTileRecipe",
+        "materials": {
+            "Plasteel": 0.25
+        },
         "type": "latheRecipe"
     },
     "BaseSilverCircuitboardRecipe": {
@@ -5562,6 +5629,90 @@
         "result": "FloorTileItemRCircuit",
         "type": "latheRecipe"
     },
+    "FloorTileItemArcadeBlue": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemArcadeBlue",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "result": "FloorTileItemArcadeBlue",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemArcadeBlue2": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemArcadeBlue2",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "result": "FloorTileItemArcadeBlue2",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemArcadeRed": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemArcadeRed",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "result": "FloorTileItemArcadeRed",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemBoxing": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Plastic"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemBoxing",
+        "materials": {
+            "Plastic": 0.25
+        },
+        "result": "FloorTileItemBoxing",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemCarpetClown": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemCarpetClown",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "result": "FloorTileItemCarpetClown",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemCarpetOffice": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemCarpetOffice",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "result": "FloorTileItemCarpetOffice",
+        "type": "latheRecipe"
+    },
     "FloorTileItemConcrete": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5804,6 +5955,62 @@
         "result": "FloorTileItemDarkVerticalSlatsBordered",
         "type": "latheRecipe"
     },
+    "FloorTileItemEighties": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Carpets"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemEighties",
+        "materials": {
+            "Cloth": 0.25
+        },
+        "result": "FloorTileItemEighties",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemElevatorShaft": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemElevatorShaft",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemElevatorShaft",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemFreezer": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemFreezer",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemFreezer",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemGold": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Precious"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemGold",
+        "materials": {
+            "Gold": 0.5
+        },
+        "result": "FloorTileItemGold",
+        "type": "latheRecipe"
+    },
     "FloorTileItemGratingMaint": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5863,6 +6070,20 @@
         "result": "FloorTileItemGrayConcreteSmooth",
         "type": "latheRecipe"
     },
+    "FloorTileItemGym": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Plastic"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemGym",
+        "materials": {
+            "Plastic": 0.25
+        },
+        "result": "FloorTileItemGym",
+        "type": "latheRecipe"
+    },
     "FloorTileItemIronsandConcrete": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5908,6 +6129,76 @@
         "result": "FloorTileItemIronsandConcreteSmooth",
         "type": "latheRecipe"
     },
+    "FloorTileItemLino": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Plastic"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemLino",
+        "materials": {
+            "Plastic": 0.25
+        },
+        "result": "FloorTileItemLino",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemMetalDiamond": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemMetalDiamond",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemMetalDiamond",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemMining": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemMining",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemMining",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemMiningDark": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemMiningDark",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemMiningDark",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemMiningLight": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemMiningLight",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemMiningLight",
+        "type": "latheRecipe"
+    },
     "FloorTileItemOldConcrete": {
         "applyMaterialDiscount": false,
         "categories": [
@@ -5951,6 +6242,162 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemOldConcreteSmooth",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemPlasmaMarble": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Marble"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemPlasmaMarble",
+        "materials": {
+            "Glass": 0.25,
+            "Plasma": 0.25,
+            "Steel": 0.25
+        },
+        "result": "FloorTileItemPlasmaMarble",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemRockVault": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemRockVault",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemRockVault",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShowroom": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Industrial"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemShowroom",
+        "materials": {
+            "Steel": 0.5
+        },
+        "result": "FloorTileItemShowroom",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttleBlack": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttleBlack",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttleBlack",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttleBlue": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttleBlue",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttleBlue",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttleGrey": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttleGrey",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttleGrey",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttleOrange": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttleOrange",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttleOrange",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttlePurple": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttlePurple",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttlePurple",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttleRed": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttleRed",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttleRed",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemShuttleWhite": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Shuttle"
+        ],
+        "completetime": 1,
+        "id": "FloorTileItemShuttleWhite",
+        "materials": {
+            "Plasteel": 0.25
+        },
+        "result": "FloorTileItemShuttleWhite",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemSilver": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Precious"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemSilver",
+        "materials": {
+            "Silver": 0.5
+        },
+        "result": "FloorTileItemSilver",
         "type": "latheRecipe"
     },
     "FloorTileItemSteel": {
@@ -6189,6 +6636,22 @@
             "Steel": 0.25
         },
         "result": "FloorTileItemTechmaintDark",
+        "type": "latheRecipe"
+    },
+    "FloorTileItemUraniumMarble": {
+        "applyMaterialDiscount": false,
+        "categories": [
+            "Tiles",
+            "Marble"
+        ],
+        "completetime": 0.5,
+        "id": "FloorTileItemUraniumMarble",
+        "materials": {
+            "Glass": 0.25,
+            "Steel": 0.25,
+            "Uranium": 0.25
+        },
+        "result": "FloorTileItemUraniumMarble",
         "type": "latheRecipe"
     },
     "FloorTileItemWhite": {
