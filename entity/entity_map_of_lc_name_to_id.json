@@ -6028,7 +6028,6 @@
     "tofu burger": "FoodBurgerTofu",
     "tofu slice": "FoodTofuSlice",
     "toggle anchored": "ActionDisguiseAnchor",
-    "toggle camera lights": "ActionSurvCameraLights",
     "toggle fov": "ActionToggleFov",
     "toggle ghost hearing": "ActionToggleGhostHearing",
     "toggle ghosts": "ActionToggleGhosts",
