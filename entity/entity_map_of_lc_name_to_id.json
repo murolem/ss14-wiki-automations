@@ -4484,6 +4484,7 @@
     "radiation collector flatpack": "RadiationCollectorFlatpack",
     "radiation gear crate": "CrateRadiation",
     "radiation hood": "ClothingHeadHatHoodRad",
+    "radiation protection": "StatusEffectRadiationProtection",
     "radiation protection crate": "CrateEmergencyRadiation",
     "radiation shutters": "ShuttersRadiation",
     "radiation sign": "SignRadiationMed",
