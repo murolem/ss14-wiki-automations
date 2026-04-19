@@ -3450,6 +3450,8 @@
     "materials spawner": "LootSpawnerMaterials",
     "mattress": "Mattress",
     "mauler toy": "ToyMauler",
+    "max cap": "MaxCapSilly",
+    "max cap in a can": "MaxCapCanister",
     "mayonnaise": "ReagentContainerMayo",
     "mcgriff": "MobMcGriff",
     "mcgriff spawner": "SpawnMobMcGriff",
