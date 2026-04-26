@@ -34,6 +34,7 @@
     "ActionChangelingDevour": "[color=red]Devour[/color]",
     "ActionChangelingStore": "DNA Store",
     "ActionChangelingTransform": "[color=red]Transform[/color]",
+    "ActionChangelingVoiceMimic": "Voice Mimicry",
     "ActionChangeVoiceMask": "Set name",
     "ActionChangeVoiceMaskImplant": "Set name",
     "ActionChargeSpell": "Charge",
