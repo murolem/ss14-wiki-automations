@@ -6326,6 +6326,7 @@
     "visiting zookeeper spawner": "VisitorZookeeperSpawner",
     "visitor id card": "VisitorIDCard",
     "vodka bottle": "DrinkBottleVodka",
+    "voice mimicry": "ActionChangelingVoiceMimic",
     "voice sensor": "voicesensor",
     "voice trigger": "VoiceTrigger",
     "void applause": "ActionVoidApplause",
