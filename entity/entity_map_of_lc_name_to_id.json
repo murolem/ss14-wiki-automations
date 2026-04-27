@@ -489,6 +489,7 @@
     "bio suit": "ClothingOuterBioGeneral",
     "biocube fabricator": "Biofabricator",
     "biocube fabricator machine board": "BiofabricatorMachineCircuitboard",
+    "biodegrade": "ActionChangelingBiodegrade",
     "biogenerator": "Biogenerator",
     "biogenerator machine board": "BiogeneratorMachineCircuitboard",
     "biohazard sign": "SignBiohazard",
