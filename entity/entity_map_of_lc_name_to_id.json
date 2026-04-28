@@ -3018,6 +3018,7 @@
     "integrated gps": "BorgHandheldGPSBasic",
     "integrated holofan": "HolofanProjectorBorg",
     "integrated ore bag": "BorgOreBag",
+    "integrated ore bag of holding": "BorgOreBagOfHolding",
     "integration test marker": "IntegrationTestMarker",
     "intellicard": "Intellicard",
     "intercom": "BaseIntercom",
