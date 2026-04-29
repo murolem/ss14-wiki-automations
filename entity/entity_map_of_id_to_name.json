@@ -33,6 +33,7 @@
     "ActionChameleonController": "Control clothing",
     "ActionChangelingBiodegrade": "Biodegrade",
     "ActionChangelingDevour": "[color=red]Devour[/color]",
+    "ActionChangelingStingDna": "Extract DNA",
     "ActionChangelingStore": "DNA Store",
     "ActionChangelingTransform": "[color=red]Transform[/color]",
     "ActionChangelingVoiceMimic": "Voice Mimicry",
