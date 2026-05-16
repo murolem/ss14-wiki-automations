@@ -1470,6 +1470,24 @@
         "result": "Candle",
         "type": "latheRecipe"
     },
+    "BioGenCompostAmmonia": {
+        "categories": [
+            "Chemicals"
+        ],
+        "completetime": 1,
+        "icon": {
+            "sprite": "Objects/Specific/Chemistry/bottle.rsi",
+            "state": "bottle-1"
+        },
+        "id": "BioGenCompostAmmonia",
+        "materials": {
+            "Biomass": 0.1
+        },
+        "resultReagents": {
+            "ReagentAmmonia": 10
+        },
+        "type": "latheRecipe"
+    },
     "BioGenCream": {
         "categories": [
             "Food"
