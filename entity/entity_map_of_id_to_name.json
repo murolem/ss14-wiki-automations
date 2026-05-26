@@ -824,6 +824,7 @@
     "BaseHandheldStationMap": "station map",
     "BaseHardBomb": "hardbomb",
     "BaseHealingItem": "item",
+    "BaseHypoInjector": "solution",
     "BaseHypospray": "solution",
     "BaseImplanter": "implanter",
     "BaseImplantOnlyImplanter": "implant extractor",
