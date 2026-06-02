@@ -3037,6 +3037,7 @@
     "ComputerXenoborgsControl": "Used to remotely monitor all xenoborgs.",
     "ComputerXenoborgsControlCircuitboard": "A computer printed circuit board for a xenoborg control console.",
     "CondenserMachineCircuitBoard": "A machine printed circuit board for a condenser.",
+    "ConstructedToilet": "The HT-451, a torque rotation-based, waste disposal unit for small matter. This one seems remarkably clean.",
     "ContainmentField": "A containment field that repels gravitational singularities.",
     "ContainmentFieldGenerator": "A machine that generates a containment field when powered by an emitter. Keeps the Singularity docile.",
     "ContainmentFieldGeneratorFlatpack": "A flatpack used for constructing a containment field generator.",
