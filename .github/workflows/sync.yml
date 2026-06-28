@@ -3,7 +3,7 @@ name: Process SS14 upstream
 on:
     schedule:
         # every hour
-        - cron: "0 * * * *"
+        # - cron: "0 * * * *"
     workflow_dispatch: {}
     push:
         branches:
